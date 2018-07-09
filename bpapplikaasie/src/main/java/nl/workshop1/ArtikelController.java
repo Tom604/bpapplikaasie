@@ -8,6 +8,8 @@ import java.sql.Statement;
 import javax.xml.parsers.ParserConfigurationException;
 import nl.workshop1.domain.Artikel;
 import nl.workshop1.utility.ConnectToDatabase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 /**
@@ -15,13 +17,16 @@ import org.xml.sax.SAXException;
  * @author Vosjes
  */
 public class ArtikelController {
+    
+    static Logger log = LoggerFactory.getLogger(ArtikelController.class);
+    
     public static void main(String[] args) {
-
+        
         try {
         //Open the database connection
         Connection conn = ConnectToDatabase.connectWithXml();
-        System.out.println("Database connected");
-        
+        log.info("Database connected");
+                
         //01 Set data from the database to an Artikel object
         Artikel artikel1 = fillArtikel(conn);
 

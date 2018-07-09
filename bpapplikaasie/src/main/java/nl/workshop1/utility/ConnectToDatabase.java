@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -21,6 +23,7 @@ public class ConnectToDatabase {
     private static String url;
     private static String username;
     private static String password;
+    static Logger log = LoggerFactory.getLogger(ConnectToDatabase.class);
     
     public static Connection connectWithXml() throws ParserConfigurationException, SAXException,
             IOException, ClassNotFoundException, SQLException {
@@ -38,7 +41,7 @@ public class ConnectToDatabase {
         password = doc.getElementsByTagName("jdbc_password").item(0).getTextContent();
         
         Class.forName(driver);
-        System.out.println("Driver loaded");
+        log.info("Driver loaded");
         
         return DriverManager.getConnection(url, username, password);
     }
