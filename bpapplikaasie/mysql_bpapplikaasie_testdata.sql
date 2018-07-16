@@ -58,7 +58,7 @@ INSERT INTO account_type (id, type) VALUES ("K", "klant");
 --   `id` INT NOT NULL AUTO_INCREMENT,
 --   `username` VARCHAR(25) NOT NULL,
 --   `wachtwoord` VARCHAR(180) NOT NULL,
---   `klant_id` INT NOT NULL,
+--   `klant_id` INT NULL,
 --   `account_type_id` CHAR(1) NOT NULL,
 --   PRIMARY KEY (`id`),
 --   UNIQUE INDEX `username_UNIQUE` (`username` ASC),

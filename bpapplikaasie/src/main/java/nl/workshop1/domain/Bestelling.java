@@ -1,6 +1,7 @@
 package nl.workshop1.domain;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -10,6 +11,7 @@ public class Bestelling {
     
     private int id;
     private BigDecimal totaalprijs;
+    private LocalDateTime datumTijd;
     private int klantId;
 
     public int getId() {
@@ -28,6 +30,14 @@ public class Bestelling {
         this.totaalprijs = totaalprijs;
     }
 
+    public LocalDateTime getDatumTijd() {
+        return datumTijd;
+    }
+
+    public void setDatumTijd(LocalDateTime datumTijd) {
+        this.datumTijd = datumTijd;
+    }
+    
     public int getKlantId() {
         return klantId;
     }
