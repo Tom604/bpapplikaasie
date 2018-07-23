@@ -1,11 +1,17 @@
 package nl.workshop1.DAO;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.xml.parsers.ParserConfigurationException;
 import nl.workshop1.domain.Artikel;
+import nl.workshop1.utility.DatabaseConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -18,77 +24,109 @@ public class MySQLArtikelDAO extends MySQLDAOFactory implements ArtikelDAO {
     */
     
     private PreparedStatement preparedStatement;
+    //Connection connection;
+    static Logger log = LoggerFactory.getLogger(MySQLArtikelDAO.class);
     
     @Override
-    public boolean insertArtikel(Connection connection, String naam, BigDecimal prijs,
-            int voorraad) throws SQLException {
+    public boolean insertArtikel(String naam, BigDecimal prijs, int voorraad) {
         
-        preparedStatement = connection.prepareStatement(
-                "insert into artikel (naam, prijs, voorraad) values (?, ?, ?)");
+        int temp = 0;
         
-        preparedStatement.setString(1, naam);
-        preparedStatement.setBigDecimal(2, prijs);
-        preparedStatement.setInt(3, voorraad);
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through insertArtikel");
+            
+            preparedStatement = connection.prepareStatement(
+                    "insert into artikel (naam, prijs, voorraad) values (?, ?, ?)");
+            preparedStatement.setString(1, naam);
+            preparedStatement.setBigDecimal(2, prijs);
+            preparedStatement.setInt(3, voorraad);
+            
+            temp = preparedStatement.executeUpdate();
+            
+        } catch (ParserConfigurationException | SAXException | IOException |
+                ClassNotFoundException | SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in insertArtikel");
+        }
         
-        return preparedStatement.executeUpdate() != 0;
+        return temp != 0;
     }
     
     @Override
-    public Artikel selectArtikel(Connection connection, String naam) throws SQLException {
+    public Artikel selectArtikel(int id) {
 
         Artikel artikel1 = new Artikel();
         
-        preparedStatement = connection.prepareStatement(
-                "select id, naam, prijs, voorraad from artikel where naam = ?");
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through selectArtikel");
+            
+            preparedStatement = connection.prepareStatement(
+                    "select id, naam, prijs, voorraad from artikel where id = ?");
+            preparedStatement.setInt(1, id);
         
-        preparedStatement.setString(1, naam);
-        
-        ResultSet resultSet = preparedStatement.executeQuery();
-        
-        if (resultSet.next()) {
-            artikel1.setId(resultSet.getInt("id"));
-            artikel1.setNaam(resultSet.getString("naam"));
-            artikel1.setPrijs(resultSet.getBigDecimal("prijs"));
-            artikel1.setVoorraad(resultSet.getInt("voorraad"));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                artikel1.setId(resultSet.getInt("id"));
+                artikel1.setNaam(resultSet.getString("naam"));
+                artikel1.setPrijs(resultSet.getBigDecimal("prijs"));
+                artikel1.setVoorraad(resultSet.getInt("voorraad"));
+            }
+        } catch (ParserConfigurationException | SAXException | IOException |
+                ClassNotFoundException | SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in selectArtikel");
         }
         
         return artikel1;
     }
     
     @Override
-    public boolean updateArtikel(Connection connection, String kolomNaam,
-            String nieuweWaarde, String naam) throws SQLException {
+    public boolean updateArtikel(int id, String naam, BigDecimal prijs, int voorraad) {
         
-        preparedStatement = connection.prepareStatement(
-                "update artikel set ? = ? where naam = ?");
+        int temp = 0;
         
-        preparedStatement.setString(1, kolomNaam);
-        preparedStatement.setString(2, nieuweWaarde);
-        preparedStatement.setString(3, naam);
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through updateArtikel");
+            
+            preparedStatement = connection.prepareStatement(
+                    "update artikel set naam = ?, prijs = ?, voorraad = ? where id = ?");
         
-        return preparedStatement.executeUpdate() != 0;
-    }
-    
-    public void updateArtikel(Connection connection, String kolomNaam,
-            BigDecimal nieuweWaarde, String naam) throws SQLException {
+            preparedStatement.setString(1, naam);
+            preparedStatement.setBigDecimal(2, prijs);
+            preparedStatement.setInt(3, voorraad);
+            preparedStatement.setInt(4, id);
         
-        updateArtikel(connection, kolomNaam, String.valueOf(nieuweWaarde), naam);
-    }
-    
-    public void updateArtikel(Connection connection, String kolomNaam,
-            int nieuweWaarde, String naam) throws SQLException {
+            temp = preparedStatement.executeUpdate();
+            
+        } catch (ParserConfigurationException | SAXException | IOException |
+                ClassNotFoundException | SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in updateArtikel");
+        }
         
-        updateArtikel(connection, kolomNaam, String.valueOf(nieuweWaarde), naam);
+        return temp != 0;
     }
     
     @Override
-    public boolean deleteArtikel(Connection connection, String naam) throws SQLException{
+    public boolean deleteArtikel(int id) {
         
-        preparedStatement = connection.prepareStatement(
-                "delete from artikel where naam = ?");
+        int temp = 0;
         
-        preparedStatement.setString(1, naam);
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through deleteArtikel");
+            
+            preparedStatement = connection.prepareStatement(
+                "delete from artikel where id = ?");
+            preparedStatement.setInt(1, id);
         
-        return preparedStatement.executeUpdate() != 0;
+            temp = preparedStatement.executeUpdate();
+            
+        } catch (ParserConfigurationException | SAXException | IOException |
+                ClassNotFoundException | SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in deleteArtikel");
+        }
+        
+        return temp != 0;
     }
 }
