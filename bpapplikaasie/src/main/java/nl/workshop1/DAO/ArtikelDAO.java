@@ -15,18 +15,10 @@ public interface ArtikelDAO {
     Alle ISUD (INSERT, SELECT, UPDATE, DELETE) methodes die door MySQLArtikelDAO geïmplementeerd worden
     */
     
-    public void insertArtikel(Connection connection, String naam, BigDecimal prijs,
+    public boolean insertArtikel(Connection connection, String naam, BigDecimal prijs,
             int voorraad) throws SQLException;
     public Artikel selectArtikel(Connection connection, String naam) throws SQLException;
-    /**
-     * 
-     * @return true in case of succes, false in case of failure
-     */
-    public boolean updateArtikel();
-    /**
-     * 
-     * @return true in case of succes, false in case of failure
-     */
-    public boolean deleteArtikel();
-    public Artikel findArtikel();
+    public boolean updateArtikel(Connection connection, String kolomNaam,
+            String nieuweWaarde, String naam) throws SQLException;
+    public boolean deleteArtikel(Connection connection, String naam) throws SQLException;
 }

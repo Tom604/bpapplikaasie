@@ -25,7 +25,7 @@ public class ConnectToDatabase {
     private static String password;
     static Logger log = LoggerFactory.getLogger(ConnectToDatabase.class);
     
-    public static Connection connectWithXml() throws ParserConfigurationException, SAXException,
+    public static Connection connectToMySQLWithXml() throws ParserConfigurationException, SAXException,
             IOException, ClassNotFoundException, SQLException {
         
         //Create Document object (with Builder and BuilderFactory)

@@ -11,21 +11,6 @@ public class Klant {
     private String achternaam;
     private String tussenvoegsel;
 
-    public Klant() {
-        this(0, "", "", "");
-    }
-    
-    public Klant(int id) {
-        this.id = id;
-    }
-
-    public Klant(int id, String voornaam, String achternaam, String tussenvoegsel) {
-        this.id = id;
-        this.voornaam = voornaam;
-        this.achternaam = achternaam;
-        this.tussenvoegsel = tussenvoegsel;
-    }
-    
     public int getId() {
         return id;
     }
@@ -56,5 +41,14 @@ public class Klant {
 
     public void setTussenvoegsel(String tussenvoegsel) {
         this.tussenvoegsel = tussenvoegsel;
+    }
+    
+    @Override
+    public String toString() {
+        if (tussenvoegsel != null) {
+            return "Klant: " + voornaam + " " + tussenvoegsel + " " + achternaam;
+        }
+        
+        return "Klant: " + voornaam + " " + achternaam;
     }
 }

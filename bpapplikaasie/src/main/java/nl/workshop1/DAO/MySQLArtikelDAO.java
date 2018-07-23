@@ -20,7 +20,7 @@ public class MySQLArtikelDAO extends MySQLDAOFactory implements ArtikelDAO {
     private PreparedStatement preparedStatement;
     
     @Override
-    public void insertArtikel(Connection connection, String naam, BigDecimal prijs,
+    public boolean insertArtikel(Connection connection, String naam, BigDecimal prijs,
             int voorraad) throws SQLException {
         
         preparedStatement = connection.prepareStatement(
@@ -30,7 +30,7 @@ public class MySQLArtikelDAO extends MySQLDAOFactory implements ArtikelDAO {
         preparedStatement.setBigDecimal(2, prijs);
         preparedStatement.setInt(3, voorraad);
         
-        preparedStatement.executeUpdate();
+        return preparedStatement.executeUpdate() != 0;
     }
     
     @Override
@@ -53,21 +53,42 @@ public class MySQLArtikelDAO extends MySQLDAOFactory implements ArtikelDAO {
         }
         
         return artikel1;
-        
     }
     
     @Override
-    public boolean updateArtikel() {
+    public boolean updateArtikel(Connection connection, String kolomNaam,
+            String nieuweWaarde, String naam) throws SQLException {
         
+        preparedStatement = connection.prepareStatement(
+                "update artikel set ? = ? where naam = ?");
+        
+        preparedStatement.setString(1, kolomNaam);
+        preparedStatement.setString(2, nieuweWaarde);
+        preparedStatement.setString(3, naam);
+        
+        return preparedStatement.executeUpdate() != 0;
+    }
+    
+    public void updateArtikel(Connection connection, String kolomNaam,
+            BigDecimal nieuweWaarde, String naam) throws SQLException {
+        
+        updateArtikel(connection, kolomNaam, String.valueOf(nieuweWaarde), naam);
+    }
+    
+    public void updateArtikel(Connection connection, String kolomNaam,
+            int nieuweWaarde, String naam) throws SQLException {
+        
+        updateArtikel(connection, kolomNaam, String.valueOf(nieuweWaarde), naam);
     }
     
     @Override
-    public boolean deleteArtikel() {
+    public boolean deleteArtikel(Connection connection, String naam) throws SQLException{
         
-    }
-    
-    @Override
-    public Artikel findArtikel() {
+        preparedStatement = connection.prepareStatement(
+                "delete from artikel where naam = ?");
         
+        preparedStatement.setString(1, naam);
+        
+        return preparedStatement.executeUpdate() != 0;
     }
 }

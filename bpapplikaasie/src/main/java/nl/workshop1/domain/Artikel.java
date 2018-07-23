@@ -44,4 +44,9 @@ public class Artikel {
     public void setVoorraad(int voorraad) {
         this.voorraad = voorraad;
     }
+    
+    @Override
+    public String toString() {
+        return "Artikel: " + naam + "\nPrijs: €" + prijs + "\nVoorraad: " + voorraad;
+    }
 }

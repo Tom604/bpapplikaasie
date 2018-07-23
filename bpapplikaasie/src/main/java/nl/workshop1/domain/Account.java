@@ -9,7 +9,7 @@ public class Account {
     private int id;
     private String username;
     private String wachtwoord;
-    private Klant klantId = new Klant(0);
+    private Klant klant;
     private char accountTypeId;
 
     public int getId() {
@@ -36,13 +36,12 @@ public class Account {
         this.wachtwoord = wachtwoord;
     }
 
-    public Klant getKlantId() {
-        return klantId;
+    public Klant getKlant() {
+        return klant;
     }
 
-    public void setKlantId(int id) {
-        Klant temp = new Klant(id);
-        this.klantId = temp;
+    public void setKlant(Klant klant) {
+        this.klant = klant;
     }
 
     public char getAccountTypeId() {
