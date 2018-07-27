@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MySQL_database>
     <jdbc_driver>com.mysql.jdbc.Driver</jdbc_driver>
-    <jdbc_url>jdbc:mysql://localhost:3306/bpapplikaasie?useSSL=false</jdbc_url>
+    <jdbc_url>jdbc:mysql://localhost:3306/?useSSL=false</jdbc_url>
     <jdbc_username>kaasie</jdbc_username>
     <jdbc_password>Lekkere342_kaas</jdbc_password>
 </MySQL_database>

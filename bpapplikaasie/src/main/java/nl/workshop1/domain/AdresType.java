@@ -24,4 +24,9 @@ public class AdresType {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "AdresType{" + "id=" + id + ", type=" + type + '}';
+    }
 }

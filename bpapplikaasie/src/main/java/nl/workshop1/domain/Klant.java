@@ -45,10 +45,7 @@ public class Klant {
     
     @Override
     public String toString() {
-        if (tussenvoegsel != null) {
-            return "Klant: " + voornaam + " " + tussenvoegsel + " " + achternaam;
-        }
-        
-        return "Klant: " + voornaam + " " + achternaam;
+        return "Klant{" + "id=" + id + ", voornaam=" + voornaam + ", achternaam="
+                + achternaam + ", tussenvoegsel=" + tussenvoegsel + '}';
     }
 }

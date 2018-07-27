@@ -1,11 +1,11 @@
 package nl.workshop1.DAO;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 import javax.xml.parsers.ParserConfigurationException;
 import nl.workshop1.domain.Artikel;
 import nl.workshop1.utility.DatabaseConnection;
@@ -23,25 +23,23 @@ public class MySQLArtikelDAO extends MySQLDAOFactory implements ArtikelDAO {
     Alle ISUD methodes uit interface en evt. extra methodes specifiek voor MySQLArtikelDAO object
     */
     
+    private int updateExecuted;
     private PreparedStatement preparedStatement;
-    //Connection connection;
     static Logger log = LoggerFactory.getLogger(MySQLArtikelDAO.class);
     
     @Override
-    public boolean insertArtikel(String naam, BigDecimal prijs, int voorraad) {
-        
-        int temp = 0;
+    public boolean insertArtikel(Artikel artikel) {
         
         try (Connection connection = DatabaseConnection.getConnection()) {
             log.debug("Database connected through insertArtikel");
             
             preparedStatement = connection.prepareStatement(
-                    "insert into artikel (naam, prijs, voorraad) values (?, ?, ?)");
-            preparedStatement.setString(1, naam);
-            preparedStatement.setBigDecimal(2, prijs);
-            preparedStatement.setInt(3, voorraad);
+                    "insert into bpapplikaasie.artikel (naam, prijs, voorraad) values (?, ?, ?)");
+            preparedStatement.setString(1, artikel.getNaam());
+            preparedStatement.setBigDecimal(2, artikel.getPrijs());
+            preparedStatement.setInt(3, artikel.getVoorraad());
             
-            temp = preparedStatement.executeUpdate();
+            updateExecuted = preparedStatement.executeUpdate();
             
         } catch (ParserConfigurationException | SAXException | IOException |
                 ClassNotFoundException | SQLException ex) {
@@ -49,27 +47,27 @@ public class MySQLArtikelDAO extends MySQLDAOFactory implements ArtikelDAO {
             log.warn("Exception catched in insertArtikel");
         }
         
-        return temp != 0;
+        return updateExecuted != 0;
     }
     
     @Override
     public Artikel selectArtikel(int id) {
 
-        Artikel artikel1 = new Artikel();
+        Artikel artikel = new Artikel();
         
         try (Connection connection = DatabaseConnection.getConnection()) {
             log.debug("Database connected through selectArtikel");
             
             preparedStatement = connection.prepareStatement(
-                    "select id, naam, prijs, voorraad from artikel where id = ?");
+                    "select id, naam, prijs, voorraad from bpapplikaasie.artikel where id = ?");
             preparedStatement.setInt(1, id);
         
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                artikel1.setId(resultSet.getInt("id"));
-                artikel1.setNaam(resultSet.getString("naam"));
-                artikel1.setPrijs(resultSet.getBigDecimal("prijs"));
-                artikel1.setVoorraad(resultSet.getInt("voorraad"));
+                artikel.setId(resultSet.getInt("id"));
+                artikel.setNaam(resultSet.getString("naam"));
+                artikel.setPrijs(resultSet.getBigDecimal("prijs"));
+                artikel.setVoorraad(resultSet.getInt("voorraad"));
             }
         } catch (ParserConfigurationException | SAXException | IOException |
                 ClassNotFoundException | SQLException ex) {
@@ -77,26 +75,23 @@ public class MySQLArtikelDAO extends MySQLDAOFactory implements ArtikelDAO {
             log.warn("Exception catched in selectArtikel");
         }
         
-        return artikel1;
+        return artikel;
     }
     
     @Override
-    public boolean updateArtikel(int id, String naam, BigDecimal prijs, int voorraad) {
-        
-        int temp = 0;
+    public boolean updateArtikel(Artikel artikel) {
         
         try (Connection connection = DatabaseConnection.getConnection()) {
             log.debug("Database connected through updateArtikel");
             
             preparedStatement = connection.prepareStatement(
-                    "update artikel set naam = ?, prijs = ?, voorraad = ? where id = ?");
+                    "update bpapplikaasie.artikel set naam = ?, prijs = ?, voorraad = ? where id = ?");
+            preparedStatement.setString(1, artikel.getNaam());
+            preparedStatement.setBigDecimal(2, artikel.getPrijs());
+            preparedStatement.setInt(3, artikel.getVoorraad());
+            preparedStatement.setInt(4, artikel.getId());
         
-            preparedStatement.setString(1, naam);
-            preparedStatement.setBigDecimal(2, prijs);
-            preparedStatement.setInt(3, voorraad);
-            preparedStatement.setInt(4, id);
-        
-            temp = preparedStatement.executeUpdate();
+            updateExecuted = preparedStatement.executeUpdate();
             
         } catch (ParserConfigurationException | SAXException | IOException |
                 ClassNotFoundException | SQLException ex) {
@@ -104,22 +99,20 @@ public class MySQLArtikelDAO extends MySQLDAOFactory implements ArtikelDAO {
             log.warn("Exception catched in updateArtikel");
         }
         
-        return temp != 0;
+        return updateExecuted != 0;
     }
     
     @Override
     public boolean deleteArtikel(int id) {
         
-        int temp = 0;
-        
         try (Connection connection = DatabaseConnection.getConnection()) {
             log.debug("Database connected through deleteArtikel");
             
             preparedStatement = connection.prepareStatement(
-                "delete from artikel where id = ?");
+                    "delete from bpapplikaasie.artikel where id = ?");
             preparedStatement.setInt(1, id);
         
-            temp = preparedStatement.executeUpdate();
+            updateExecuted = preparedStatement.executeUpdate();
             
         } catch (ParserConfigurationException | SAXException | IOException |
                 ClassNotFoundException | SQLException ex) {
@@ -127,6 +120,35 @@ public class MySQLArtikelDAO extends MySQLDAOFactory implements ArtikelDAO {
             log.warn("Exception catched in deleteArtikel");
         }
         
-        return temp != 0;
+        return updateExecuted != 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 13 * hash + this.updateExecuted;
+        hash = 13 * hash + Objects.hashCode(this.preparedStatement);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final MySQLArtikelDAO other = (MySQLArtikelDAO) obj;
+        if (this.updateExecuted != other.updateExecuted) {
+            return false;
+        }
+        if (!Objects.equals(this.preparedStatement, other.preparedStatement)) {
+            return false;
+        }
+        return true;
     }
 }

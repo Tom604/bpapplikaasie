@@ -12,7 +12,7 @@ public class Bestelling {
     private int id;
     private BigDecimal totaalprijs;
     private LocalDateTime datumTijd;
-    private int klantId;
+    private Klant klant;
 
     public int getId() {
         return id;
@@ -38,11 +38,17 @@ public class Bestelling {
         this.datumTijd = datumTijd;
     }
     
-    public int getKlantId() {
-        return klantId;
+    public Klant getKlant() {
+        return klant;
     }
 
-    public void setKlantId(int klantId) {
-        this.klantId = klantId;
+    public void setKlant(Klant klant) {
+        this.klant = klant;
+    }
+
+    @Override
+    public String toString() {
+        return "Bestelling{" + "id=" + id + ", totaalprijs=" + totaalprijs
+                + ", datumTijd=" + datumTijd + ", klant=" + klant + '}';
     }
 }

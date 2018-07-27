@@ -7,8 +7,8 @@ package nl.workshop1.domain;
 public class BestelRegel {
     
     private int id;
-    private int bestellingId;
-    private int artikelId;
+    private Bestelling bestelling;
+    private Artikel artikel;
     private int aantal;
 
     public int getId() {
@@ -19,20 +19,20 @@ public class BestelRegel {
         this.id = id;
     }
 
-    public int getBestellingId() {
-        return bestellingId;
+    public Bestelling getBestelling() {
+        return bestelling;
     }
 
-    public void setBestellingId(int bestellingId) {
-        this.bestellingId = bestellingId;
+    public void setBestelling(Bestelling bestelling) {
+        this.bestelling = bestelling;
     }
 
-    public int getArtikelId() {
-        return artikelId;
+    public Artikel getArtikel() {
+        return artikel;
     }
 
-    public void setArtikelId(int artikelId) {
-        this.artikelId = artikelId;
+    public void setArtikel(Artikel artikel) {
+        this.artikel = artikel;
     }
 
     public int getAantal() {
@@ -41,5 +41,11 @@ public class BestelRegel {
 
     public void setAantal(int aantal) {
         this.aantal = aantal;
+    }
+
+    @Override
+    public String toString() {
+        return "BestelRegel{" + "id=" + id + ", bestelling=" + bestelling
+                + ", artikel=" + artikel + ", aantal=" + aantal + '}';
     }
 }

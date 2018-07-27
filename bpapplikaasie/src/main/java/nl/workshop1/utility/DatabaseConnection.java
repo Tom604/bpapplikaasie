@@ -17,15 +17,15 @@ import org.xml.sax.SAXException;
  *
  * @author Vosjes
  */
-public class ConnectToDatabase {
+public class DatabaseConnection {
 
     private static String driver;
     private static String url;
     private static String username;
     private static String password;
-    static Logger log = LoggerFactory.getLogger(ConnectToDatabase.class);
+    static Logger log = LoggerFactory.getLogger(DatabaseConnection.class);
     
-    public static Connection connectToMySQLWithXml() throws ParserConfigurationException, SAXException,
+    public static Connection getConnection() throws ParserConfigurationException, SAXException,
             IOException, ClassNotFoundException, SQLException {
         
         //Create Document object (with Builder and BuilderFactory)

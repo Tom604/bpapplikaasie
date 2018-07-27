@@ -12,8 +12,8 @@ public class Adres {
     private String toevoeging;
     private String postcode;
     private String woonplaats;
-    private int klantId;
-    private char adresTypeId;
+    private Klant klant;
+    private AdresType adresType;
 
     public int getId() {
         return id;
@@ -63,20 +63,27 @@ public class Adres {
         this.woonplaats = woonplaats;
     }
 
-    public int getKlantId() {
-        return klantId;
+    public Klant getKlant() {
+        return klant;
     }
 
-    public void setKlantId(int klantId) {
-        this.klantId = klantId;
+    public void setKlant(Klant klant) {
+        this.klant = klant;
     }
 
-    public char getAdresTypeId() {
-        return adresTypeId;
+    public AdresType getAdresType() {
+        return adresType;
     }
 
-    public void setAdresTypeId(char adresTypeId) {
-        this.adresTypeId = adresTypeId;
+    public void setAdresType(AdresType adresType) {
+        this.adresType = adresType;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Adres{" + "id=" + id + ", straatnaam=" + straatnaam + ", huisnummer="
+                + huisnummer + ", toevoeging=" + toevoeging + ", postcode=" + postcode
+                + ", woonplaats=" + woonplaats + ", klant=" + klant + ", adresType="
+                + adresType + '}';
+    }
 }

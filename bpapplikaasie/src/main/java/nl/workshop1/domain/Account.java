@@ -10,7 +10,7 @@ public class Account {
     private String username;
     private String wachtwoord;
     private Klant klant;
-    private char accountTypeId;
+    private AccountType accountType;
 
     public int getId() {
         return id;
@@ -44,11 +44,17 @@ public class Account {
         this.klant = klant;
     }
 
-    public char getAccountTypeId() {
-        return accountTypeId;
+    public AccountType getAccountType() {
+        return accountType;
     }
 
-    public void setAccountTypeId(char accountTypeId) {
-        this.accountTypeId = accountTypeId;
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" + "id=" + id + ", username=" + username + ", wachtwoord="
+                + wachtwoord + ", klant=" + klant + ", accountType=" + accountType + '}';
     }
 }
