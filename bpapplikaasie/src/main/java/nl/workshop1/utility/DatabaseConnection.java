@@ -25,24 +25,34 @@ public class DatabaseConnection {
     private static String password;
     static Logger log = LoggerFactory.getLogger(DatabaseConnection.class);
     
-    public static Connection getConnection() throws ParserConfigurationException, SAXException,
-            IOException, ClassNotFoundException, SQLException {
+    public static Connection getConnection() {
         
-        //Create Document object (with Builder and BuilderFactory)
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-	DocumentBuilder docBuilder = dbFactory.newDocumentBuilder();
-        Document doc = docBuilder.parse(new File("mysql_data.xml"));
-        doc.getDocumentElement().normalize();
+        Connection connection = null;
         
-        //Read data from xml through the Document object
-        driver = doc.getElementsByTagName("jdbc_driver").item(0).getTextContent();
-        url = doc.getElementsByTagName("jdbc_url").item(0).getTextContent();
-        username = doc.getElementsByTagName("jdbc_username").item(0).getTextContent();
-        password = doc.getElementsByTagName("jdbc_password").item(0).getTextContent();
+        try {
+            //Create Document object (with Builder and BuilderFactory)
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = dbFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse(new File("mysql_data.xml"));
+            doc.getDocumentElement().normalize();
         
-        Class.forName(driver);
-        log.info("Driver loaded");
+            //Read data from xml through the Document object
+            driver = doc.getElementsByTagName("jdbc_driver").item(0).getTextContent();
+            url = doc.getElementsByTagName("jdbc_url").item(0).getTextContent();
+            username = doc.getElementsByTagName("jdbc_username").item(0).getTextContent();
+            password = doc.getElementsByTagName("jdbc_password").item(0).getTextContent();
+
+            Class.forName(driver);
+            log.info("Driver loaded");
+
+            connection = DriverManager.getConnection(url, username, password);
+            
+        } catch (ParserConfigurationException | SAXException | IOException |
+            ClassNotFoundException | SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in DatabaseConnection");
+        }
         
-        return DriverManager.getConnection(url, username, password);
+        return connection;
     }
 }

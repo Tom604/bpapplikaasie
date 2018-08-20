@@ -1,4 +1,8 @@
-package nl.workshop1.DAO;
+package nl.workshop1.dao.mysqldao;
+
+import nl.workshop1.dao.ArtikelDAO;
+import nl.workshop1.dao.KlantDAO;
+import nl.workshop1.dao.mysqldao.MySQLArtikelDAO;
 
 /**
  *

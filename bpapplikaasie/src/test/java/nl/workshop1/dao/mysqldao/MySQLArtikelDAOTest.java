@@ -1,4 +1,4 @@
-package nl.workshop1.DAO;
+package nl.workshop1.dao.mysqldao;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -31,18 +31,11 @@ public class MySQLArtikelDAOTest {
     
     @Before
     public void setUp() {
-        
         try (Connection connection = DatabaseConnection.getConnection()) {
             Statement statement = connection.createStatement();
             
-            // Drop and create schema bpapplikaasie
-            statement.executeUpdate("DROP SCHEMA IF EXISTS bpapplikaasie");
-            statement.executeUpdate("CREATE SCHEMA IF NOT EXISTS bpapplikaasie "
-                    + "DEFAULT CHARACTER SET utf8");
-            statement.executeUpdate("USE bpapplikaasie");
-            
             // Drop and create table artikel
-            statement.executeUpdate("DROP TABLE IF EXISTS bpapplikaasie.artikel");
+            statement.executeUpdate("USE bpapplikaasie");
             statement.executeUpdate(
                     "CREATE TABLE IF NOT EXISTS bpapplikaasie.artikel " +
                     "(id INT NOT NULL AUTO_INCREMENT, " +
@@ -68,12 +61,13 @@ public class MySQLArtikelDAOTest {
     
     @After
     public void tearDown() {
-        
         try (Connection connection = DatabaseConnection.getConnection()) {
             Statement statement = connection.createStatement();
             
-            // Drop schema bpapplikaasie
-            statement.executeUpdate("DROP SCHEMA IF EXISTS bpapplikaasie");
+            // Truncate table bpapplikaasie.artikel
+            statement.executeUpdate("SET foreign_key_checks = 0");
+            statement.executeUpdate("TRUNCATE TABLE bpapplikaasie.artikel");
+            statement.executeUpdate("SET foreign_key_checks = 1");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -139,31 +133,6 @@ public class MySQLArtikelDAOTest {
         MySQLArtikelDAO instance = new MySQLArtikelDAO();
         boolean expResult = true;
         boolean result = instance.deleteArtikel(id);
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of hashCode method, of class MySQLArtikelDAO.
-     */
-    @Test
-    public void testHashCode() {
-        System.out.println("hashCode");
-        MySQLArtikelDAO instance = new MySQLArtikelDAO();
-        int expResult = 507;
-        int result = instance.hashCode();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of equals method, of class MySQLArtikelDAO.
-     */
-    @Test
-    public void testEquals() {
-        System.out.println("equals");
-        Object obj = null;
-        MySQLArtikelDAO instance = new MySQLArtikelDAO();
-        boolean expResult = false;
-        boolean result = instance.equals(obj);
         assertEquals(expResult, result);
     }
 }

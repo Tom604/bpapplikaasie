@@ -1,48 +1,45 @@
-package nl.workshop1.DAO;
+package nl.workshop1.dao.mysqldao;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
-import javax.xml.parsers.ParserConfigurationException;
+import nl.workshop1.dao.ArtikelDAO;
 import nl.workshop1.domain.Artikel;
 import nl.workshop1.utility.DatabaseConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
 
 /**
  *
  * @author Vosjes
  */
-public class MySQLArtikelDAO extends MySQLDAOFactory implements ArtikelDAO {
+public class MySQLArtikelDAO implements ArtikelDAO {
     
     /*
     Alle ISUD methodes uit interface en evt. extra methodes specifiek voor MySQLArtikelDAO object
     */
     
-    private int updateExecuted;
-    private PreparedStatement preparedStatement;
     static Logger log = LoggerFactory.getLogger(MySQLArtikelDAO.class);
     
     @Override
     public boolean insertArtikel(Artikel artikel) {
         
+        int updateExecuted = 0;
+        PreparedStatement preparedStatement;
+        
         try (Connection connection = DatabaseConnection.getConnection()) {
             log.debug("Database connected through insertArtikel");
             
             preparedStatement = connection.prepareStatement(
-                    "insert into bpapplikaasie.artikel (naam, prijs, voorraad) values (?, ?, ?)");
+                    "insert into artikel (naam, prijs, voorraad) values (?, ?, ?)");
             preparedStatement.setString(1, artikel.getNaam());
             preparedStatement.setBigDecimal(2, artikel.getPrijs());
             preparedStatement.setInt(3, artikel.getVoorraad());
             
             updateExecuted = preparedStatement.executeUpdate();
             
-        } catch (ParserConfigurationException | SAXException | IOException |
-                ClassNotFoundException | SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
             log.warn("Exception catched in insertArtikel");
         }
@@ -54,12 +51,13 @@ public class MySQLArtikelDAO extends MySQLDAOFactory implements ArtikelDAO {
     public Artikel selectArtikel(int id) {
 
         Artikel artikel = new Artikel();
+        PreparedStatement preparedStatement;
         
         try (Connection connection = DatabaseConnection.getConnection()) {
             log.debug("Database connected through selectArtikel");
             
             preparedStatement = connection.prepareStatement(
-                    "select id, naam, prijs, voorraad from bpapplikaasie.artikel where id = ?");
+                    "select id, naam, prijs, voorraad from artikel where id = ?");
             preparedStatement.setInt(1, id);
         
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -69,8 +67,7 @@ public class MySQLArtikelDAO extends MySQLDAOFactory implements ArtikelDAO {
                 artikel.setPrijs(resultSet.getBigDecimal("prijs"));
                 artikel.setVoorraad(resultSet.getInt("voorraad"));
             }
-        } catch (ParserConfigurationException | SAXException | IOException |
-                ClassNotFoundException | SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
             log.warn("Exception catched in selectArtikel");
         }
@@ -81,11 +78,14 @@ public class MySQLArtikelDAO extends MySQLDAOFactory implements ArtikelDAO {
     @Override
     public boolean updateArtikel(Artikel artikel) {
         
+        int updateExecuted = 0;
+        PreparedStatement preparedStatement;
+        
         try (Connection connection = DatabaseConnection.getConnection()) {
             log.debug("Database connected through updateArtikel");
             
             preparedStatement = connection.prepareStatement(
-                    "update bpapplikaasie.artikel set naam = ?, prijs = ?, voorraad = ? where id = ?");
+                    "update artikel set naam = ?, prijs = ?, voorraad = ? where id = ?");
             preparedStatement.setString(1, artikel.getNaam());
             preparedStatement.setBigDecimal(2, artikel.getPrijs());
             preparedStatement.setInt(3, artikel.getVoorraad());
@@ -93,8 +93,7 @@ public class MySQLArtikelDAO extends MySQLDAOFactory implements ArtikelDAO {
         
             updateExecuted = preparedStatement.executeUpdate();
             
-        } catch (ParserConfigurationException | SAXException | IOException |
-                ClassNotFoundException | SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
             log.warn("Exception catched in updateArtikel");
         }
@@ -105,50 +104,23 @@ public class MySQLArtikelDAO extends MySQLDAOFactory implements ArtikelDAO {
     @Override
     public boolean deleteArtikel(int id) {
         
+        int updateExecuted = 0;
+        PreparedStatement preparedStatement;
+        
         try (Connection connection = DatabaseConnection.getConnection()) {
             log.debug("Database connected through deleteArtikel");
             
             preparedStatement = connection.prepareStatement(
-                    "delete from bpapplikaasie.artikel where id = ?");
+                    "delete from artikel where id = ?");
             preparedStatement.setInt(1, id);
         
             updateExecuted = preparedStatement.executeUpdate();
             
-        } catch (ParserConfigurationException | SAXException | IOException |
-                ClassNotFoundException | SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
             log.warn("Exception catched in deleteArtikel");
         }
         
         return updateExecuted != 0;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 13 * hash + this.updateExecuted;
-        hash = 13 * hash + Objects.hashCode(this.preparedStatement);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final MySQLArtikelDAO other = (MySQLArtikelDAO) obj;
-        if (this.updateExecuted != other.updateExecuted) {
-            return false;
-        }
-        if (!Objects.equals(this.preparedStatement, other.preparedStatement)) {
-            return false;
-        }
-        return true;
     }
 }

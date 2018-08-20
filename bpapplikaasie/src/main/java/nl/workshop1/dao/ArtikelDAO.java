@@ -1,4 +1,4 @@
-package nl.workshop1.DAO;
+package nl.workshop1.dao;
 
 import nl.workshop1.domain.Artikel;
 
