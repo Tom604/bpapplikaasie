@@ -2,6 +2,8 @@ package nl.workshop1.dao.mysqldao;
 
 import java.sql.Connection;
 import java.sql.Statement;
+import nl.workshop1.dao.DAOFactory;
+import nl.workshop1.dao.KlantDAO;
 import nl.workshop1.domain.Klant;
 import nl.workshop1.utility.DatabaseConnection;
 import org.junit.After;
@@ -81,9 +83,10 @@ public class MySQLKlantDAOTest {
         klant.setVoornaam("Sjaak");
         klant.setAchternaam("Rand");
         klant.setTussenvoegsel("van de");
-        MySQLKlantDAO instance = new MySQLKlantDAO();
+        DAOFactory mySQLDAOFactory = DAOFactory.getDAOFactory(DAOFactory.MYSQL);
+        KlantDAO klantDAO = mySQLDAOFactory.getKlantDAO();
         boolean expResult = true;
-        boolean result = instance.insertKlant(klant);
+        boolean result = klantDAO.insertKlant(klant);
         assertEquals(expResult, result);
     }
 
