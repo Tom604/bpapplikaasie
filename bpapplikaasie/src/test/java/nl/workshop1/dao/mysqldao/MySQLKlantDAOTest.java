@@ -83,8 +83,7 @@ public class MySQLKlantDAOTest {
         klant.setVoornaam("Sjaak");
         klant.setAchternaam("Rand");
         klant.setTussenvoegsel("van de");
-        DAOFactory mySQLDAOFactory = DAOFactory.getDAOFactory(DAOFactory.MYSQL);
-        KlantDAO klantDAO = mySQLDAOFactory.getKlantDAO();
+        KlantDAO klantDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getKlantDAO();
         boolean expResult = true;
         boolean result = klantDAO.insertKlant(klant);
         assertEquals(expResult, result);
@@ -97,13 +96,13 @@ public class MySQLKlantDAOTest {
     public void testSelectKlant() {
         System.out.println("selectKlant");
         int id = 1;
-        MySQLKlantDAO instance = new MySQLKlantDAO();
+        KlantDAO klantDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getKlantDAO();
         Klant expResult = new Klant();
         expResult.setId(1);
         expResult.setVoornaam("tom");
         expResult.setAchternaam("vos");
         expResult.setTussenvoegsel("de");
-        Klant result = instance.selectKlant(id);
+        Klant result = klantDAO.selectKlant(id);
         assertEquals(expResult, result);
     }
 
@@ -117,9 +116,9 @@ public class MySQLKlantDAOTest {
         klant.setId(2);
         klant.setVoornaam("Kees");
         klant.setAchternaam("Jong");
-        MySQLKlantDAO instance = new MySQLKlantDAO();
+        KlantDAO klantDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getKlantDAO();
         boolean expResult = true;
-        boolean result = instance.updateKlant(klant);
+        boolean result = klantDAO.updateKlant(klant);
         assertEquals(expResult, result);
     }
 
@@ -130,9 +129,9 @@ public class MySQLKlantDAOTest {
     public void testDeleteKlant() {
         System.out.println("deleteKlant");
         int id = 1;
-        MySQLKlantDAO instance = new MySQLKlantDAO();
+        KlantDAO klantDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getKlantDAO();
         boolean expResult = true;
-        boolean result = instance.deleteKlant(id);
+        boolean result = klantDAO.deleteKlant(id);
         assertEquals(expResult, result);
     }
 }
