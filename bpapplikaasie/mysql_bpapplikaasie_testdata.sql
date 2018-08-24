@@ -35,21 +35,6 @@ INSERT INTO artikel (naam, prijs, voorraad) VALUES ("schimmel", 5, 18);
 INSERT INTO artikel (naam, prijs, voorraad) VALUES ("goudse", 4.5, 24);
 
 -- -----------------------------------------------------
--- Table `bpapplikaasie`.`account_type`
--- -----------------------------------------------------
--- DROP TABLE IF EXISTS `bpapplikaasie`.`account_type` ;
--- 
--- CREATE TABLE IF NOT EXISTS `bpapplikaasie`.`account_type` (
---   `id` CHAR(1) NOT NULL,
---   `type` VARCHAR(45) NOT NULL,
---   PRIMARY KEY (`id`),
---   UNIQUE INDEX `type_UNIQUE` (`type` ASC))
-
-INSERT INTO account_type (id, type) VALUES ("A", "admin");
-INSERT INTO account_type (id, type) VALUES ("M", "medewerker");
-INSERT INTO account_type (id, type) VALUES ("K", "klant");
-
--- -----------------------------------------------------
 -- Table `bpapplikaasie`.`account`
 -- -----------------------------------------------------
 -- DROP TABLE IF EXISTS `bpapplikaasie`.`account` ;
@@ -58,31 +43,21 @@ INSERT INTO account_type (id, type) VALUES ("K", "klant");
 --   `id` INT NOT NULL AUTO_INCREMENT,
 --   `username` VARCHAR(25) NOT NULL,
 --   `wachtwoord` VARCHAR(180) NOT NULL,
+--   `accounttype` ENUM('admin', 'klant', 'medewerker') NOT NULL,
 --   `klant_id` INT NULL,
---   `account_type_id` CHAR(1) NOT NULL,
 --   PRIMARY KEY (`id`),
 --   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
 --   INDEX `fk_account_klant1_idx` (`klant_id` ASC),
 --   UNIQUE INDEX `klant_id_UNIQUE` (`klant_id` ASC),
---   INDEX `fk_account_account_type1_idx` (`account_type_id` ASC),
 --   CONSTRAINT `fk_account_klant1`
 --     FOREIGN KEY (`klant_id`)
 --     REFERENCES `bpapplikaasie`.`klant` (`id`)
 --     ON DELETE NO ACTION
---     ON UPDATE NO ACTION,
---   CONSTRAINT `fk_account_account_type1`
---     FOREIGN KEY (`account_type_id`)
---     REFERENCES `bpapplikaasie`.`account_type` (`id`)
---     ON DELETE NO ACTION
 --     ON UPDATE NO ACTION)
 
-INSERT INTO account (username, wachtwoord, klant_id, account_type_id) VALUES
-	("tomdevos", "tomtom",
-	(SELECT id FROM klant WHERE voornaam = 'tom'),
-    (SELECT id FROM account_type WHERE type = 'medewerker'));
--- moet "M" zijn
-INSERT INTO account (username, wachtwoord, klant_id, account_type_id) VALUES
-	("boerpiet", "pietpiet",
-    (SELECT id FROM klant WHERE voornaam = 'boer'),
-    (SELECT id FROM account_type WHERE type = 'admin'));
--- moet "A" zijn
+INSERT INTO account (username, wachtwoord, accounttype, klant_id) VALUES
+	("tomdevos", "tomtom", 'medewerker',
+	(SELECT id FROM klant WHERE voornaam = 'tom'));
+INSERT INTO account (username, wachtwoord, accounttype, klant_id) VALUES
+	("boerpiet", "pietpiet", 1,
+    (SELECT id FROM klant WHERE voornaam = 'boer'));
