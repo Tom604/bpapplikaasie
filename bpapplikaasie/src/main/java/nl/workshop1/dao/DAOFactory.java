@@ -18,7 +18,7 @@ public abstract class DAOFactory {
     
     public abstract ArtikelDAO getArtikelDAO();
     public abstract KlantDAO getKlantDAO();
-    public abstract AdresTypeDAO getAdresTypeDAO();
+    public abstract AdresDAO getAdresDAO();
     
     public static DAOFactory getDAOFactory(int whichfactory) {
         

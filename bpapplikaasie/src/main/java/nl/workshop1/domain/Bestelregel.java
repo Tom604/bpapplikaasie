@@ -4,7 +4,7 @@ package nl.workshop1.domain;
  *
  * @author Vosjes
  */
-public class BestelRegel {
+public class Bestelregel {
     
     private int id;
     private Bestelling bestelling;

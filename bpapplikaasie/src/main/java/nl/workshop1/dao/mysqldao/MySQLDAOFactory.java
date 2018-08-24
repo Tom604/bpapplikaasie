@@ -1,6 +1,6 @@
 package nl.workshop1.dao.mysqldao;
 
-import nl.workshop1.dao.AdresTypeDAO;
+import nl.workshop1.dao.AdresDAO;
 import nl.workshop1.dao.ArtikelDAO;
 import nl.workshop1.dao.DAOFactory;
 import nl.workshop1.dao.KlantDAO;
@@ -26,7 +26,7 @@ public class MySQLDAOFactory extends DAOFactory {
     }
     
     @Override
-    public AdresTypeDAO getAdresTypeDAO() {
-        return new MySQLAdresTypeDAO();
+    public AdresDAO getAdresDAO() {
+        return new MySQLAdresDAO();
     }
 }

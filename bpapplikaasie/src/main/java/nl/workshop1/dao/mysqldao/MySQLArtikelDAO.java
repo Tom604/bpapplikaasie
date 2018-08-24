@@ -16,11 +16,11 @@ import org.slf4j.LoggerFactory;
  */
 public class MySQLArtikelDAO implements ArtikelDAO {
     
+    static Logger log = LoggerFactory.getLogger(MySQLArtikelDAO.class);
+    
     /*
     Alle ISUD methodes uit interface en evt. extra methodes specifiek voor MySQLArtikelDAO object
     */
-    
-    static Logger log = LoggerFactory.getLogger(MySQLArtikelDAO.class);
     
     @Override
     public boolean insertArtikel(Artikel artikel) {
@@ -32,7 +32,7 @@ public class MySQLArtikelDAO implements ArtikelDAO {
             log.debug("Database connected through insertArtikel");
             
             preparedStatement = connection.prepareStatement(
-                    "insert into artikel (naam, prijs, voorraad) values (?, ?, ?)");
+                    "INSERT INTO artikel (naam, prijs, voorraad) VALUES (?, ?, ?)");
             preparedStatement.setString(1, artikel.getNaam());
             preparedStatement.setBigDecimal(2, artikel.getPrijs());
             preparedStatement.setInt(3, artikel.getVoorraad());
@@ -57,7 +57,7 @@ public class MySQLArtikelDAO implements ArtikelDAO {
             log.debug("Database connected through selectArtikel");
             
             preparedStatement = connection.prepareStatement(
-                    "select id, naam, prijs, voorraad from artikel where id = ?");
+                    "SELECT id, naam, prijs, voorraad FROM artikel WHERE id = ?");
             preparedStatement.setInt(1, id);
         
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -85,7 +85,7 @@ public class MySQLArtikelDAO implements ArtikelDAO {
             log.debug("Database connected through updateArtikel");
             
             preparedStatement = connection.prepareStatement(
-                    "update artikel set naam = ?, prijs = ?, voorraad = ? where id = ?");
+                    "UPDATE artikel SET naam = ?, prijs = ?, voorraad = ? WHERE id = ?");
             preparedStatement.setString(1, artikel.getNaam());
             preparedStatement.setBigDecimal(2, artikel.getPrijs());
             preparedStatement.setInt(3, artikel.getVoorraad());
@@ -111,7 +111,7 @@ public class MySQLArtikelDAO implements ArtikelDAO {
             log.debug("Database connected through deleteArtikel");
             
             preparedStatement = connection.prepareStatement(
-                    "delete from artikel where id = ?");
+                    "DELETE FROM artikel WHERE id = ?");
             preparedStatement.setInt(1, id);
         
             updateExecuted = preparedStatement.executeUpdate();

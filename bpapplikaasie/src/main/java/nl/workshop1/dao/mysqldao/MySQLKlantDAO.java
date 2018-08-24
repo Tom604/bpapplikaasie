@@ -16,11 +16,11 @@ import org.slf4j.LoggerFactory;
  */
 public class MySQLKlantDAO implements KlantDAO {
 
+    static Logger log = LoggerFactory.getLogger(MySQLKlantDAO.class);
+    
     /*
     Alle ISUD methodes uit interface en evt. extra methodes specifiek voor MySQLKlantDAO object
     */
-    
-    static Logger log = LoggerFactory.getLogger(MySQLKlantDAO.class);
     
     @Override
     public boolean insertKlant(Klant klant) {
@@ -32,7 +32,7 @@ public class MySQLKlantDAO implements KlantDAO {
             log.debug("Database connected through insertKlant");
             
             preparedStatement = connection.prepareStatement(
-                    "insert into klant (voornaam, achternaam, tussenvoegsel) values (?, ?, ?)");
+                    "INSERT INTO klant (voornaam, achternaam, tussenvoegsel) VALUES (?, ?, ?)");
             preparedStatement.setString(1, klant.getVoornaam());
             preparedStatement.setString(2, klant.getAchternaam());
             preparedStatement.setString(3, klant.getTussenvoegsel());
@@ -57,7 +57,7 @@ public class MySQLKlantDAO implements KlantDAO {
             log.debug("Database connected through selectKlant");
             
             preparedStatement = connection.prepareStatement(
-                    "select id, voornaam, achternaam, tussenvoegsel from klant where id = ?");
+                    "SELECT id, voornaam, achternaam, tussenvoegsel FROM klant WHERE id = ?");
             preparedStatement.setInt(1, id);
         
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -85,7 +85,7 @@ public class MySQLKlantDAO implements KlantDAO {
             log.debug("Database connected through updateKlant");
             
             preparedStatement = connection.prepareStatement(
-                    "update klant set voornaam = ?, achternaam = ?, tussenvoegsel = ? where id = ?");
+                    "UPDATE klant SET voornaam = ?, achternaam = ?, tussenvoegsel = ? WHERE id = ?");
             preparedStatement.setString(1, klant.getVoornaam());
             preparedStatement.setString(2, klant.getAchternaam());
             preparedStatement.setString(3, klant.getTussenvoegsel());
@@ -111,7 +111,7 @@ public class MySQLKlantDAO implements KlantDAO {
             log.debug("Database connected through deleteKlant");
             
             preparedStatement = connection.prepareStatement(
-                    "delete from klant where id = ?");
+                    "DELETE FROM klant WHERE id = ?");
             preparedStatement.setInt(1, id);
         
             updateExecuted = preparedStatement.executeUpdate();
