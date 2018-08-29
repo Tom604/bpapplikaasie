@@ -33,8 +33,10 @@ public class MySQLAdresDAO implements AdresDAO {
             log.debug("Database connected through insertAdres");
             
             preparedStatement = connection.prepareStatement(
-                    "INSERT INTO adres (straatnaam, huisnummer, toevoeging, postcode,"
-                    + " woonplaats, adrestype, klant) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO adres (straatnaam, huisnummer, toevoeging, postcode, " +
+                    "woonplaats, adrestype, klant_id) VALUES (?, ?, ?, ?, ?, ?, " +
+                    "(SELECT id FROM klant WHERE id = ?))");
+            
             preparedStatement.setString(1, adres.getStraatnaam());
             preparedStatement.setInt(2, adres.getHuisnummer());
             preparedStatement.setString(3, adres.getToevoeging());
@@ -44,7 +46,7 @@ public class MySQLAdresDAO implements AdresDAO {
             preparedStatement.setInt(7, adres.getKlant().getId());
             
             updateExecuted = preparedStatement.executeUpdate();
-            
+
         } catch (SQLException ex) {
             ex.printStackTrace();
             log.warn("Exception catched in insertAdres");
@@ -64,8 +66,8 @@ public class MySQLAdresDAO implements AdresDAO {
             log.debug("Database connected through selectAdres");
             
             preparedStatement = connection.prepareStatement(
-                    "SELECT id, straatnaam, huisnummer, toevoeging, postcode,"
-                    + " woonplaats, adrestype, klant FROM adres WHERE id = ?");
+                    "SELECT id, straatnaam, huisnummer, toevoeging, postcode, " +
+                    "woonplaats, adrestype, klant_id FROM adres WHERE id = ?");
             preparedStatement.setInt(1, id);
         
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -77,7 +79,7 @@ public class MySQLAdresDAO implements AdresDAO {
                 adres.setPostcode(resultSet.getString("postcode"));
                 adres.setWoonplaats(resultSet.getString("woonplaats"));
                 adres.setAdrestype(resultSet.getString("adrestype"));
-                klant.setId(resultSet.getInt("klant"));
+                klant.setId(resultSet.getInt("klant_id"));
                 adres.setKlant(klant);
             }
         } catch (SQLException ex) {
@@ -98,8 +100,8 @@ public class MySQLAdresDAO implements AdresDAO {
             log.debug("Database connected through updateAdres");
             
             preparedStatement = connection.prepareStatement(
-                    "UPDATE adres SET straatnaam = ?, huisnummer = ?, toevoeging = ?"
-                    + " postcode = ?, woonplaats = ?, adrestype = ?, klant = ?, WHERE id = ?");
+                    "UPDATE adres SET straatnaam = ?, huisnummer = ?, toevoeging = ?, " +
+                    "postcode = ?, woonplaats = ?, adrestype = ?, klant_id = ? WHERE id = ?");
             preparedStatement.setString(1, adres.getStraatnaam());
             preparedStatement.setInt(2, adres.getHuisnummer());
             preparedStatement.setString(3, adres.getToevoeging());
