@@ -55,4 +55,26 @@ public class DatabaseConnection {
         
         return connection;
     }
+    
+    public static int getDatabaseType() {
+        
+        int type = 1;
+
+/*        
+        TODO Implement example code below to offer the possibility of using several
+        different database systems when running this application.
+        
+        The 'x' represents the option for another DB than MySQL (being the default),
+        this can be extended to as many DB's as needed.
+        Depending on the precise implementation of x (where it gets its information,
+        like from an XML document), the implementation may change. 
+
+        if (x)
+            type = 2;
+        
+        return type;
+*/
+
+        return type;
+    }
 }

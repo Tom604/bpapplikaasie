@@ -83,7 +83,7 @@ public class MySQLKlantDAOTest {
         klant.setVoornaam("Sjaak");
         klant.setAchternaam("Rand");
         klant.setTussenvoegsel("van de");
-        KlantDAO klantDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getKlantDAO();
+        KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
         boolean expResult = true;
         boolean result = klantDAO.insertKlant(klant);
         assertEquals(expResult, result);
@@ -96,7 +96,7 @@ public class MySQLKlantDAOTest {
     public void testSelectKlant() {
         System.out.println("selectKlant");
         int id = 1;
-        KlantDAO klantDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getKlantDAO();
+        KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
         Klant expResult = new Klant();
         expResult.setId(1);
         expResult.setVoornaam("tom");
@@ -116,7 +116,7 @@ public class MySQLKlantDAOTest {
         klant.setId(2);
         klant.setVoornaam("Kees");
         klant.setAchternaam("Jong");
-        KlantDAO klantDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getKlantDAO();
+        KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
         boolean expResult = true;
         boolean result = klantDAO.updateKlant(klant);
         assertEquals(expResult, result);
@@ -129,7 +129,7 @@ public class MySQLKlantDAOTest {
     public void testDeleteKlant() {
         System.out.println("deleteKlant");
         int id = 1;
-        KlantDAO klantDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getKlantDAO();
+        KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
         boolean expResult = true;
         boolean result = klantDAO.deleteKlant(id);
         assertEquals(expResult, result);

@@ -36,7 +36,6 @@ public class MySQLAdresDAO implements AdresDAO {
                     "INSERT INTO adres (straatnaam, huisnummer, toevoeging, postcode, " +
                     "woonplaats, adrestype, klant_id) VALUES (?, ?, ?, ?, ?, ?, " +
                     "(SELECT id FROM klant WHERE id = ?))");
-            
             preparedStatement.setString(1, adres.getStraatnaam());
             preparedStatement.setInt(2, adres.getHuisnummer());
             preparedStatement.setString(3, adres.getToevoeging());

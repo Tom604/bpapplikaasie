@@ -1,6 +1,7 @@
 package nl.workshop1.dao;
 
 import nl.workshop1.dao.mysqldao.MySQLDAOFactory;
+import nl.workshop1.utility.DatabaseConnection;
 
 /**
  *
@@ -8,23 +9,24 @@ import nl.workshop1.dao.mysqldao.MySQLDAOFactory;
  */
 public abstract class DAOFactory {
     
-    public static final int MYSQL = 1;
-    // Meerdere data fields voor meerdere databases
-    
     /*
-    Hier bevinden zich de abstracte methodes die door de factories geïmplementeerd dienen te worden
-    Gebruiken bij meerdere persistence manieren (bijv. MongoDB naast MySQL)
+    Hier bevinden zich de abstracte methodes die door de factories geïmplementeerd
+    dienen te worden, alsook de statische methode om de betreffende factory te maken.
+    Gebruiken bij meerdere persistence manieren (bijv. MySQL en MongoDB)
     */
     
     public abstract ArtikelDAO getArtikelDAO();
     public abstract KlantDAO getKlantDAO();
     public abstract AdresDAO getAdresDAO();
     
-    public static DAOFactory getDAOFactory(int whichfactory) {
+    public static DAOFactory getDAOFactory() {
         
-        switch (whichfactory) {
-            case MYSQL: return new MySQLDAOFactory();
-            // Meerdere cases voor meerdere databases
+        int db = DatabaseConnection.getDatabaseType();
+        
+        switch (db) {
+            case 1: return new MySQLDAOFactory();
+            // case 2: return new MongoDBDAOFactory();
+            // Eventueel meerdere cases voor meerdere databases
             
             default: return null;
         }

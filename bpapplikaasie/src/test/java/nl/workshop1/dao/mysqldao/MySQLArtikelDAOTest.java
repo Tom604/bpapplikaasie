@@ -85,7 +85,7 @@ public class MySQLArtikelDAOTest {
         artikel.setNaam("oude");
         artikel.setPrijs(new BigDecimal(4));
         artikel.setVoorraad(21);
-        ArtikelDAO artikelDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getArtikelDAO();
+        ArtikelDAO artikelDAO = DAOFactory.getDAOFactory().getArtikelDAO();
         boolean expResult = true;
         boolean result = artikelDAO.insertArtikel(artikel);
         assertEquals(expResult, result);
@@ -98,7 +98,7 @@ public class MySQLArtikelDAOTest {
     public void testSelectArtikel() {
         System.out.println("selectArtikel");
         int id = 1;
-        ArtikelDAO artikelDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getArtikelDAO();
+        ArtikelDAO artikelDAO = DAOFactory.getDAOFactory().getArtikelDAO();
         Artikel expResult = new Artikel();
         expResult.setId(1);
         expResult.setNaam("brandnetel");
@@ -119,7 +119,7 @@ public class MySQLArtikelDAOTest {
         artikel.setNaam("jonge");
         artikel.setPrijs(new BigDecimal(3.5));
         artikel.setVoorraad(17);
-        ArtikelDAO artikelDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getArtikelDAO();
+        ArtikelDAO artikelDAO = DAOFactory.getDAOFactory().getArtikelDAO();
         boolean expResult = true;
         boolean result = artikelDAO.updateArtikel(artikel);
         assertEquals(expResult, result);
@@ -132,7 +132,7 @@ public class MySQLArtikelDAOTest {
     public void testDeleteArtikel() {
         System.out.println("deleteArtikel");
         int id = 1;
-        ArtikelDAO artikelDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getArtikelDAO();
+        ArtikelDAO artikelDAO = DAOFactory.getDAOFactory().getArtikelDAO();
         boolean expResult = true;
         boolean result = artikelDAO.deleteArtikel(id);
         assertEquals(expResult, result);

@@ -130,7 +130,7 @@ public class MySQLAdresDAOTest {
         adres.setWoonplaats("groest");
         adres.setAdrestype("post");
         adres.setKlant(klant);
-        AdresDAO adresDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getAdresDAO();
+        AdresDAO adresDAO = DAOFactory.getDAOFactory().getAdresDAO();
         boolean expResult = true;
         boolean result = adresDAO.insertAdres(adres);
         assertEquals(expResult, result);
@@ -143,7 +143,7 @@ public class MySQLAdresDAOTest {
     public void testSelectAdres() {
         System.out.println("selectAdres");
         int id = 1;
-        AdresDAO adresDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getAdresDAO();
+        AdresDAO adresDAO = DAOFactory.getDAOFactory().getAdresDAO();
         Adres expResult = new Adres();
         Klant klant = new Klant();
         klant.setId(1);
@@ -176,7 +176,7 @@ public class MySQLAdresDAOTest {
         adres.setWoonplaats("verghel");
         adres.setAdrestype("factuur");
         adres.setKlant(klant);
-        AdresDAO adresDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getAdresDAO();
+        AdresDAO adresDAO = DAOFactory.getDAOFactory().getAdresDAO();
         boolean expResult = true;
         boolean result = adresDAO.updateAdres(adres);
         assertEquals(expResult, result);
@@ -189,7 +189,7 @@ public class MySQLAdresDAOTest {
     public void testDeleteAdres() {
         System.out.println("deleteAdres");
         int id = 1;
-        AdresDAO adresDAO = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getAdresDAO();
+        AdresDAO adresDAO = DAOFactory.getDAOFactory().getAdresDAO();
         boolean expResult = true;
         boolean result = adresDAO.deleteAdres(id);
         assertEquals(expResult, result);
