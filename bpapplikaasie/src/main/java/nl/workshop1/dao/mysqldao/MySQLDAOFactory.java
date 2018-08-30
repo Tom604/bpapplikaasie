@@ -1,5 +1,6 @@
 package nl.workshop1.dao.mysqldao;
 
+import nl.workshop1.dao.AccountDAO;
 import nl.workshop1.dao.AdresDAO;
 import nl.workshop1.dao.ArtikelDAO;
 import nl.workshop1.dao.DAOFactory;
@@ -16,6 +17,16 @@ public class MySQLDAOFactory extends DAOFactory {
     */
     
     @Override
+    public AccountDAO getAccountDAO() {
+        return new MySQLAccountDAO();
+    }
+    
+    @Override
+    public AdresDAO getAdresDAO() {
+        return new MySQLAdresDAO();
+    }
+    
+    @Override
     public ArtikelDAO getArtikelDAO() {
         return new MySQLArtikelDAO();
     }
@@ -23,10 +34,5 @@ public class MySQLDAOFactory extends DAOFactory {
     @Override
     public KlantDAO getKlantDAO() {
         return new MySQLKlantDAO();
-    }
-    
-    @Override
-    public AdresDAO getAdresDAO() {
-        return new MySQLAdresDAO();
     }
 }

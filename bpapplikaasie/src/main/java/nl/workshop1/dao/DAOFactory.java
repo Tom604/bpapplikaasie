@@ -15,9 +15,10 @@ public abstract class DAOFactory {
     Gebruiken bij meerdere persistence manieren (bijv. MySQL en MongoDB)
     */
     
+    public abstract AccountDAO getAccountDAO();
+    public abstract AdresDAO getAdresDAO();
     public abstract ArtikelDAO getArtikelDAO();
     public abstract KlantDAO getKlantDAO();
-    public abstract AdresDAO getAdresDAO();
     
     public static DAOFactory getDAOFactory() {
         

@@ -20,7 +20,7 @@ public class MySQLAdresDAO implements AdresDAO {
     static Logger log = LoggerFactory.getLogger(MySQLAdresDAO.class);
     
     /*
-    Alle ISUD methodes uit interface en evt. extra methodes specifiek voor MySQLAdresTypeDAO object
+    Alle ISUD methodes uit interface en evt. extra methodes specifiek voor MySQLAdresDAO object
     */
     
     @Override

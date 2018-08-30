@@ -9,7 +9,7 @@ import nl.workshop1.domain.Adres;
 public interface AdresDAO {
     
     /*
-    Alle ISUD (INSERT, SELECT, UPDATE, DELETE) methodes die door MySQLAdresTypeDAO geïmplementeerd worden
+    Alle ISUD (INSERT, SELECT, UPDATE, DELETE) methodes die door MySQLAdresDAO geïmplementeerd worden
     */
     
     public boolean insertAdres(Adres adres);
