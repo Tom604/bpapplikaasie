@@ -72,7 +72,7 @@ public class MySQLAdresDAOTest {
                     "klant_id INT NOT NULL, " +
                     "PRIMARY KEY (id), " +
                     "INDEX fk_adres_klant_idx (klant_id ASC), " +
-                    "UNIQUE INDEX uq_klant_adrestype (klant_id ASC), " +
+                    "UNIQUE INDEX uq_klant_adrestype (klant_id ASC, adrestype ASC), " +
                     "CONSTRAINT fk_adres_klant " +
                         "FOREIGN KEY (klant_id) " +
                         "REFERENCES bpapplikaasie.klant (id) " +
