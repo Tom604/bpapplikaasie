@@ -83,7 +83,7 @@ public class MySQLArtikelDAOTest {
         System.out.println("insertArtikel");
         Artikel artikel = new Artikel();
         artikel.setNaam("oude");
-        artikel.setPrijs(new BigDecimal(4));
+        artikel.setPrijs(new BigDecimal("4.00"));
         artikel.setVoorraad(21);
         ArtikelDAO artikelDAO = DAOFactory.getDAOFactory().getArtikelDAO();
         boolean expResult = true;
@@ -117,7 +117,7 @@ public class MySQLArtikelDAOTest {
         Artikel artikel = new Artikel();
         artikel.setId(2);
         artikel.setNaam("jonge");
-        artikel.setPrijs(new BigDecimal(3.5));
+        artikel.setPrijs(new BigDecimal("3.50"));
         artikel.setVoorraad(17);
         ArtikelDAO artikelDAO = DAOFactory.getDAOFactory().getArtikelDAO();
         boolean expResult = true;
