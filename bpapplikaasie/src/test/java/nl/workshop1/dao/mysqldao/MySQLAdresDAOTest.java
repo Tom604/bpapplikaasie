@@ -49,7 +49,6 @@ public class MySQLAdresDAOTest {
                     "ENGINE = InnoDB");
             
             // Insert testdata into the klant table
-            statement.executeUpdate("USE bpapplikaasie");
             statement.executeUpdate(
                     "INSERT INTO klant (voornaam, achternaam, tussenvoegsel) VALUES (\"tom\", \"vos\", \"de\")");
             statement.executeUpdate(
@@ -76,12 +75,11 @@ public class MySQLAdresDAOTest {
                     "CONSTRAINT fk_adres_klant " +
                         "FOREIGN KEY (klant_id) " +
                         "REFERENCES bpapplikaasie.klant (id) " +
-                        "ON DELETE NO ACTION " +
+                        "ON DELETE CASCADE " +
                         "ON UPDATE NO ACTION) " +
                     "ENGINE = InnoDB");
             
             // Insert testdata into the adres table
-            statement.executeUpdate("USE bpapplikaasie");
             statement.executeUpdate(
                     "INSERT INTO adres (straatnaam, huisnummer, toevoeging, postcode, woonplaats, " +
                     "adrestype, klant_id) VALUES (\"rijk\", 3, \"bis\", \"3432AD\", \"grutjes\", " +

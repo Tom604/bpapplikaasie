@@ -51,7 +51,6 @@ public class MySQLBestellingDAOTest {
                     "ENGINE = InnoDB");
             
             // Insert testdata into the klant table
-            statement.executeUpdate("USE bpapplikaasie");
             statement.executeUpdate(
                     "INSERT INTO klant (voornaam, achternaam, tussenvoegsel) VALUES (\"tom\", \"vos\", \"de\")");
             statement.executeUpdate(
@@ -73,12 +72,11 @@ public class MySQLBestellingDAOTest {
                     "CONSTRAINT fk_bestelling_klant " +
                         "FOREIGN KEY (klant_id) " +
                         "REFERENCES bpapplikaasie.klant (id) " +
-                        "ON DELETE NO ACTION " +
+                        "ON DELETE CASCADE " +
                         "ON UPDATE NO ACTION) " +
                     "ENGINE = InnoDB");
             
             // Insert testdata into the bestelling table
-            statement.executeUpdate("USE bpapplikaasie");
             statement.executeUpdate(
                     "INSERT INTO bestelling (totaalprijs, datum_tijd, klant_id) " +
                     "VALUES (45.65, '2015-10-25 14:37:01', 1)");

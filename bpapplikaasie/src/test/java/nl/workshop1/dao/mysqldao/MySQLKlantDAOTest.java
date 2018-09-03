@@ -35,8 +35,9 @@ public class MySQLKlantDAOTest {
         try (Connection connection = DatabaseConnection.getConnection()) {
             Statement statement = connection.createStatement();
             
-            // Drop and create table klant
             statement.executeUpdate("USE bpapplikaasie");
+            
+            // Drop and create table klant
             statement.executeUpdate(
                     "CREATE TABLE IF NOT EXISTS bpapplikaasie.klant " +
                     "(id INT NOT NULL AUTO_INCREMENT, " +
@@ -47,7 +48,6 @@ public class MySQLKlantDAOTest {
                     "ENGINE = InnoDB");
             
             // Insert testdata into the klant table
-            statement.executeUpdate("USE bpapplikaasie");
             statement.executeUpdate(
                     "INSERT INTO klant (voornaam, achternaam, tussenvoegsel) VALUES (\"tom\", \"vos\", \"de\")");
             statement.executeUpdate(

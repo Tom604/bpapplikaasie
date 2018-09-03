@@ -7,7 +7,6 @@ import nl.workshop1.dao.DAOFactory;
 import nl.workshop1.domain.Artikel;
 import nl.workshop1.domain.Bestelling;
 import nl.workshop1.domain.Bestelregel;
-import nl.workshop1.domain.Klant;
 import nl.workshop1.utility.DatabaseConnection;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -51,7 +50,6 @@ public class MySQLBestelregelDAOTest {
                     "ENGINE = InnoDB");
             
             // Insert testdata into the klant table
-            statement.executeUpdate("USE bpapplikaasie");
             statement.executeUpdate(
                     "INSERT INTO klant (voornaam, achternaam, tussenvoegsel) VALUES (\"tom\", \"vos\", \"de\")");
             statement.executeUpdate(
@@ -73,12 +71,11 @@ public class MySQLBestelregelDAOTest {
                     "CONSTRAINT fk_bestelling_klant " +
                         "FOREIGN KEY (klant_id) " +
                         "REFERENCES bpapplikaasie.klant (id) " +
-                        "ON DELETE NO ACTION " +
+                        "ON DELETE CASCADE " +
                         "ON UPDATE NO ACTION) " +
                     "ENGINE = InnoDB");
             
             // Insert testdata into the bestelling table
-            statement.executeUpdate("USE bpapplikaasie");
             statement.executeUpdate(
                     "INSERT INTO bestelling (totaalprijs, datum_tijd, klant_id) " +
                     "VALUES (45.65, '2015-10-25 14:37:01', 1)");
@@ -105,7 +102,6 @@ public class MySQLBestelregelDAOTest {
                     "ENGINE = InnoDB");
             
             // Insert testdata into the artikel table
-            statement.executeUpdate("USE bpapplikaasie");
             statement.executeUpdate(
                     "INSERT INTO artikel (naam, prijs, voorraad) VALUES (\"brandnetel\", 6, 20)");
             statement.executeUpdate(
@@ -129,17 +125,16 @@ public class MySQLBestelregelDAOTest {
                     "CONSTRAINT fk_bestelling_has_artikel_bestelling1 " +
                         "FOREIGN KEY (bestelling_id) " +
                         "REFERENCES bpapplikaasie.bestelling (id) " +
-                        "ON DELETE NO ACTION " +
+                        "ON DELETE CASCADE " +
                         "ON UPDATE NO ACTION, " +
                     "CONSTRAINT fk_bestelling_has_artikel_artikel1 " +
                         "FOREIGN KEY (artikel_id) " +
                         "REFERENCES bpapplikaasie.artikel (id) " +
-                        "ON DELETE NO ACTION " +
+                        "ON DELETE CASCADE " +
                         "ON UPDATE NO ACTION) " +
                     "ENGINE = InnoDB");
             
             // Insert testdate into the bestelregel table
-            statement.executeUpdate("USE bpapplikaasie");
             statement.executeUpdate(
                     "INSERT INTO bestelregel (aantal, bestelling_id, artikel_id) " +
                     "VALUES (4, 1, 1)");
