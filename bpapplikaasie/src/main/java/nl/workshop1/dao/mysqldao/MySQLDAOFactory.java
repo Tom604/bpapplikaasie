@@ -4,6 +4,7 @@ import nl.workshop1.dao.AccountDAO;
 import nl.workshop1.dao.AdresDAO;
 import nl.workshop1.dao.ArtikelDAO;
 import nl.workshop1.dao.BestellingDAO;
+import nl.workshop1.dao.BestelregelDAO;
 import nl.workshop1.dao.DAOFactory;
 import nl.workshop1.dao.KlantDAO;
 
@@ -35,6 +36,11 @@ public class MySQLDAOFactory extends DAOFactory {
     @Override
     public BestellingDAO getBestellingDAO() {
         return new MySQLBestellingDAO();
+    }
+    
+    @Override
+    public BestelregelDAO getBestelregelDAO() {
+        return new MySQLBestelregelDAO();
     }
     
     @Override

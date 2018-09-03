@@ -19,6 +19,7 @@ public abstract class DAOFactory {
     public abstract AdresDAO getAdresDAO();
     public abstract ArtikelDAO getArtikelDAO();
     public abstract BestellingDAO getBestellingDAO();
+    public abstract BestelregelDAO getBestelregelDAO();
     public abstract KlantDAO getKlantDAO();
     
     public static DAOFactory getDAOFactory() {
