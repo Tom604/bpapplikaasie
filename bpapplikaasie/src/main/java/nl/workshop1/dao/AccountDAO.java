@@ -14,6 +14,7 @@ public interface AccountDAO {
     
     public boolean insertAccount(Account account);
     public Account selectAccount(int id);
+    public Account selectAccount(String username);
     public boolean updateAccount(Account account);
     public boolean deleteAccount(int id);
 }

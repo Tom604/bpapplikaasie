@@ -58,7 +58,7 @@ public class MySQLAccountDAO implements AccountDAO {
         PreparedStatement preparedStatement;
         
         try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectAccount");
+            log.debug("Database connected through selectAccount-id");
             
             preparedStatement = connection.prepareStatement(
                     "SELECT id, username, wachtwoord, accounttype, klant_id " +
@@ -76,7 +76,39 @@ public class MySQLAccountDAO implements AccountDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in selectAccount");
+            log.warn("Exception catched in selectAccount-id");
+        }
+        
+        return account;
+    }
+    
+    @Override
+    public Account selectAccount(String username) {
+        
+        Klant klant = new Klant();
+        Account account = new Account();
+        PreparedStatement preparedStatement;
+        
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through selectAccount-username");
+            
+            preparedStatement = connection.prepareStatement(
+                    "SELECT id, username, wachtwoord, accounttype, klant_id " +
+                    "FROM account WHERE username = ?");
+            preparedStatement.setString(1, username);
+        
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                account.setId(resultSet.getInt("id"));
+                account.setUsername(resultSet.getString("username"));
+                account.setWachtwoord(resultSet.getString("wachtwoord"));
+                account.setAccounttype(resultSet.getString("accounttype"));
+                klant.setId(resultSet.getInt("klant_id"));
+                account.setKlant(klant);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in selectAccount-username");
         }
         
         return account;
