@@ -10,22 +10,21 @@ import nl.workshop1.domain.Account;
  */
 public class LoginController {
     
-    public boolean compareData(String username, String wachtwoord) {
+    public static String loginnaam;
+    public static String accounttype;
+
+    public boolean validateLogin(String username, String wachtwoord) {
         
         boolean comparison = false;
         
-        // Verkrijg data van de database via AccountDAO en vergelijk
+        // Verkrijg data van de database via AccountDAO en valideer
         AccountDAO accountDAO = DAOFactory.getDAOFactory().getAccountDAO();
-        try {
-            Account account = accountDAO.selectAccount(username);
-            if (account.getUsername().compareTo(username) == 0 &&
-                    account.getWachtwoord().compareTo(wachtwoord) == 0) {
+        Account account = accountDAO.selectAccount(username);
+        if (wachtwoord.equals(account.getWachtwoord())) {
                 comparison = true;
+                loginnaam = account.getUsername();
+                accounttype = account.getAccounttype();
             }
-        } catch (NullPointerException ex) {
-            comparison = false;
-        }
-        
         return comparison;
     }
 }

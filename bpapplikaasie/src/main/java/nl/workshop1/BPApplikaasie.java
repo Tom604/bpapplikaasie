@@ -1,6 +1,6 @@
 package nl.workshop1;
 
-import nl.workshop1.view.HoofdMenuView;
+import nl.workshop1.view.LoginMenuView;
 
 /**
  *
@@ -13,8 +13,8 @@ public class BPApplikaasie {
         
         //Start bpapplikaasie
        
-        HoofdMenuView hoofdMenuView = new HoofdMenuView();
-        hoofdMenuView.startMenu();
+        LoginMenuView loginMenuView = new LoginMenuView();
+        loginMenuView.showStartMenu();
         
     }
 }

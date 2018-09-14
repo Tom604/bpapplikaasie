@@ -1,8 +1,7 @@
 package nl.workshop1.view;
 
-import java.math.BigDecimal;
-import java.util.InputMismatchException;
 import java.util.Scanner;
+import nl.workshop1.controller.LoginController;
 
 /**
  *
@@ -10,52 +9,30 @@ import java.util.Scanner;
  */
 public abstract class MenuView {
     
-    protected final String MAINTOPBOTTOM = "*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*";
-    protected final String MAINHEADER1 = "Boer Piets kazen";
-    protected final String MAINHEADER2 = "Ingelogd als ";
+    protected final String MAINTOPBOTTOM = "\n*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*\n";
+    protected final String MAINHEADER = "Boer Piets kazen\t";
     protected final String MAINCHOICE = "Maak uw keuze (voer het getal in en druk dan op enter): ";
     protected final String MAINERROR = "Uw invoer is onjuist. Probeer het opnieuw.";
+    protected final String MAINGOODBYE = "Tot ziens bij Boer Piets kazen\n";
+    protected final Scanner SCANNER = new Scanner(System.in);
+    protected String viewName;
     
     /**
-     * De input getter voor Strings.
-     * @param printString De waarde die geprint moet worden door deze methode.
-     * @return De String input.
+     * Deze methode print de standaard headers voor de verschillende views
      */
-    protected String getStringInput(String printString) {
-        Scanner input = new Scanner(System.in);
-        System.out.print(printString);
-        return input.nextLine();
-    }
-    
-    /**
-     * De input getter voor integers, gebruikt voor keuzemenu's; controleert of er
-     * een InputMismatchException plaatsvindt.
-     * @param printString De waarde die geprint moet worden door deze methode.
-     * @param aantal Het aantal keuzes uit het keuzemenu (zonder 0) waarvoor de 
-     * input en return value gevraagd worden.
-     * @return De int input, -1 voor foutieve input.
-     */
-    protected int getIntInput(String printString, int aantal) {
-        int temp = 0;
-        try {
-            Scanner input = new Scanner(System.in);
-            System.out.print(printString);
-            temp = input.nextInt();
-            if (temp > aantal || temp < 0) {
-                throw new InputMismatchException();
-            }
-        } catch (InputMismatchException ex) {
-            System.out.println("\n" + MAINTOPBOTTOM + "\n");
-            System.out.println(MAINERROR);
+    protected void printHeader() {
+        if (viewName.equals("Startscherm") || viewName.equals("Inlogscherm")) {
+            System.out.println(MAINTOPBOTTOM);
+            System.out.println(MAINHEADER + viewName + "\tNog niet ingelogd\n");
         }
-        return temp;
-    }
-   
-    protected BigDecimal getBigDecimalInput(String printString) {
-        Scanner input = new Scanner(System.in);
-        System.out.print(printString);
-        return input.nextBigDecimal();
+        else {
+            System.out.println(MAINTOPBOTTOM);
+            System.out.println(MAINHEADER + viewName + "\tIngelogd als " +
+                    LoginController.loginnaam + "\n");
+        }
     }
     
-    public abstract void showMenu(String loginNaam);
+    public abstract void showMenu();
+    public abstract void setViewName(String viewName);
+    
 }
