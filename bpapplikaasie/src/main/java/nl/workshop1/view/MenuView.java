@@ -32,6 +32,13 @@ public abstract class MenuView {
         }
     }
     
+    protected String getSelection() {
+        System.out.print(MAINCHOICE);
+        String selection = SCANNER.next();
+        System.out.println(MAINTOPBOTTOM);
+        return selection;
+    }
+    
     public abstract void showMenu();
     public abstract void setViewName(String viewName);
     

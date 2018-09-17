@@ -76,6 +76,34 @@ public class MySQLArtikelDAO implements ArtikelDAO {
     }
     
     @Override
+    public Artikel selectArtikel(String naam) {
+
+        Artikel artikel = new Artikel();
+        PreparedStatement preparedStatement;
+        
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through selectArtikel");
+            
+            preparedStatement = connection.prepareStatement(
+                    "SELECT id, naam, prijs, voorraad FROM artikel WHERE naam = ?");
+            preparedStatement.setString(1, naam);
+        
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                artikel.setId(resultSet.getInt("id"));
+                artikel.setNaam(resultSet.getString("naam"));
+                artikel.setPrijs(resultSet.getBigDecimal("prijs"));
+                artikel.setVoorraad(resultSet.getInt("voorraad"));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in selectArtikel");
+        }
+        
+        return artikel;
+    }
+    
+    @Override
     public boolean updateArtikel(Artikel artikel) {
         
         int updateExecuted = 0;
@@ -113,6 +141,29 @@ public class MySQLArtikelDAO implements ArtikelDAO {
             preparedStatement = connection.prepareStatement(
                     "DELETE FROM artikel WHERE id = ?");
             preparedStatement.setInt(1, id);
+        
+            updateExecuted = preparedStatement.executeUpdate();
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in deleteArtikel");
+        }
+        
+        return updateExecuted != 0;
+    }
+    
+    @Override
+    public boolean deleteArtikel(String naam) {
+        
+        int updateExecuted = 0;
+        PreparedStatement preparedStatement;
+        
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through deleteArtikel");
+            
+            preparedStatement = connection.prepareStatement(
+                    "DELETE FROM artikel WHERE id = ?");
+            preparedStatement.setString(1, naam);
         
             updateExecuted = preparedStatement.executeUpdate();
             

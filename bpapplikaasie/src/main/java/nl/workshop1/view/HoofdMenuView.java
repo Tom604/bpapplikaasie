@@ -1,5 +1,7 @@
 package nl.workshop1.view;
 
+import nl.workshop1.controller.LoginController;
+
 /**
  *
  * @author Vosjes
@@ -12,21 +14,25 @@ public class HoofdMenuView extends MenuView {
     @Override
     public void showMenu() {
         
-        String selectie = "";
+        String selection = "";
         
         do {
-            setViewName("Hoofdpagina");
+            setViewName("Hoofdpagina\t");
             printHeader();
             
+            String type = LoginController.accounttype;
+            
+            /*
+            Hier nog een switch + methodes maken (zie ArtikelMenuView) voor de verschillende accounts:
+            admin, medewerker en klant. Onderstaande is voor admin (ziet alles).
+            */
             System.out.println("1. Accounts\n2. Adressen\n3. Artikelen\n" +
-                    "4. Bestellingen\n5. Klanten\n\n0. Uitloggen en terug " +
+                    "4. Bestellingen\n5. Klanten\n0. Uitloggen en terug " +
                     "naar het Startscherm\n");
             
-            System.out.print(MAINCHOICE);
-            selectie = SCANNER.nextLine();
-            System.out.println(MAINTOPBOTTOM);
+            selection = getSelection();
             
-            switch (selectie) {
+            switch (selection) {
                 case "0":   break;
 //                case 1:     MenuView accountMenuView = new AccountMenuView();
 //                            accountMenuView.showMenu(loginNaam); break;
@@ -40,7 +46,7 @@ public class HoofdMenuView extends MenuView {
 //                            klantMenuView.showMenu(loginNaam);
                 default:    System.out.println(MAINERROR);
             }
-        } while (selectie.equals("0") == false);
+        } while (selection.equals("0") == false);
     }
     
     @Override

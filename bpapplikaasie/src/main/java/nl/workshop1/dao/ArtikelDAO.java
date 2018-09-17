@@ -14,6 +14,8 @@ public interface ArtikelDAO {
     
     public boolean insertArtikel(Artikel artikel);
     public Artikel selectArtikel(int id);
+    public Artikel selectArtikel(String naam);
     public boolean updateArtikel(Artikel artikel);
     public boolean deleteArtikel(int id);
+    public boolean deleteArtikel(String naam);
 }

@@ -13,28 +13,20 @@ public class LoginMenuView extends MenuView {
      */
     public void showStartMenu() {
         
-        String selectie = "";
+        String selection = "";
         
         do {
-            setViewName("Startscherm");
+            setViewName("Startscherm\t");
             printHeader();
             
             System.out.println("1. Inloggen\n0. Afsluiten\n");
-            
-            /*
-            Hier nog in MenuView een methode voor maken: getSelection() met String
-            als return value: selectie = getSelection();?
-            */
-            System.out.print(MAINCHOICE);
-            selectie = SCANNER.nextLine();
-            System.out.println(MAINTOPBOTTOM);
-            
-            switch (selectie) {
-                case "1":   showMenu(); break;
+            selection = getSelection();
+            switch (selection) {
                 case "0":   System.out.println(MAINGOODBYE); break;
-                default:    System.out.println(MAINERROR); break;
+                case "1":   showMenu(); break;
+                default:    System.out.println(MAINERROR);
             }
-        } while (selectie.equals("0") == false);
+        } while (selection.equals("0") == false);
     }
     
     /**
@@ -43,14 +35,14 @@ public class LoginMenuView extends MenuView {
     @Override
     public void showMenu() {
         
-        setViewName("Inlogscherm");
+        setViewName("Inlogscherm\t");
         printHeader();
         
         System.out.println("Log in met uw gebruikersnaam en wachtwoord.\n");
         System.out.print("Voer uw gebruikersnaam in (en druk dan op enter): ");
-        String username = SCANNER.nextLine();
+        String username = SCANNER.next();
         System.out.print("Voer uw wachtwoord in (en druk dan op enter): ");
-        String wachtwoord = SCANNER.nextLine();
+        String wachtwoord = SCANNER.next();
         
         System.out.println(MAINTOPBOTTOM);
         

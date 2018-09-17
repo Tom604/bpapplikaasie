@@ -15,16 +15,16 @@ public class LoginController {
 
     public boolean validateLogin(String username, String wachtwoord) {
         
-        boolean comparison = false;
+        boolean validation = false;
         
         // Verkrijg data van de database via AccountDAO en valideer
         AccountDAO accountDAO = DAOFactory.getDAOFactory().getAccountDAO();
         Account account = accountDAO.selectAccount(username);
         if (wachtwoord.equals(account.getWachtwoord())) {
-                comparison = true;
+                validation = true;
                 loginnaam = account.getUsername();
                 accounttype = account.getAccounttype();
             }
-        return comparison;
+        return validation;
     }
 }
