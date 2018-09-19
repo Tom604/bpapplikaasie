@@ -95,7 +95,7 @@ public class ArtikelMenuView extends MenuView {
             switch (selection) {
                 case "0":   break;
                 case "1":   ArtikelController artikelController = new ArtikelController();
-                            if (artikelController.insertedArtikel(naam, prijs, voorraad)) {
+                            if (artikelController.insertArtikel(naam, prijs, voorraad)) {
                                 System.out.println("Artikel toegevoegd.");
                             }
                             else {
@@ -122,7 +122,7 @@ public class ArtikelMenuView extends MenuView {
         String naam = SCANNER.next();
             
         ArtikelController artikelController = new ArtikelController();
-        artikelController.setSelectedArtikel(naam);
+        artikelController.selectArtikel(naam);
             
         System.out.println("\nHet geselecteerde artikel:");
         System.out.println("Naam:\t\t" + artikelController.getNaam() + 

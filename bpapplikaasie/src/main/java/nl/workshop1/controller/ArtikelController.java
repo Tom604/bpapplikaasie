@@ -27,11 +27,7 @@ public class ArtikelController {
         return voorraad;
     }
     
-    /*
-    TODO - M: Namen van onderstaande methodes veranderen
-    */
-    
-    public boolean insertedArtikel(String naam, BigDecimal prijs, int voorraad) {
+    public boolean insertArtikel(String naam, BigDecimal prijs, int voorraad) {
         ArtikelDAO artikelDAO = DAOFactory.getDAOFactory().getArtikelDAO();
         Artikel artikel = new Artikel();
         artikel.setNaam(naam);
@@ -40,7 +36,7 @@ public class ArtikelController {
         return artikelDAO.insertArtikel(artikel);
     }
     
-    public void setSelectedArtikel(String naam) {
+    public void selectArtikel(String naam) {
         ArtikelDAO artikelDAO = DAOFactory.getDAOFactory().getArtikelDAO();
         Artikel artikel = artikelDAO.selectArtikel(naam);
         this.naam = artikel.getNaam();

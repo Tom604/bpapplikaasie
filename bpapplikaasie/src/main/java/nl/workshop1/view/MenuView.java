@@ -21,7 +21,7 @@ public abstract class MenuView {
      * Deze methode print de standaard headers voor de verschillende views
      */
     protected void printHeader() {
-        if (viewName.equals("Startscherm") || viewName.equals("Inlogscherm")) {
+        if (viewName.equals("Startscherm\t") || viewName.equals("Inlogscherm\t")) {
             System.out.println(MAINTOPBOTTOM);
             System.out.println(MAINHEADER + viewName + "\tNog niet ingelogd\n");
         }

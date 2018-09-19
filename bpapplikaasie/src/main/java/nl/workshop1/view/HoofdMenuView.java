@@ -1,7 +1,5 @@
 package nl.workshop1.view;
 
-import nl.workshop1.controller.LoginController;
-
 /**
  *
  * @author Vosjes
@@ -20,11 +18,9 @@ public class HoofdMenuView extends MenuView {
             setViewName("Hoofdpagina\t");
             printHeader();
             
-            String type = LoginController.accounttype;
-            
             /*
-            Hier nog een switch + methodes maken (zie ArtikelMenuView) voor de verschillende accounts:
-            admin, medewerker en klant. Onderstaande is voor admin (ziet alles).
+            TODO - W: Hier nog een switch + methodes maken (zie ArtikelMenuView) voor de
+            verschillende accounts: admin, medewerker en klant. Onderstaande is voor admin (ziet alles).
             */
             System.out.println("1. Accounts\n2. Adressen\n3. Artikelen\n" +
                     "4. Bestellingen\n5. Klanten\n0. Uitloggen en terug " +
@@ -42,8 +38,8 @@ public class HoofdMenuView extends MenuView {
                             artikelMenuView.showMenu(); break;
 //                case 4:     MenuView bestellingMenuView = new BestellingMenuView();
 //                            bestellingMenuView.showMenu(loginNaam); break;
-//                case 5:     MenuView klantMenuView = new KlantMenuView();
-//                            klantMenuView.showMenu(loginNaam);
+                case "5":   MenuView klantMenuView = new KlantMenuView();
+                            klantMenuView.showMenu();
                 default:    System.out.println(MAINERROR);
             }
         } while (selection.equals("0") == false);
