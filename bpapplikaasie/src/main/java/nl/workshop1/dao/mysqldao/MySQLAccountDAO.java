@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import nl.workshop1.dao.AccountDAO;
 import nl.workshop1.domain.Account;
 import nl.workshop1.domain.Klant;
@@ -112,6 +114,40 @@ public class MySQLAccountDAO implements AccountDAO {
         }
         
         return account;
+    }
+    
+    @Override
+    public ArrayList<Account> selectAccounts() {
+        
+        ArrayList<Account> accounts = new ArrayList<>();
+        Klant klant;
+        Account account;
+        
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through selectAccount-id");
+            
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT id, username, wachtwoord, accounttype, klant_id " +
+                    "FROM account");
+        
+            while (resultSet.next()) {
+                account = new Account();
+                klant = new Klant();
+                account.setId(resultSet.getInt("id"));
+                account.setUsername(resultSet.getString("username"));
+                account.setWachtwoord(resultSet.getString("wachtwoord"));
+                account.setAccounttype(resultSet.getString("accounttype"));
+                klant.setId(resultSet.getInt("klant_id"));
+                account.setKlant(klant);
+                accounts.add(account);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in selectAccount-id");
+        }
+        
+        return accounts;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package nl.workshop1.dao;
 
+import java.util.ArrayList;
 import nl.workshop1.domain.Klant;
 
 /**
@@ -14,6 +15,7 @@ public interface KlantDAO {
     
     public boolean insertKlant(Klant klant);
     public Klant selectKlant(int id);
+    public ArrayList<Klant> selectKlanten();
     public boolean updateKlant(Klant klant);
     public boolean deleteKlant(int id);
 }

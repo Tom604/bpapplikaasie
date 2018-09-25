@@ -39,6 +39,14 @@ public abstract class MenuView {
         return selection;
     }
     
+    /*
+    Kan deze in MenuView? Dan moet de foreach loop geen objectspecifieke data
+    nodig hebben. Handig?
+    */
+    protected void printList(Object object) {
+        
+    }
+    
     public abstract void showMenu();
     public abstract void setViewName(String viewName);
     

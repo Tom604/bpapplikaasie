@@ -1,5 +1,6 @@
 package nl.workshop1.dao;
 
+import java.util.ArrayList;
 import nl.workshop1.domain.Account;
 
 /**
@@ -15,6 +16,7 @@ public interface AccountDAO {
     public boolean insertAccount(Account account);
     public Account selectAccount(int id);
     public Account selectAccount(String username);
+    public ArrayList<Account> selectAccounts();
     public boolean updateAccount(Account account);
     public boolean deleteAccount(int id);
 }

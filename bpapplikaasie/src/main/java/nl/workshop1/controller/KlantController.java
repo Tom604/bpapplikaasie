@@ -1,5 +1,6 @@
 package nl.workshop1.controller;
 
+import java.util.ArrayList;
 import nl.workshop1.dao.DAOFactory;
 import nl.workshop1.dao.KlantDAO;
 import nl.workshop1.domain.Klant;
@@ -21,8 +22,12 @@ public class KlantController {
     
     public Klant selectKlant(int id) {
         KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
-        Klant klant = klantDAO.selectKlant(id);
-        return klant;
+        return klantDAO.selectKlant(id);
+    }
+    
+    public ArrayList<Klant> selectKlanten() {
+        KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
+        return klantDAO.selectKlanten();
     }
     
     public boolean updateKlant(String voornaam, String achternaam, String tussenvoegsel) {

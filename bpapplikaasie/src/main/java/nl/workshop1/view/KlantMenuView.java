@@ -1,5 +1,6 @@
 package nl.workshop1.view;
 
+import java.util.ArrayList;
 import nl.workshop1.controller.KlantController;
 import nl.workshop1.domain.Klant;
 
@@ -23,10 +24,10 @@ public class KlantMenuView extends MenuView {
             selection = getSelection();
             switch (selection) {
                 case "0":   break;
-                case "1":   insertKlantMenu(); break;
-                case "2":   selectKlantMenu(); break;
-                case "3":   updateKlantMenu(); break;
-                case "4":   deleteKlantMenu(); break;
+                case "1":   showInsertKlantMenu(); break;
+                case "2":   showSelectKlantMenu(); break;
+                case "3":   showUpdateKlantMenu(); break;
+                case "4":   showDeleteKlantMenu(); break;
                 default:    System.out.println(MAINERROR);
             }
         } while (selection.equals("0") == false);
@@ -37,12 +38,12 @@ public class KlantMenuView extends MenuView {
         this.viewName = viewName;
     }
 
-    private void insertKlantMenu() {
+    private void showInsertKlantMenu() {
         
         setViewName("Klanten toevoegen");
         printHeader();
         
-        System.out.println("Voeg een nieuw artikel toe aan de database.\n");
+        System.out.println("Voeg een nieuwe klant toe aan de database.\n");
         System.out.print("Voer de voornaam van de klant in (en druk dan op enter): ");
         String voornaam = SCANNER.next();
         System.out.print("Voer de achternaam van de klant in (en druk dan op enter): ");
@@ -61,56 +62,58 @@ public class KlantMenuView extends MenuView {
             case "1":   KlantController klantController = new KlantController();
                         klantController.insertKlant(voornaam, achternaam, tussenvoegsel);
                         System.out.println("Klant toegevoegd.");
+                        break;
             default:    System.out.println(MAINERROR);
         }
     }
-
-    private Klant selectKlantMenu() {
+    
+    Klant showSelectKlantMenu() {
         
         setViewName("Klanten zoeken\t");
         printHeader();
+        
+        int id = printList();
+        System.out.println("\n0. Terug");
         
         KlantController klantController = new KlantController();
         Klant klant = new Klant();
         
-        // TODO - S: Niet altijd tussenvoegsel weergeven (is soms null).
-        // TODO?: Lijst weergeven in aparte methode?
-        for (int x = 1, y = 1; x <= 3 ; x++, y++) {
-            klant = klantController.selectKlant(x);
-            System.out.println(y + ". " + klant.getVoornaam() + " " +
-                    klant.getTussenvoegsel() + " " + klant.getAchternaam());
+        System.out.println("\nSelecteer klant.\n");
+        int selection = Integer.parseInt(getSelection());
+        if (selection == 0) {
+        }
+        else if (selection < 0 || selection > id) {
+            System.out.println(MAINERROR);
+        }
+        else {
+            klant = klantController.selectKlant(selection);
+            System.out.println("De geselecteerde klant:");
+            System.out.println(klant.toString());
         }
             
-        System.out.println("\nSelecteer klant.\n");
-        String selection = getSelection();
-        switch (selection) {
-            case "0":   break;
-            case "1":   klant = klantController.selectKlant(1); break;
-            case "2":   klant = klantController.selectKlant(2); break;
-            case "3":   klant = klantController.selectKlant(3); break;
-            default:    System.out.println(MAINERROR);
-        }
-        
-        // TODO - C: Niet altijd tussenvoegsel weergeven (is soms null)?
-        System.out.println("De geselecteerde klant:");
-        System.out.println("Naam:\t\t" + klant.getVoornaam() + 
-                "\nAchternaam:\t" + klant.getAchternaam() +
-                "\nTussenvoegsel:\t" + klant.getTussenvoegsel());
-        
-        System.out.println(MAINTOPBOTTOM);
-        
         return klant;
     }
+    
+    private int printList() {
 
-    private void updateKlantMenu() {
+        KlantController klantController = new KlantController();
+        ArrayList<Klant> klanten = klantController.selectKlanten();
         
-        Klant klant = selectKlantMenu();
-        setViewName("Klanten zoeken\t");
+        for (Klant e: klanten) {
+            System.out.println(e.getId() + ". " + e.toString());
+        }
+        return klanten.size();
+    }
+
+    private void showUpdateKlantMenu() {
+        
+        Klant klant = showSelectKlantMenu();
+        setViewName("Klanten aanpassen\t");
         printHeader();
         
         System.out.println("Wat wilt u aanpassen?");
-        System.out.println("1. Voornaam\n2. Achternaam\n3. Tussenvoegsel\n" +
-                "0. Niets, terug naar artikelpagina\n");
+        System.out.println("1. Voornaam\n2. Achternaam\n3. Tussenvoegsel\n\n" +
+                "0. Niets, terug naar Klantenpagina\n");
         String selection = getSelection();
         switch (selection) {
             case "0":   break;
@@ -150,15 +153,15 @@ public class KlantMenuView extends MenuView {
         }
     }
     
-    private void deleteKlantMenu() {
+    private void showDeleteKlantMenu() {
         
-        Klant klant = selectKlantMenu();
+        Klant klant = showSelectKlantMenu();
         int id = klant.getId();
         
         setViewName("Klant verwijderen");
         printHeader();
         
-        System.out.println("\nWilt u deze klant verwijderen?");
+        System.out.println("Wilt u deze klant verwijderen?");
         System.out.println("1. Ja\n0. Nee\n");
             
         String selection = getSelection();

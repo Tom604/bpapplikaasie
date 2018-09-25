@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import nl.workshop1.dao.AdresDAO;
 import nl.workshop1.domain.Adres;
 import nl.workshop1.domain.Klant;
@@ -87,6 +89,43 @@ public class MySQLAdresDAO implements AdresDAO {
         }
         
         return adres;
+    }
+    
+    @Override
+    public ArrayList<Adres> selectAdressen() {
+        
+        ArrayList<Adres> adressen = new ArrayList<>();
+        Klant klant;
+        Adres adres;
+        
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through selectAdres");
+            
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT id, straatnaam, huisnummer, toevoeging, postcode, " +
+                    "woonplaats, adrestype, klant_id FROM adres");
+        
+            while (resultSet.next()) {
+                adres = new Adres();
+                klant = new Klant();
+                adres.setId(resultSet.getInt("id"));
+                adres.setStraatnaam(resultSet.getString("straatnaam"));
+                adres.setHuisnummer(resultSet.getInt("huisnummer"));
+                adres.setToevoeging(resultSet.getString("toevoeging"));
+                adres.setPostcode(resultSet.getString("postcode"));
+                adres.setWoonplaats(resultSet.getString("woonplaats"));
+                adres.setAdrestype(resultSet.getString("adrestype"));
+                klant.setId(resultSet.getInt("klant_id"));
+                adres.setKlant(klant);
+                adressen.add(adres);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in selectAdres");
+        }
+        
+        return adressen;
     }
 
     @Override

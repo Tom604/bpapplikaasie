@@ -13,6 +13,13 @@ import org.slf4j.LoggerFactory;
  */
 public class ArtikelMenuView extends MenuView {
     
+    /*
+    Deze klasse, inclusief ArtikelController nog aanpassen aan de standaards vanuit
+    KlantMenuView. Try-catches weg; Artikel objecten ipv ArtikelController objecten
+    gebruiken om data op te slaan en rond te sturen; onnodige complexiteiten, zoals
+    extra keuzes voor gebruikers weghalen.
+    */
+    
     static Logger log = LoggerFactory.getLogger(ArtikelMenuView.class);
     
     @Override

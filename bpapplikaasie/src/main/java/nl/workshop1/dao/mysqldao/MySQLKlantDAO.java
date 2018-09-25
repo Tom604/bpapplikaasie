@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import nl.workshop1.dao.KlantDAO;
 import nl.workshop1.domain.Klant;
 import nl.workshop1.utility.DatabaseConnection;
@@ -50,7 +52,7 @@ public class MySQLKlantDAO implements KlantDAO {
     @Override
     public Klant selectKlant(int id) {
         
-        Klant klant1 = new Klant();
+        Klant klant = new Klant();
         PreparedStatement preparedStatement;
         
         try (Connection connection = DatabaseConnection.getConnection()) {
@@ -62,17 +64,46 @@ public class MySQLKlantDAO implements KlantDAO {
         
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                klant1.setId(resultSet.getInt("id"));
-                klant1.setVoornaam(resultSet.getString("voornaam"));
-                klant1.setAchternaam(resultSet.getString("achternaam"));
-                klant1.setTussenvoegsel(resultSet.getString("tussenvoegsel"));
+                klant.setId(resultSet.getInt("id"));
+                klant.setVoornaam(resultSet.getString("voornaam"));
+                klant.setAchternaam(resultSet.getString("achternaam"));
+                klant.setTussenvoegsel(resultSet.getString("tussenvoegsel"));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
             log.warn("Exception catched in selectKlant");
         }
         
-        return klant1;
+        return klant;
+    }
+    
+    @Override
+    public ArrayList<Klant> selectKlanten() {
+        
+        ArrayList<Klant> klanten = new ArrayList<>();
+        Klant klant;
+        
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through selectKlanten");
+            
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT id, voornaam, achternaam, tussenvoegsel FROM klant");
+            
+            while (resultSet.next()) {
+                klant = new Klant();
+                klant.setId(resultSet.getInt("id"));
+                klant.setVoornaam(resultSet.getString("voornaam"));
+                klant.setAchternaam(resultSet.getString("achternaam"));
+                klant.setTussenvoegsel(resultSet.getString("tussenvoegsel"));
+                klanten.add(klant);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in selectKlanten");
+        }
+        
+        return klanten;
     }
 
     @Override
