@@ -4,8 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import nl.workshop1.dao.ArtikelDAO;
+import static nl.workshop1.dao.mysqldao.MySQLKlantDAO.log;
 import nl.workshop1.domain.Artikel;
+import nl.workshop1.domain.Klant;
 import nl.workshop1.utility.DatabaseConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,6 +105,35 @@ public class MySQLArtikelDAO implements ArtikelDAO {
         }
         
         return artikel;
+    }
+    
+    @Override
+    public ArrayList<Artikel> selectArtikelen() {
+        
+        ArrayList<Artikel> artikelen = new ArrayList<>();
+        Artikel artikel;
+        
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through selectKlanten");
+            
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT id, naam, prijs, voorraad FROM artikel");
+            
+            while (resultSet.next()) {
+                artikel = new Artikel();
+                artikel.setId(resultSet.getInt("id"));
+                artikel.setNaam(resultSet.getString("naam"));
+                artikel.setPrijs(resultSet.getBigDecimal("prijs"));
+                artikel.setVoorraad(resultSet.getInt("voorraad"));
+                artikelen.add(artikel);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in selectKlanten");
+        }
+        
+        return artikelen;
     }
     
     @Override

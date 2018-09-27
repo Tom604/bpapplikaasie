@@ -1,5 +1,6 @@
 package nl.workshop1.dao;
 
+import java.util.ArrayList;
 import nl.workshop1.domain.Artikel;
 
 /**
@@ -15,6 +16,7 @@ public interface ArtikelDAO {
     public boolean insertArtikel(Artikel artikel);
     public Artikel selectArtikel(int id);
     public Artikel selectArtikel(String naam);
+    public ArrayList<Artikel> selectArtikelen();
     public boolean updateArtikel(Artikel artikel);
     public boolean deleteArtikel(int id);
     public boolean deleteArtikel(String naam);

@@ -1,11 +1,9 @@
 package nl.workshop1.view;
 
 import java.math.BigDecimal;
-import java.util.NoSuchElementException;
+import java.util.ArrayList;
 import nl.workshop1.controller.ArtikelController;
-import nl.workshop1.controller.LoginController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import nl.workshop1.domain.Artikel;
 
 /**
  *
@@ -13,181 +11,137 @@ import org.slf4j.LoggerFactory;
  */
 public class ArtikelMenuView extends MenuView {
     
-    /*
-    Deze klasse, inclusief ArtikelController nog aanpassen aan de standaards vanuit
-    KlantMenuView. Try-catches weg; Artikel objecten ipv ArtikelController objecten
-    gebruiken om data op te slaan en rond te sturen; onnodige complexiteiten, zoals
-    extra keuzes voor gebruikers weghalen.
-    */
-    
-    static Logger log = LoggerFactory.getLogger(ArtikelMenuView.class);
-    
     @Override
     public void showMenu() {
         
-        String type = LoginController.accounttype;
         String selection = "";
         
         do {
             setViewName("Artikelen\t");
             printHeader();
             
-            switch (type) {
-                case "admin":       selection = showAdminMenu(); break;
-                case "medewerker":  selection = showMedewerkerMenu(); break;
-                default:            System.out.println("Onjuiste input.");
+            System.out.println("1. Artikel toevoegen\n2. Artikel zoeken\n3. Artikel " +
+                "aanpassen\n4. Artikel verwijderen\n\n0. Terug naar Hoofdpagina\n");
+            selection = getSelection();
+            switch (selection) {
+                case "0":   break;
+                case "1":   showInsertArtikeltMenu(); break;
+                case "2":   showSelectArtikelMenu(); break;
+                case "3":   showUpdateArtikelMenu(); break;
+                case "4":   showDeleteArtikelMenu(); break;
+                default:    System.out.println(MAINERROR);
             }
-            
-            /*
-            Constante maken voor de loop continuation condition van de while in MenuView?:
-            protected final boolean LOOPCONTCOND = selection.equals("0") == false
-            */
         } while (selection.equals("0") == false);
     }
     
-    /*
-    Admin en medewerkermenu van MenuView overerven (abstract)? Gebruik ik in meerdere klassen.
-    In dit geval is er geen klantmenu, maar die zou ik wel in MenuView zetten, dus die zou ik
-    dan ook moeten implementeren (is dit handig - iig niet voor LoginMenuView)?
-    */
-    private String showAdminMenu() {
-        System.out.println("1. Artikel toevoegen\n2. Artikel zoeken\n3. Artikel " +
-                "aanpassen\n4. Artikel verwijderen\n\n0. Terug naar Hoofdpagina\n");
-        String selection = getSelection();
-        switch (selection) {
-            case "0":   break;
-            case "1":   showArtikelInsertMenu(); break;
-            case "2":   showArtikelSelectMenu(); break;
-            case "3":   showArtikelUpdateMenu(); break;
-            case "4":   showArtikelDeleteMenu(); break;
-            default:    System.out.println(MAINERROR);
-        }
-        return selection;
+    @Override
+    public void setViewName(String viewName) {
+        this.viewName = viewName;
     }
     
-    private String showMedewerkerMenu() {
-        System.out.println("1. Artikel zoeken\n2. Artikel aanpassen\n" +
-                "3. Artikel verwijderen\n\n0. Terug naar Hoofdpagina\n");
-        String selection = getSelection();
-        switch (selection) {
-            case "0":   break;
-            case "1":   showArtikelSelectMenu(); break;
-            case "2":   showArtikelUpdateMenu(); break;
-            case "3":   showArtikelDeleteMenu(); break;
-            default:    System.out.println(MAINERROR);
-        }
-        return selection;
-    }
-    
-    private void showArtikelInsertMenu() {
+    private void showInsertArtikeltMenu() {
         
         setViewName("Artikel toevoegen");
         printHeader();
 
-        try {
-            System.out.println("Voeg een nieuw artikel toe aan de database.\n");
-            System.out.print("Voer de naam van het artikel in (en druk dan op enter): ");
-            String naam = SCANNER.next();
-            System.out.print("Voer de prijs van het artikel in (en druk dan op enter): ");
-            BigDecimal prijs = SCANNER.nextBigDecimal();
-            System.out.print("Voer de voorraad voor het artikel in (en druk dan op enter): ");
-            int voorraad = SCANNER.nextInt();
+        Artikel artikel = new Artikel();
+        
+        System.out.println("Voeg een nieuw artikel toe aan de database.\n");
+        System.out.print("Voer de naam van het artikel in (en druk dan op enter): ");
+        artikel.setNaam(SCANNER.next());
+        System.out.print("Voer de prijs van het artikel in (en druk dan op enter): ");
+        artikel.setPrijs(SCANNER.nextBigDecimal());
+        System.out.print("Voer de voorraad voor het artikel in (en druk dan op enter): ");
+        artikel.setVoorraad(SCANNER.nextInt());
 
-            System.out.println("\nHet opgegeven artikel:\nNaam:\t\t" + naam +
-                    "\nPrijs:\t\t" + prijs + "\nVoorraad:\t" + voorraad);
-            System.out.println("\nIs dit correct?");
-            System.out.println("1. Ja, opslaan.\n0. Nee, stoppen (niets opslaan).\n");
-            
-            String selection = getSelection();
-            switch (selection) {
-                case "0":   break;
-                case "1":   ArtikelController artikelController = new ArtikelController();
-                            if (artikelController.insertArtikel(naam, prijs, voorraad)) {
-                                System.out.println("Artikel toegevoegd.");
-                            }
-                            else {
-                                System.out.println("Artikel kon niet worden toegevoegd, probeer opnieuw.");
-                            }
-                            break;
-                default:    System.out.println(MAINERROR);
-            }
-        } catch (NumberFormatException | NoSuchElementException | IllegalStateException ex) {
-            log.warn("Exception catched in showArtikelInsertMenu() method");
-            System.out.println(MAINTOPBOTTOM);
-            System.out.println(MAINERROR);
-            SCANNER.next();
+        System.out.println("\nHet opgegeven artikel:\n" + artikel.toString());
+        System.out.println("\nIs dit correct?");
+        System.out.println("1. Ja, opslaan.\n0. Nee, stoppen (niets opslaan).\n");
+        
+        String selection = getSelection();
+        switch (selection) {
+            case "0":   break;
+            case "1":   ArtikelController artikelController = new ArtikelController();
+                        artikelController.insertArtikel(artikel);
+                        System.out.println("Artikel toegevoegd.");
+                        break;
+            default:    System.out.println(MAINERROR);
         }
     }
     
-    private ArtikelController showArtikelSelectMenu() {
+    Artikel showSelectArtikelMenu() {
 
         setViewName("Artikel zoeken\t");
         printHeader();
         
-        System.out.println("Zoek een artikel uit de database.");
-        System.out.print("Voer de naam van het artikel in (en druk dan op enter): ");
-        String naam = SCANNER.next();
-            
-        ArtikelController artikelController = new ArtikelController();
-        artikelController.selectArtikel(naam);
-            
-        System.out.println("\nHet geselecteerde artikel:");
-        System.out.println("Naam:\t\t" + artikelController.getNaam() + 
-                "\nPrijs:\t\t" + artikelController.getPrijs() +
-                "\nVoorraad:\t" + artikelController.getVoorraad());
-
-        System.out.println(MAINTOPBOTTOM);
+        int id = printList();
+        System.out.println("\n0. Terug");
         
-        return artikelController;
+        ArtikelController artikelController = new ArtikelController();
+        Artikel artikel = new Artikel();
+        
+        System.out.println("Selecteer artikel.\n");
+        int selection = Integer.parseInt(getSelection());
+        if (selection == 0) {
+        }
+        else if (selection < 0 || selection > id) {
+            System.out.println(MAINERROR);
+        }
+        else {
+            artikel = artikelController.selectArtikel(selection);
+            System.out.println("Het geselecteerde artikel:");
+            System.out.println(artikel.toString());
+        }
+        
+        return artikel;
     }
     
-    private void showArtikelUpdateMenu() {
+    private int printList() {
+
+        ArtikelController artikelController = new ArtikelController();
+        ArrayList<Artikel> artikelen = artikelController.selectArtikelen();
         
-        /*
-        Is deze methode goed zo? Wellicht wil ik hem anders indelen.
-        */
-        try {
-            ArtikelController artikelController = showArtikelSelectMenu();
-            String naam = artikelController.getNaam();
-            BigDecimal prijs = artikelController.getPrijs();
-            int voorraad = artikelController.getVoorraad();
-            
-            setViewName("Artikel aanpassen");
-            printHeader();
-            
-            System.out.println("Wat wilt u aanpassen?");
-            System.out.println("1. Naam\n2. Prijs\n3. Voorraad\n" +
-                    "0. Niets, terug naar artikelpagina\n");
-            
-            String selection = getSelection(); // Geeft extra TOPBOTTOM regel
-            switch (selection) {
-                case "0":   break;
-                case "1":   System.out.print("Nieuwe naam: ");
-                            String nieuweNaam = SCANNER.next();
-                            showUpdatedArtikelMenu(nieuweNaam, prijs, voorraad);
-                            break;
-                case "2":   System.out.print("Nieuwe prijs: ");
-                            BigDecimal nieuwePrijs = SCANNER.nextBigDecimal();
-                            showUpdatedArtikelMenu(naam, nieuwePrijs, voorraad);
-                            break;
-                case "3":   System.out.print("Nieuwe voorraad: ");
-                            int nieuweVoorraad = SCANNER.nextInt();
-                            showUpdatedArtikelMenu(naam, prijs, nieuweVoorraad);
-                            break;
-                default:    System.out.println(MAINERROR);
-            }
-        } catch (NumberFormatException | NoSuchElementException | IllegalStateException ex) {
-            log.warn("Exception catched in showArtikelUpdateMenu() method");
-            System.out.println(MAINTOPBOTTOM);
-            System.out.println(MAINERROR);
-            SCANNER.next();
+        for (Artikel e: artikelen) {
+            System.out.println(e.getId() + ". " + e.toString());
+        }
+        return artikelen.size();
+    }
+    
+    void showUpdateArtikelMenu() {
+        
+        Artikel artikel = showSelectArtikelMenu();
+        setViewName("Artikel aanpassen");
+        printHeader();
+           
+        System.out.println("Wat wilt u aanpassen?");
+        System.out.println("1. Naam\n2. Prijs\n3. Voorraad\n" +
+                "0. Niets, terug naar artikelpagina\n");
+        String selection = getSelection();
+        switch (selection) {
+            case "0":   break;
+            case "1":   System.out.print("Nieuwe naam: ");
+                        String nieuweNaam = SCANNER.next();
+                        artikel.setNaam(nieuweNaam);
+                        showUpdatedArtikelMenu(artikel);
+                        break;
+            case "2":   System.out.print("Nieuwe prijs: ");
+                        BigDecimal nieuwePrijs = SCANNER.nextBigDecimal();
+                        artikel.setPrijs(nieuwePrijs);
+                        showUpdatedArtikelMenu(artikel);
+                        break;
+            case "3":   System.out.print("Nieuwe voorraad: ");
+                        int nieuweVoorraad = SCANNER.nextInt();
+                        artikel.setVoorraad(nieuweVoorraad);
+                        showUpdatedArtikelMenu(artikel);
+                        break;
+            default:    System.out.println(MAINERROR);
         }
     }
     
-    private void showUpdatedArtikelMenu(String naam, BigDecimal prijs, int voorraad) {
+    private void showUpdatedArtikelMenu(Artikel artikel) {
         
-        System.out.println("\nHet aangepaste artikel:\n\nNaam:\t\t" + naam +
-                        "\nPrijs:\t\t" + prijs + "\nVoorraad:\t" + voorraad);
+        System.out.println("\nHet aangepaste artikel:\n\nNaam:\t\t" + artikel.getNaam() +
+                        "\nPrijs:\t\t" + artikel.getPrijs() + "\nVoorraad:\t" + artikel.getVoorraad());
                 
         System.out.println("\nWilt u het aangepaste artikel opslaan?");
         System.out.println("1. Ja\n0. Nee\n");
@@ -196,17 +150,17 @@ public class ArtikelMenuView extends MenuView {
         switch (selection) {
             case "0":   break;
             case "1":   ArtikelController artikelController = new ArtikelController();
-                        artikelController.updateArtikel(naam, prijs, voorraad);
+                        artikelController.updateArtikel(artikel);
                         System.out.println("Artikel opgeslagen.");
                         break;
             default:    System.out.println(MAINERROR);
         }
     }
     
-    private void showArtikelDeleteMenu() {
+    private void showDeleteArtikelMenu() {
         
-        ArtikelController artikelController = showArtikelSelectMenu();
-        String naam = artikelController.getNaam();
+        Artikel artikel = showSelectArtikelMenu();
+        int id = artikel.getId();
         
         setViewName("Artikel verwijderen");
         printHeader();
@@ -217,15 +171,11 @@ public class ArtikelMenuView extends MenuView {
         String selection = getSelection();
         switch (selection) {
             case "0":   break;
-            case "1":   artikelController.deleteArtikel(naam);
+            case "1":   ArtikelController artikelController = new ArtikelController();
+                        artikelController.deleteArtikel(id);
                         System.out.println("Artikel verwijderd.");
                         break;
             default:    System.out.println(MAINERROR);
         }
-    }
-    
-    @Override
-    public void setViewName(String viewName) {
-        this.viewName = viewName;
     }
 }

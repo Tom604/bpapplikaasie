@@ -1,6 +1,6 @@
 package nl.workshop1.controller;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import nl.workshop1.dao.ArtikelDAO;
 import nl.workshop1.dao.DAOFactory;
 import nl.workshop1.domain.Artikel;
@@ -11,50 +11,28 @@ import nl.workshop1.domain.Artikel;
  */
 public class ArtikelController {
 
-    private String naam;
-    private BigDecimal prijs;
-    private int voorraad;
-
-    public String getNaam() {
-        return naam;
-    }
-
-    public BigDecimal getPrijs() {
-        return prijs;
-    }
-
-    public int getVoorraad() {
-        return voorraad;
-    }
-    
-    public boolean insertArtikel(String naam, BigDecimal prijs, int voorraad) {
+    public boolean insertArtikel(Artikel artikel) {
         ArtikelDAO artikelDAO = DAOFactory.getDAOFactory().getArtikelDAO();
-        Artikel artikel = new Artikel();
-        artikel.setNaam(naam);
-        artikel.setPrijs(prijs);
-        artikel.setVoorraad(voorraad);
         return artikelDAO.insertArtikel(artikel);
     }
     
-    public void selectArtikel(String naam) {
+    public Artikel selectArtikel(int id) {
         ArtikelDAO artikelDAO = DAOFactory.getDAOFactory().getArtikelDAO();
-        Artikel artikel = artikelDAO.selectArtikel(naam);
-        this.naam = artikel.getNaam();
-        this.prijs = artikel.getPrijs();
-        this.voorraad = artikel.getVoorraad();
+        return artikelDAO.selectArtikel(id);
     }
     
-    public boolean updateArtikel(String naam, BigDecimal prijs, int voorraad) {
+    public ArrayList<Artikel> selectArtikelen() {
         ArtikelDAO artikelDAO = DAOFactory.getDAOFactory().getArtikelDAO();
-        Artikel artikel = new Artikel();
-        artikel.setNaam(naam);
-        artikel.setPrijs(prijs);
-        artikel.setVoorraad(voorraad);
+        return artikelDAO.selectArtikelen();
+    }
+    
+    public boolean updateArtikel(Artikel artikel) {
+        ArtikelDAO artikelDAO = DAOFactory.getDAOFactory().getArtikelDAO();
         return artikelDAO.updateArtikel(artikel);
     }
     
-    public boolean deleteArtikel(String naam) {
+    public boolean deleteArtikel(int id) {
         ArtikelDAO artikelDAO = DAOFactory.getDAOFactory().getArtikelDAO();
-        return artikelDAO.deleteArtikel(naam);
+        return artikelDAO.deleteArtikel(id);
     }
 }
