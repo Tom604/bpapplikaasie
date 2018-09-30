@@ -1,5 +1,6 @@
 package nl.workshop1.dao;
 
+import java.util.ArrayList;
 import nl.workshop1.domain.Bestelregel;
 
 /**
@@ -14,6 +15,8 @@ public interface BestelregelDAO {
     
     public boolean insertBestelregel(Bestelregel bestelregel);
     public Bestelregel selectBestelregel (int id);
+    public ArrayList<Bestelregel> selectBestelregels();
+    public ArrayList<Bestelregel> selectBestelregels(int bestellingId);
     public boolean updateBestelregel (Bestelregel bestelregel);
     public boolean deleteBestelregel (int id);
 }

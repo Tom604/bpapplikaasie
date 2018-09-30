@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import nl.workshop1.dao.BestelregelDAO;
 import nl.workshop1.domain.Artikel;
 import nl.workshop1.domain.Bestelling;
@@ -82,6 +84,79 @@ public class MySQLBestelregelDAO implements BestelregelDAO {
         }
         
         return bestelregel;
+    }
+    
+    @Override
+    public ArrayList<Bestelregel> selectBestelregels() {
+        
+        ArrayList<Bestelregel> bestelregels = new ArrayList<>();
+        Bestelling bestelling;
+        Artikel artikel;
+        Bestelregel bestelregel;
+        
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through selectBestelregel");
+            
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT id, aantal, bestelling_id, artikel_id FROM bestelregel");
+            
+            while (resultSet.next()) {
+                bestelling = new Bestelling();
+                artikel = new Artikel();
+                bestelregel = new Bestelregel();
+                bestelregel.setId(resultSet.getInt("id"));
+                bestelregel.setAantal(resultSet.getInt("aantal"));
+                bestelling.setId(resultSet.getInt("bestelling_id"));
+                bestelregel.setBestelling(bestelling);
+                artikel.setId(resultSet.getInt("artikel_id"));
+                bestelregel.setArtikel(artikel);
+                bestelregels.add(bestelregel);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in selectBestelregel");
+        }
+        
+        return bestelregels;
+    }
+    
+    @Override
+    public ArrayList<Bestelregel> selectBestelregels(int bestellingId) {
+        
+        ArrayList<Bestelregel> bestelregels = new ArrayList<>();
+        Bestelling bestelling;
+        Artikel artikel;
+        Bestelregel bestelregel;
+        PreparedStatement preparedStatement;
+        
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through selectBestelregel");
+            
+            preparedStatement = connection.prepareStatement(
+                    "SELECT id, aantal, bestelling_id, artikel_id " +
+                    "FROM bestelregel WHERE bestelling_id = ?");
+            preparedStatement.setInt(1, bestellingId);
+        
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                bestelling = new Bestelling();
+                artikel = new Artikel();
+                bestelregel = new Bestelregel();
+                bestelregel.setId(resultSet.getInt("id"));
+                bestelregel.setAantal(resultSet.getInt("aantal"));
+                bestelling.setId(resultSet.getInt("bestelling_id"));
+                bestelregel.setBestelling(bestelling);
+                artikel.setId(resultSet.getInt("artikel_id"));
+                bestelregel.setArtikel(artikel);
+                bestelregels.add(bestelregel);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in selectBestelregel");
+        }
+        
+        return bestelregels;
     }
 
     @Override

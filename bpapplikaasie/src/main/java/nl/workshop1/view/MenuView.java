@@ -23,7 +23,7 @@ public abstract class MenuView {
     protected void printHeader() {
         if (viewName.equals("Startscherm\t") || viewName.equals("Inlogscherm\t")) {
             System.out.println(MAINTOPBOTTOM);
-            System.out.println(MAINHEADER + viewName + "\tNog niet ingelogd\n");
+            System.out.println(MAINHEADER + viewName + "\tNiet ingelogd\n");
         }
         else {
             System.out.println(MAINTOPBOTTOM);
@@ -39,15 +39,6 @@ public abstract class MenuView {
         return selection;
     }
     
-    /*
-    Kan deze in MenuView? Dan moet de foreach loop geen objectspecifieke data
-    nodig hebben. Handig?
-    */
-    protected void printList(Object object) {
-        
-    }
-    
     public abstract void showMenu();
     public abstract void setViewName(String viewName);
-    
 }

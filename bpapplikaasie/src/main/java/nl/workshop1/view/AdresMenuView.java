@@ -49,7 +49,7 @@ public class AdresMenuView extends MenuView {
         KlantMenuView klantMenuView = new KlantMenuView();
         Klant klant = klantMenuView.showSelectKlantMenu();
         
-        setViewName("Adressen toevoegen");
+        setViewName("Adres toevoegen");
         printHeader();
         
         /*
@@ -113,7 +113,7 @@ public class AdresMenuView extends MenuView {
     
     private Adres showSelectAdresMenu() {
         
-        setViewName("Adressen zoeken\t");
+        setViewName("Adres zoeken\t");
         printHeader();
         
         int id = printList();
@@ -152,7 +152,7 @@ public class AdresMenuView extends MenuView {
     private void showUpdateAdresMenu() {
         
         Adres adres = showSelectAdresMenu();
-        setViewName("Adressen aanpassen\t");
+        setViewName("Adres aanpassen\t");
         printHeader();
         
         System.out.println("Wat wilt u aanpassen?");

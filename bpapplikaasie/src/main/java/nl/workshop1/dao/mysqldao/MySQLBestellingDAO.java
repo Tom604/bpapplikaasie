@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import nl.workshop1.dao.BestellingDAO;
 import nl.workshop1.domain.Bestelling;
 import nl.workshop1.domain.Klant;
@@ -80,6 +82,39 @@ public class MySQLBestellingDAO implements BestellingDAO {
         }
         
         return bestelling;
+    }
+    
+    @Override
+    public ArrayList<Bestelling> selectBestellingen() {
+        
+        ArrayList<Bestelling> bestellingen = new ArrayList<>();
+        Klant klant;
+        Bestelling bestelling;
+        
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through selectBestelling");
+            
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT id, totaalprijs, datum_tijd, klant_id FROM bestelling");
+        
+            while (resultSet.next()) {
+                klant = new Klant();
+                bestelling = new Bestelling();
+                bestelling.setId(resultSet.getInt("id"));
+                bestelling.setTotaalprijs(resultSet.getBigDecimal("totaalprijs"));
+                Timestamp timestamp = resultSet.getTimestamp("datum_tijd");
+                bestelling.setDatumTijd(timestamp.toLocalDateTime());
+                klant.setId(resultSet.getInt("klant_id"));
+                bestelling.setKlant(klant);
+                bestellingen.add(bestelling);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in selectBestelling");
+        }
+        
+        return bestellingen;
     }
 
     @Override

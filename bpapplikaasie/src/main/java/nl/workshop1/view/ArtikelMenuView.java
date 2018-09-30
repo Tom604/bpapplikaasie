@@ -75,7 +75,7 @@ public class ArtikelMenuView extends MenuView {
         printHeader();
         
         int id = printList();
-        System.out.println("\n0. Terug");
+        System.out.println("\n0. Terug\n");
         
         ArtikelController artikelController = new ArtikelController();
         Artikel artikel = new Artikel();
@@ -107,7 +107,7 @@ public class ArtikelMenuView extends MenuView {
         return artikelen.size();
     }
     
-    void showUpdateArtikelMenu() {
+    private void showUpdateArtikelMenu() {
         
         Artikel artikel = showSelectArtikelMenu();
         setViewName("Artikel aanpassen");
@@ -120,18 +120,15 @@ public class ArtikelMenuView extends MenuView {
         switch (selection) {
             case "0":   break;
             case "1":   System.out.print("Nieuwe naam: ");
-                        String nieuweNaam = SCANNER.next();
-                        artikel.setNaam(nieuweNaam);
+                        artikel.setNaam(SCANNER.next());
                         showUpdatedArtikelMenu(artikel);
                         break;
             case "2":   System.out.print("Nieuwe prijs: ");
-                        BigDecimal nieuwePrijs = SCANNER.nextBigDecimal();
-                        artikel.setPrijs(nieuwePrijs);
+                        artikel.setPrijs(SCANNER.nextBigDecimal());
                         showUpdatedArtikelMenu(artikel);
                         break;
             case "3":   System.out.print("Nieuwe voorraad: ");
-                        int nieuweVoorraad = SCANNER.nextInt();
-                        artikel.setVoorraad(nieuweVoorraad);
+                        artikel.setVoorraad(SCANNER.nextInt());
                         showUpdatedArtikelMenu(artikel);
                         break;
             default:    System.out.println(MAINERROR);
@@ -140,8 +137,7 @@ public class ArtikelMenuView extends MenuView {
     
     private void showUpdatedArtikelMenu(Artikel artikel) {
         
-        System.out.println("\nHet aangepaste artikel:\n\nNaam:\t\t" + artikel.getNaam() +
-                        "\nPrijs:\t\t" + artikel.getPrijs() + "\nVoorraad:\t" + artikel.getVoorraad());
+        System.out.println("\nHet aangepaste artikel:\n" + artikel.toString());
                 
         System.out.println("\nWilt u het aangepaste artikel opslaan?");
         System.out.println("1. Ja\n0. Nee\n");

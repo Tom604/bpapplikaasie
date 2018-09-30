@@ -41,7 +41,7 @@ public class AccountMenuView extends MenuView {
     
     private void showInsertAccountMenu() {
         
-        setViewName("Accounts toevoegen\t");
+        setViewName("Account toevoegen\t");
         printHeader();
         
         Klant klant = new Klant();
@@ -90,7 +90,7 @@ public class AccountMenuView extends MenuView {
     
     private Account showSelectAccountMenu() {
         
-        setViewName("Accounts zoeken\t");
+        setViewName("Account zoeken\t");
         printHeader();
         
         int id = printList();
@@ -129,7 +129,7 @@ public class AccountMenuView extends MenuView {
     private void showUpdateAccountMenu() {
         
         Account account = showSelectAccountMenu();
-        setViewName("Accounts aanpassen\t");
+        setViewName("Account aanpassen\t");
         printHeader();
         
         System.out.println("Wat wilt u aanpassen?");

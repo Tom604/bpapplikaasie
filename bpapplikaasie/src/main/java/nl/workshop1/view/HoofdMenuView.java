@@ -30,14 +30,14 @@ public class HoofdMenuView extends MenuView {
             
             switch (selection) {
                 case "0":   break;
-                case "1":     MenuView accountMenuView = new AccountMenuView();
+                case "1":   MenuView accountMenuView = new AccountMenuView();
                             accountMenuView.showMenu(); break;
-                case "2":     MenuView adresMenuView = new AdresMenuView();
+                case "2":   MenuView adresMenuView = new AdresMenuView();
                             adresMenuView.showMenu(); break;
                 case "3":   MenuView artikelMenuView = new ArtikelMenuView();
                             artikelMenuView.showMenu(); break;
-//                case "4":     MenuView bestellingMenuView = new BestellingMenuView();
-//                            bestellingMenuView.showMenu(); break;
+                case "4":   MenuView bestellingMenuView = new BestellingMenuView();
+                            bestellingMenuView.showMenu(); break;
                 case "5":   MenuView klantMenuView = new KlantMenuView();
                             klantMenuView.showMenu(); break;
                 default:    System.out.println(MAINERROR);

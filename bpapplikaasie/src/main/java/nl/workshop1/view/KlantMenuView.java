@@ -40,7 +40,7 @@ public class KlantMenuView extends MenuView {
 
     private void showInsertKlantMenu() {
         
-        setViewName("Klanten toevoegen");
+        setViewName("Klant toevoegen");
         printHeader();
         
         System.out.println("Voeg een nieuwe klant toe aan de database.\n");
@@ -69,7 +69,7 @@ public class KlantMenuView extends MenuView {
     
     Klant showSelectKlantMenu() {
         
-        setViewName("Klanten zoeken\t");
+        setViewName("Klant zoeken\t");
         printHeader();
         
         int id = printList();
@@ -108,7 +108,7 @@ public class KlantMenuView extends MenuView {
     private void showUpdateKlantMenu() {
         
         Klant klant = showSelectKlantMenu();
-        setViewName("Klanten aanpassen\t");
+        setViewName("Klant aanpassen\t");
         printHeader();
         
         System.out.println("Wat wilt u aanpassen?");
