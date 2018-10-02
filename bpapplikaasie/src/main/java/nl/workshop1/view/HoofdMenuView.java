@@ -22,12 +22,9 @@ public class HoofdMenuView extends MenuView {
             TODO - W: Hier nog een switch + methodes maken (zie ArtikelMenuView) voor de
             verschillende accounts: admin, medewerker en klant. Onderstaande is voor admin (ziet alles).
             */
-            System.out.println("1. Accounts\n2. Adressen\n3. Artikelen\n" +
-                    "4. Bestellingen\n5. Klanten\n\n0. Uitloggen en terug " +
-                    "naar het Startscherm\n");
-            
+            System.out.println("1. Accounts\n2. Adressen\n3. Artikelen\n4. Bestellingen\n" +
+                    "5. Klanten\n\n0. Uitloggen en terug naar het Startscherm\n");
             selection = getSelection();
-            
             switch (selection) {
                 case "0":   break;
                 case "1":   MenuView accountMenuView = new AccountMenuView();

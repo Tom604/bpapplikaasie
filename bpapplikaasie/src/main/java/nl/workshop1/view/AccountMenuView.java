@@ -44,34 +44,40 @@ public class AccountMenuView extends MenuView {
         setViewName("Account toevoegen\t");
         printHeader();
         
-        Klant klant = new Klant();
+        Account account = new Account();
         String accounttype = getAccounttype();
         
         if (accounttype.equals("klant")) {
             KlantMenuView klantMenuView = new KlantMenuView();
-            klant = klantMenuView.showSelectKlantMenu();
+            account.setKlant(klantMenuView.showSelectKlantMenu());
         }
+        
+        account.setAccounttype(accounttype);
         
         System.out.println("Voeg een nieuwe account toe aan de database.\n");
         System.out.print("Voer de username voor het account in (en druk dan op enter): ");
-        String username = SCANNER.next();
+        account.setUsername(SCANNER.next());
         System.out.print("Voer het wachtwoord voor het account in (en druk dan op enter): ");
-        String wachtwoord = SCANNER.next();
+        account.setWachtwoord(SCANNER.next());
             
-        System.out.println("\nHet opgegeven account:\nUsername:\t\t" + username +
-                "\nWachtwoord:\t\t" + wachtwoord + "\nAccounttype:\t\t" + accounttype);
+        System.out.println("\nHet opgegeven account:\n" + account.toString());
         System.out.println("\nIs dit correct?");
         System.out.println("1. Ja, opslaan.\n0. Nee, opnieuw invoeren.\n");
-
-        String selection = getSelection();
-        switch (selection) {
+        switch (getSelection()) {
             case "0":   break;
             case "1":   AccountController accountController = new AccountController();
-                        accountController.insertAccount(username, wachtwoord, accounttype, klant);
+                        accountController.insertAccount(account);
                         System.out.println("Account toegevoegd.");
                         break;
             default:    System.out.println(MAINERROR);
         }
+    }
+    
+    void showInsertKlantaccountMenu(Klant klant) {
+        /*
+        Hier de klant account aanmaken als je een klant aanmaakt - klantmenuview spreekt
+        deze methode aan. Hetzelfde voor adres.
+        */
     }
     
     private String getAccounttype() {
@@ -79,8 +85,7 @@ public class AccountMenuView extends MenuView {
         String accounttype = "";
         System.out.println("\nSelecteer accounttype:");
         System.out.println("1. Administrator\n2. Klant\n3. Medewerker\n");
-        String selection = getSelection();
-        switch (selection) {
+        switch (getSelection()) {
             case "1":   accounttype = "admin"; break;
             case "2":   accounttype = "klant"; break;
             case "3":   accounttype = "medewerker";
@@ -135,39 +140,33 @@ public class AccountMenuView extends MenuView {
         System.out.println("Wat wilt u aanpassen?");
         System.out.println("1. Username\n2. Wachtwoord\n3. Accounttype\n\n" +
                 "0. Niets, terug naar Accountspagina\n");
-        String selection = getSelection();
-        switch (selection) {
+        switch (getSelection()) {
             case "0":   break;
             case "1":   System.out.print("Nieuwe username: ");
-                        String nieuweUsername = SCANNER.next();
-                        showUpdatedAccountMenu(nieuweUsername, account.getWachtwoord(), account.getAccounttype(), account.getKlant());
+                        account.setUsername(SCANNER.next());
+                        showUpdatedAccountMenu(account);
                         break;
             case "2":   System.out.print("Nieuw wachtwoord: ");
-                        String nieuwWachtwoord = SCANNER.next();
-                        showUpdatedAccountMenu(account.getUsername(), nieuwWachtwoord, account.getAccounttype(), account.getKlant());
+                        account.setWachtwoord(SCANNER.next());
+                        showUpdatedAccountMenu(account);
                         break;
             case "3":   System.out.print("Nieuw accounttype: ");
-                        String nieuwAccounttype = SCANNER.next();
-                        showUpdatedAccountMenu(account.getUsername(), account.getWachtwoord(), nieuwAccounttype, account.getKlant());
+                        account.setAccounttype(getAccounttype());
+                        showUpdatedAccountMenu(account);
                         break;
             default:    System.out.println(MAINERROR);
         }
     }
 
-    private void showUpdatedAccountMenu(String username, String wachtwoord, String accounttype, Klant klant) {
+    private void showUpdatedAccountMenu(Account account) {
         
-        System.out.println("\nDe aangepaste account:");
-        System.out.println("Username:\t\t" + username + "\nWachtwoord:\t\t" + wachtwoord +
-                "\nAccounttyppe:\t" + accounttype);
-        
+        System.out.println("\nDe aangepaste account:\n" + account.toString());
         System.out.println("\nWilt u de aangepaste account opslaan?");
         System.out.println("1. Ja\n0. Nee\n");
-            
-        String selection = getSelection();
-        switch (selection) {
+        switch (getSelection()) {
             case "0":   break;
             case "1":   AccountController accountController = new AccountController();
-                        accountController.updateAccount(username, wachtwoord, accounttype, klant);
+                        accountController.updateAccount(account);
                         System.out.println("Account opgeslagen.");
                         break;
             default:    System.out.println(MAINERROR);
@@ -184,9 +183,7 @@ public class AccountMenuView extends MenuView {
         
         System.out.println("Wilt u deze account verwijderen?");
         System.out.println("1. Ja\n0. Nee\n");
-            
-        String selection = getSelection();
-        switch (selection) {
+        switch (getSelection()) {
             case "0":   break;
             case "1":   AccountController accountController = new AccountController();
                         accountController.deleteAccount(id);

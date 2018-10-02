@@ -1,6 +1,5 @@
 package nl.workshop1.view;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import nl.workshop1.controller.ArtikelController;
 import nl.workshop1.domain.Artikel;
@@ -57,9 +56,7 @@ public class ArtikelMenuView extends MenuView {
         System.out.println("\nHet opgegeven artikel:\n" + artikel.toString());
         System.out.println("\nIs dit correct?");
         System.out.println("1. Ja, opslaan.\n0. Nee, stoppen (niets opslaan).\n");
-        
-        String selection = getSelection();
-        switch (selection) {
+        switch (getSelection()) {
             case "0":   break;
             case "1":   ArtikelController artikelController = new ArtikelController();
                         artikelController.insertArtikel(artikel);
@@ -92,7 +89,6 @@ public class ArtikelMenuView extends MenuView {
             System.out.println("Het geselecteerde artikel:");
             System.out.println(artikel.toString());
         }
-        
         return artikel;
     }
     
@@ -114,10 +110,8 @@ public class ArtikelMenuView extends MenuView {
         printHeader();
            
         System.out.println("Wat wilt u aanpassen?");
-        System.out.println("1. Naam\n2. Prijs\n3. Voorraad\n" +
-                "0. Niets, terug naar artikelpagina\n");
-        String selection = getSelection();
-        switch (selection) {
+        System.out.println("1. Naam\n2. Prijs\n3. Voorraad\n\n0. Niets, terug naar artikelpagina\n");
+        switch (getSelection()) {
             case "0":   break;
             case "1":   System.out.print("Nieuwe naam: ");
                         artikel.setNaam(SCANNER.next());
@@ -141,9 +135,7 @@ public class ArtikelMenuView extends MenuView {
                 
         System.out.println("\nWilt u het aangepaste artikel opslaan?");
         System.out.println("1. Ja\n0. Nee\n");
-            
-        String selection = getSelection();
-        switch (selection) {
+        switch (getSelection()) {
             case "0":   break;
             case "1":   ArtikelController artikelController = new ArtikelController();
                         artikelController.updateArtikel(artikel);
@@ -163,9 +155,7 @@ public class ArtikelMenuView extends MenuView {
         
         System.out.println("\nWilt u dit artikel verwijderen?");
         System.out.println("1. Ja\n0. Nee\n");
-            
-        String selection = getSelection();
-        switch (selection) {
+        switch (getSelection()) {
             case "0":   break;
             case "1":   ArtikelController artikelController = new ArtikelController();
                         artikelController.deleteArtikel(id);

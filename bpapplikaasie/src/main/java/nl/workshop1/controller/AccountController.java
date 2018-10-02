@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import nl.workshop1.dao.AccountDAO;
 import nl.workshop1.dao.DAOFactory;
 import nl.workshop1.domain.Account;
-import nl.workshop1.domain.Klant;
 
 /**
  *
@@ -12,14 +11,22 @@ import nl.workshop1.domain.Klant;
  */
 public class AccountController {
     
-    public boolean insertAccount(String username, String wachtwoord, String accounttype, Klant klant) {
+    public boolean insertAccount(Account account) {
         AccountDAO accountDAO = DAOFactory.getDAOFactory().getAccountDAO();
-        Account account = new Account();
-        account.setUsername(username);
-        account.setWachtwoord(wachtwoord);
-        account.setAccounttype(accounttype);
-        account.setKlant(klant);
         return accountDAO.insertAccount(account);
+    }
+    
+    public boolean insertKlantaccount(Account account) {
+        /*
+        Deze methode gebruiken om de insertKlantaccount(Account account) methode in
+        de DAO aan te roepen (nog aanmaken). Ook insertAccount in de DAO nog aanpassen - 
+        geen klant toevoegen aan het account.
+        Anders doen:
+        Gewoon de algemene insertAccount methode hierboven gebruiken, zorgen dat er in
+        de view al een null klant gezet wordt.
+        */
+        
+        return true;
     }
     
     public Account selectAccount(int id) {
@@ -32,13 +39,8 @@ public class AccountController {
         return accountDAO.selectAccounts();
     }
     
-    public boolean updateAccount(String username, String wachtwoord, String accounttype, Klant klant) {
+    public boolean updateAccount(Account account) {
         AccountDAO accountDAO = DAOFactory.getDAOFactory().getAccountDAO();
-        Account account = new Account();
-        account.setUsername(username);
-        account.setWachtwoord(wachtwoord);
-        account.setAccounttype(accounttype);
-        account.setKlant(klant);
         return accountDAO.updateAccount(account);
     }
     

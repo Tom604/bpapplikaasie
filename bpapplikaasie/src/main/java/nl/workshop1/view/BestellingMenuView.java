@@ -64,6 +64,7 @@ public class BestellingMenuView extends MenuView {
         
         KlantMenuView klantMenuView = new KlantMenuView();
         Klant klant = klantMenuView.showSelectKlantMenu();
+        
         Bestelling bestelling = new Bestelling();
         bestelling.setKlant(klant);
         bestelling.setTotaalprijs(new BigDecimal("0")); // Initiële waarde voor totaalprijs
@@ -114,8 +115,11 @@ public class BestellingMenuView extends MenuView {
     }
     
     private void showUpdateBestellingMenu() {
+        
+        Bestelling bestelling = showSelectBestellingMenu();
+        
         BestelregelMenuView bestelregelMenuView = new BestelregelMenuView();
-        bestelregelMenuView.showMenu();
+        bestelregelMenuView.showMenuWithBestelling(bestelling);
     }
     
     private void showDeleteBestellingMenu() {
@@ -128,9 +132,7 @@ public class BestellingMenuView extends MenuView {
         
         System.out.println("Wilt u deze bestelling verwijderen?");
         System.out.println("1. Ja\n0. Nee\n");
-            
-        String selection = getSelection();
-        switch (selection) {
+        switch (getSelection()) {
             case "0":   break;
             case "1":   BestellingController bestellingController = new BestellingController();
                         bestellingController.deleteBestelling(id);

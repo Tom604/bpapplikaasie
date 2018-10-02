@@ -11,12 +11,8 @@ import nl.workshop1.domain.Klant;
  */
 public class KlantController {
     
-    public boolean insertKlant(String voornaam, String achternaam, String tussenvoegsel) {
+    public boolean insertKlant(Klant klant) {
         KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
-        Klant klant = new Klant();
-        klant.setVoornaam(voornaam);
-        klant.setAchternaam(achternaam);
-        klant.setTussenvoegsel(tussenvoegsel);
         return klantDAO.insertKlant(klant);
     }
     
@@ -30,12 +26,8 @@ public class KlantController {
         return klantDAO.selectKlanten();
     }
     
-    public boolean updateKlant(String voornaam, String achternaam, String tussenvoegsel) {
+    public boolean updateKlant(Klant klant) {
         KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
-        Klant klant = new Klant();
-        klant.setVoornaam(voornaam);
-        klant.setAchternaam(achternaam);
-        klant.setTussenvoegsel(tussenvoegsel);
         return klantDAO.updateKlant(klant);
     }
     

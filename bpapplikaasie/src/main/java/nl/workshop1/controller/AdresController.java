@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import nl.workshop1.dao.AdresDAO;
 import nl.workshop1.dao.DAOFactory;
 import nl.workshop1.domain.Adres;
-import nl.workshop1.domain.Klant;
 
 /**
  *
@@ -12,17 +11,8 @@ import nl.workshop1.domain.Klant;
  */
 public class AdresController {
     
-    public boolean insertAdres(String straatnaam, int huisnummer, String toevoeging,
-            String postcode, String woonplaats, String adrestype, Klant klant) {
+    public boolean insertAdres(Adres adres) {
         AdresDAO adresDAO = DAOFactory.getDAOFactory().getAdresDAO();
-        Adres adres = new Adres();
-        adres.setStraatnaam(straatnaam);
-        adres.setHuisnummer(huisnummer);
-        adres.setToevoeging(toevoeging);
-        adres.setPostcode(postcode);
-        adres.setWoonplaats(woonplaats);
-        adres.setAdrestype(adrestype);
-        adres.setKlant(klant);
         return adresDAO.insertAdres(adres);
     }
     
@@ -36,17 +26,8 @@ public class AdresController {
         return adresDAO.selectAdressen();
     }
     
-    public boolean updateAdres(String straatnaam, int huisnummer, String toevoeging,
-            String postcode, String woonplaats, String adrestype, Klant klant) {
+    public boolean updateAdres(Adres adres) {
         AdresDAO adresDAO = DAOFactory.getDAOFactory().getAdresDAO();
-        Adres adres = new Adres();
-        adres.setStraatnaam(straatnaam);
-        adres.setHuisnummer(huisnummer);
-        adres.setToevoeging(toevoeging);
-        adres.setPostcode(postcode);
-        adres.setWoonplaats(woonplaats);
-        adres.setAdrestype(adrestype);
-        adres.setKlant(klant);
         return adresDAO.updateAdres(adres);
     }
     

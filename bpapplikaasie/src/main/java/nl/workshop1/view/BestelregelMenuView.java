@@ -17,13 +17,14 @@ public class BestelregelMenuView extends MenuView {
 
     @Override
     public void showMenu() {
+    }
+    
+    public void showMenuWithBestelling(Bestelling bestelling) {
         
         /*
         Hier wordt showUpdateBestellingMenu() van BestellingMenuView opgevangen
         */
         
-        BestellingMenuView bestellingMenuView = new BestellingMenuView();
-        Bestelling bestelling = bestellingMenuView.showSelectBestellingMenu();
         String selection = "";
         
         do {
@@ -33,7 +34,6 @@ public class BestelregelMenuView extends MenuView {
             System.out.println("Wilt u:\n");
             System.out.println("1. Bestelregel toevoegen\n2. Bestelregel aanpassen\n" +
                     "3. Bestelregel verwijderen\n\n0. Terug naar Bestellingpagina\n");
-        
             selection = getSelection();
             switch (selection) {
                 case "0":   break;
@@ -93,9 +93,7 @@ public class BestelregelMenuView extends MenuView {
         System.out.println("\nDe opgegeven bestelregel:\n" + bestelregel.toString());
         System.out.println("\nIs dit correct?");
         System.out.println("1. Ja, opslaan.\n0. Nee, stoppen (niets opslaan).\n");
-        
-        String selection = getSelection();
-        switch (selection) {
+        switch (getSelection()) {
             case "0":   break;
             case "1":   BestelregelController bestelregelController = new BestelregelController();
                         bestelregelController.insertBestelregel(bestelregel);
@@ -122,6 +120,7 @@ public class BestelregelMenuView extends MenuView {
         }
         else {
             bestelregel.setAantal(selection);
+            bestelregel.setArtikel(artikel);
             subtractFromArtikelVoorraad(bestelregel);
         }
         return bestelregel;
@@ -173,8 +172,7 @@ public class BestelregelMenuView extends MenuView {
         
         System.out.println("Wat wilt u aanpassen?");
         System.out.println("1. Aantal\n\n0. Niets, terug naar Bestelling aanpassen\n");
-        String selection = getSelection();
-        switch (selection) {
+        switch (getSelection()) {
             case "0":   break;
             case "1":   System.out.print("Nieuw aantal: ");
                         bestelregel.setAantal(SCANNER.nextInt());
@@ -192,9 +190,7 @@ public class BestelregelMenuView extends MenuView {
         System.out.println("\nDe aangepaste bestelregel:\n" + bestelregel.toString());
         System.out.println("\nWilt u de aangepaste bestelregel opslaan?");
         System.out.println("1. Ja\n0. Nee\n");
-            
-        String selection = getSelection();
-        switch (selection) {
+        switch (getSelection()) {
             case "0":   break;
             case "1":   BestelregelController bestelregelController = new BestelregelController();
                         bestelregelController.updateBestelregel(bestelregel);
@@ -215,9 +211,7 @@ public class BestelregelMenuView extends MenuView {
         
         System.out.println("Wilt u deze bestelregel verwijderen?");
         System.out.println("1. Ja\n0. Nee\n");
-            
-        String selection = getSelection();
-        switch (selection) {
+        switch (getSelection()) {
             case "0":   break;
             case "1":   subtractFromTotaalprijsBestelling(bestelregel, bestelling);
                         addToArtikelVoorraad(bestelregel);
