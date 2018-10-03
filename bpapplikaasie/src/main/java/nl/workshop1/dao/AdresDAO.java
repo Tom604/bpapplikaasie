@@ -16,6 +16,7 @@ public interface AdresDAO {
     public boolean insertAdres(Adres adres);
     public Adres selectAdres(int id);
     public ArrayList<Adres> selectAdressen();
+    public ArrayList<Adres> selectAdressen(int klantId);
     public boolean updateAdres(Adres adres);
     public boolean deleteAdres(int id);
 }

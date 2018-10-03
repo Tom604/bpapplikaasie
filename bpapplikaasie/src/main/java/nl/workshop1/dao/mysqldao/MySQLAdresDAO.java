@@ -127,6 +127,45 @@ public class MySQLAdresDAO implements AdresDAO {
         
         return adressen;
     }
+    
+    @Override
+    public ArrayList<Adres> selectAdressen(int klantId) {
+        
+        ArrayList<Adres> adressen = new ArrayList<>();
+        Klant klant;
+        Adres adres;
+        PreparedStatement preparedStatement;
+        
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through selectAdres");
+            
+            preparedStatement = connection.prepareStatement(
+                    "SELECT id, straatnaam, huisnummer, toevoeging, postcode, " +
+                    "woonplaats, adrestype, klant_id FROM adres WHERE klant_id = ?");
+            preparedStatement.setInt(1, klantId);
+            
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                adres = new Adres();
+                klant = new Klant();
+                adres.setId(resultSet.getInt("id"));
+                adres.setStraatnaam(resultSet.getString("straatnaam"));
+                adres.setHuisnummer(resultSet.getInt("huisnummer"));
+                adres.setToevoeging(resultSet.getString("toevoeging"));
+                adres.setPostcode(resultSet.getString("postcode"));
+                adres.setWoonplaats(resultSet.getString("woonplaats"));
+                adres.setAdrestype(resultSet.getString("adrestype"));
+                klant.setId(resultSet.getInt("klant_id"));
+                adres.setKlant(klant);
+                adressen.add(adres);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in selectAdres");
+        }
+        
+        return adressen;
+    }
 
     @Override
     public boolean updateAdres(Adres adres) {

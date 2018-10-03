@@ -26,6 +26,11 @@ public class AdresController {
         return adresDAO.selectAdressen();
     }
     
+    public ArrayList<Adres> selectAdressen(int klantId) {
+        AdresDAO adresDAO = DAOFactory.getDAOFactory().getAdresDAO();
+        return adresDAO.selectAdressen(klantId);
+    }
+    
     public boolean updateAdres(Adres adres) {
         AdresDAO adresDAO = DAOFactory.getDAOFactory().getAdresDAO();
         return adresDAO.updateAdres(adres);

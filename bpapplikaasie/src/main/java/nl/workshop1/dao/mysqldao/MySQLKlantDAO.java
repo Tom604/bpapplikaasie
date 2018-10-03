@@ -78,6 +78,35 @@ public class MySQLKlantDAO implements KlantDAO {
     }
     
     @Override
+    public Klant insertAndSelectKlant(Klant klant) {
+        
+        PreparedStatement preparedStatement;
+        
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through selectLastKlantAdded");
+            
+            preparedStatement = connection.prepareStatement(
+                    "INSERT INTO klant (voornaam, achternaam, tussenvoegsel) VALUES (?, ?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, klant.getVoornaam());
+            preparedStatement.setString(2, klant.getAchternaam());
+            preparedStatement.setString(3, klant.getTussenvoegsel());
+            
+            preparedStatement.executeUpdate();
+            
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                klant = selectKlant(resultSet.getInt(1));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in selectLastKlantAdded");
+        }
+        
+        return klant;
+    }
+    
+    @Override
     public ArrayList<Klant> selectKlanten() {
         
         ArrayList<Klant> klanten = new ArrayList<>();

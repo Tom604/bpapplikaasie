@@ -21,6 +21,15 @@ public class KlantController {
         return klantDAO.selectKlant(id);
     }
     
+    public Klant insertAndSelectKlant(Klant klant) {
+        
+        /*
+        Hier wordt de klant gezet en met id uit de db gehaald
+        */
+        KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
+        return klantDAO.insertAndSelectKlant(klant);
+    }
+    
     public ArrayList<Klant> selectKlanten() {
         KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
         return klantDAO.selectKlanten();

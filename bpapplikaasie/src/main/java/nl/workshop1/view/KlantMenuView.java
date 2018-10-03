@@ -49,9 +49,9 @@ public class KlantMenuView extends MenuView {
         System.out.print("Voer de voornaam van de klant in (en druk dan op enter): ");
         klant.setVoornaam(SCANNER.next());
         System.out.print("Voer de achternaam van de klant in (en druk dan op enter): ");
-        klant.setAchternaam(SCANNER.next());
+        klant.setAchternaam(SCANNER.next()); SCANNER.nextLine();
         System.out.print("Voer het tussenvoegsel van de klant in (en druk dan op enter): ");
-        klant.setTussenvoegsel(SCANNER.next());
+        klant.setTussenvoegsel(SCANNER.nextLine());
             
         System.out.println("\nDe opgegeven klant:\n" + klant.toString());
         System.out.println("\nIs dit correct?");
@@ -59,11 +59,20 @@ public class KlantMenuView extends MenuView {
         switch (getSelection()) {
             case "0":   break;
             case "1":   KlantController klantController = new KlantController();
-                        klantController.insertKlant(klant);
+                        klant = klantController.insertAndSelectKlant(klant);
+                        System.out.println(klant);
                         System.out.println("Klant toegevoegd.");
+                        addAccountAndAdresForKlant(klant);
                         break;
             default:    System.out.println(MAINERROR);
         }
+    }
+    
+    private void addAccountAndAdresForKlant(Klant klant) {
+        AccountMenuView accountMenuView = new AccountMenuView();
+        accountMenuView.setAccountForKlant(klant);
+        AdresMenuView adresMenuView = new AdresMenuView();
+        adresMenuView.showInsertAdresMenu(klant);
     }
     
     Klant showSelectKlantMenu() {

@@ -55,7 +55,6 @@ public class MySQLAccountDAO implements AccountDAO {
     @Override
     public Account selectAccount(int id) {
         
-        Klant klant = new Klant();
         Account account = new Account();
         PreparedStatement preparedStatement;
         
@@ -73,8 +72,14 @@ public class MySQLAccountDAO implements AccountDAO {
                 account.setUsername(resultSet.getString("username"));
                 account.setWachtwoord(resultSet.getString("wachtwoord"));
                 account.setAccounttype(resultSet.getString("accounttype"));
-                klant.setId(resultSet.getInt("klant_id"));
-                account.setKlant(klant);
+                if (resultSet.getInt("klant_id") != 0){
+                    Klant klant = new Klant();
+                    klant.setId(resultSet.getInt("klant_id"));
+                    account.setKlant(klant);
+                }
+                else {
+                    account.setKlant(null);
+                }
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -87,7 +92,6 @@ public class MySQLAccountDAO implements AccountDAO {
     @Override
     public Account selectAccount(String username) {
         
-        Klant klant = new Klant();
         Account account = new Account();
         PreparedStatement preparedStatement;
         
@@ -105,8 +109,14 @@ public class MySQLAccountDAO implements AccountDAO {
                 account.setUsername(resultSet.getString("username"));
                 account.setWachtwoord(resultSet.getString("wachtwoord"));
                 account.setAccounttype(resultSet.getString("accounttype"));
-                klant.setId(resultSet.getInt("klant_id"));
-                account.setKlant(klant);
+                if (resultSet.getInt("klant_id") != 0){
+                    Klant klant = new Klant();
+                    klant.setId(resultSet.getInt("klant_id"));
+                    account.setKlant(klant);
+                }
+                else {
+                    account.setKlant(null);
+                }
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -120,8 +130,6 @@ public class MySQLAccountDAO implements AccountDAO {
     public ArrayList<Account> selectAccounts() {
         
         ArrayList<Account> accounts = new ArrayList<>();
-        Klant klant;
-        Account account;
         
         try (Connection connection = DatabaseConnection.getConnection()) {
             log.debug("Database connected through selectAccount-id");
@@ -132,14 +140,19 @@ public class MySQLAccountDAO implements AccountDAO {
                     "FROM account");
         
             while (resultSet.next()) {
-                account = new Account();
-                klant = new Klant();
+                Account account = new Account();
                 account.setId(resultSet.getInt("id"));
                 account.setUsername(resultSet.getString("username"));
                 account.setWachtwoord(resultSet.getString("wachtwoord"));
                 account.setAccounttype(resultSet.getString("accounttype"));
-                klant.setId(resultSet.getInt("klant_id"));
-                account.setKlant(klant);
+                if (resultSet.getInt("klant_id") != 0){
+                    Klant klant = new Klant();
+                    klant.setId(resultSet.getInt("klant_id"));
+                    account.setKlant(klant);
+                }
+                else {
+                    account.setKlant(null);
+                }
                 accounts.add(account);
             }
         } catch (SQLException ex) {

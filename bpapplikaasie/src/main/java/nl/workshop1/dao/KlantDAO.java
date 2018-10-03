@@ -15,6 +15,7 @@ public interface KlantDAO {
     
     public boolean insertKlant(Klant klant);
     public Klant selectKlant(int id);
+    public Klant insertAndSelectKlant(Klant klant);
     public ArrayList<Klant> selectKlanten();
     public boolean updateKlant(Klant klant);
     public boolean deleteKlant(int id);

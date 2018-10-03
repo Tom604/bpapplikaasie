@@ -25,7 +25,7 @@ public class AccountMenuView extends MenuView {
             selection = getSelection();
             switch (selection) {
                 case "0":   break;
-                case "1":   showInsertAccountMenu(); break;
+                case "1":   setAccounttype(); break;
                 case "2":   showSelectAccountMenu(); break;
                 case "3":   showUpdateAccountMenu(); break;
                 case "4":   showDeleteAccountMenu(); break;
@@ -39,26 +39,39 @@ public class AccountMenuView extends MenuView {
         this.viewName = viewName;
     }
     
-    private void showInsertAccountMenu() {
-        
-        setViewName("Account toevoegen\t");
-        printHeader();
-        
+    private void setAccounttype() {
+
         Account account = new Account();
-        String accounttype = getAccounttype();
         
-        if (accounttype.equals("klant")) {
-            KlantMenuView klantMenuView = new KlantMenuView();
-            account.setKlant(klantMenuView.showSelectKlantMenu());
+        System.out.println("Selecteer accounttype:");
+        System.out.println("1. Administrator\n2. Medewerker\n");
+        switch (getSelection()) {
+            case "1":   account.setAccounttype("admin");
+                        showInsertAccountMenu(account);
+                        break;
+            case "2":   account.setAccounttype("medewerker");
+                        showInsertAccountMenu(account);
+                        break;
+            default:    System.out.println(MAINERROR);
         }
+    }
+    
+    void setAccountForKlant(Klant klant) {
+        Account account = new Account();
+        account.setKlant(klant);
+        account.setAccounttype("klant");
+        showInsertAccountMenu(account);
+    }
+    
+    private void showInsertAccountMenu(Account account) {
         
-        account.setAccounttype(accounttype);
+        setViewName("Account toevoegen");
+        printHeader();
         
         System.out.println("Voeg een nieuwe account toe aan de database.\n");
         System.out.print("Voer de username voor het account in (en druk dan op enter): ");
         account.setUsername(SCANNER.next());
-        System.out.print("Voer het wachtwoord voor het account in (en druk dan op enter): ");
-        account.setWachtwoord(SCANNER.next());
+        account.setWachtwoord(getInputWithValidation("wachtwoord"));
             
         System.out.println("\nHet opgegeven account:\n" + account.toString());
         System.out.println("\nIs dit correct?");
@@ -71,26 +84,6 @@ public class AccountMenuView extends MenuView {
                         break;
             default:    System.out.println(MAINERROR);
         }
-    }
-    
-    void showInsertKlantaccountMenu(Klant klant) {
-        /*
-        Hier de klant account aanmaken als je een klant aanmaakt - klantmenuview spreekt
-        deze methode aan. Hetzelfde voor adres.
-        */
-    }
-    
-    private String getAccounttype() {
-        
-        String accounttype = "";
-        System.out.println("\nSelecteer accounttype:");
-        System.out.println("1. Administrator\n2. Klant\n3. Medewerker\n");
-        switch (getSelection()) {
-            case "1":   accounttype = "admin"; break;
-            case "2":   accounttype = "klant"; break;
-            case "3":   accounttype = "medewerker";
-        }
-        return accounttype;
     }
     
     private Account showSelectAccountMenu() {
@@ -138,7 +131,7 @@ public class AccountMenuView extends MenuView {
         printHeader();
         
         System.out.println("Wat wilt u aanpassen?");
-        System.out.println("1. Username\n2. Wachtwoord\n3. Accounttype\n\n" +
+        System.out.println("1. Username\n2. Wachtwoord\n\n" +
                 "0. Niets, terug naar Accountspagina\n");
         switch (getSelection()) {
             case "0":   break;
@@ -148,10 +141,6 @@ public class AccountMenuView extends MenuView {
                         break;
             case "2":   System.out.print("Nieuw wachtwoord: ");
                         account.setWachtwoord(SCANNER.next());
-                        showUpdatedAccountMenu(account);
-                        break;
-            case "3":   System.out.print("Nieuw accounttype: ");
-                        account.setAccounttype(getAccounttype());
                         showUpdatedAccountMenu(account);
                         break;
             default:    System.out.println(MAINERROR);

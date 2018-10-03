@@ -2,6 +2,7 @@ package nl.workshop1.view;
 
 import java.util.Scanner;
 import nl.workshop1.controller.LoginController;
+import nl.workshop1.utility.InputValidator;
 
 /**
  *
@@ -37,6 +38,31 @@ public abstract class MenuView {
         String selection = SCANNER.next();
         System.out.println(MAINTOPBOTTOM);
         return selection;
+    }
+    
+    protected String getInputWithValidation(String type) {
+        
+        InputValidator inputValidator = new InputValidator();
+        boolean b = true;
+        String input = "";
+        
+        do {
+            switch (type) {
+                case "postcode":    System.out.print("Voer de postcode voor het adres in" +
+                                            "(en druk dan op enter): ");
+                                    b = inputValidator.validatePostcode(input = SCANNER.nextLine());
+                                    break;
+                case "wachtwoord":  System.out.print("Voer het wachtwoord voor het account in " +
+                                            "(en druk dan op enter): ");
+                                    b = inputValidator.validateWachtwoord(input = SCANNER.next());
+                                    break;
+            }
+            if (b == false) {
+                System.out.println(MAINERROR);
+            }
+        } while (b == false);
+        
+        return input;
     }
     
     public abstract void showMenu();
