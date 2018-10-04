@@ -27,9 +27,8 @@ public class MySQLBestellingDAO implements BestellingDAO {
     */
     
     @Override
-    public boolean insertBestelling(Bestelling bestelling) {
+    public Bestelling insertBestelling(Bestelling bestelling) {
         
-        int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
         try (Connection connection = DatabaseConnection.getConnection()) {
@@ -37,19 +36,24 @@ public class MySQLBestellingDAO implements BestellingDAO {
             
             preparedStatement = connection.prepareStatement(
                     "INSERT INTO bestelling (totaalprijs, datum_tijd, klant_id) " +
-                    "VALUES (?, ?, (SELECT id FROM klant WHERE id = ?))");
+                    "VALUES (?, ?, (SELECT id FROM klant WHERE id = ?))",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setBigDecimal(1, bestelling.getTotaalprijs());
             preparedStatement.setTimestamp(2, Timestamp.valueOf(bestelling.getDatumTijd()));
             preparedStatement.setInt(3, bestelling.getKlant().getId());
             
-            updateExecuted = preparedStatement.executeUpdate();
-
+            preparedStatement.executeUpdate();
+            
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                bestelling.setId(resultSet.getInt(1));
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             log.warn("Exception catched in insertBestelling");
         }
         
-        return updateExecuted != 0;
+        return bestelling;
     }
 
     @Override

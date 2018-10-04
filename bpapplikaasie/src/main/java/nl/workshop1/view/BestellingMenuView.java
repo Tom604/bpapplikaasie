@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import nl.workshop1.controller.BestellingController;
+import nl.workshop1.controller.KlantController;
 import nl.workshop1.domain.Bestelling;
 import nl.workshop1.domain.Klant;
 
@@ -28,8 +29,9 @@ public class BestellingMenuView extends MenuView {
             switch (selection) {
                 case "0":   break;
                 case "1":   showInsertBestellingMenu(); break;
-                case "2":   showSelectBestellingMenu(); break;
-                case "3":   showUpdateBestellingMenu(); break;
+                case "2":   showSelectionOptionsMenu(); break;
+                case "3":   Bestelling bestelling = showSelectionOptionsMenu();
+                            showUpdateBestellingMenu(bestelling); break;
                 case "4":   showDeleteBestellingMenu(); break;
                 default:    System.out.println(MAINERROR);
             }
@@ -53,8 +55,9 @@ public class BestellingMenuView extends MenuView {
         switch (getSelection()) {
             case "0":   break;
             case "1":   BestellingController bestellingController = new BestellingController();
-                        bestellingController.insertBestelling(bestelling);
-                        System.out.println("Lege bestelling toegevoegd.");
+                        bestelling = bestellingController.insertBestelling(bestelling);
+                        System.out.println("Bestelling toegevoegd.");
+                        showUpdateBestellingMenu(bestelling);
                         break;
             default:    System.out.println(MAINERROR);
         }
@@ -72,10 +75,63 @@ public class BestellingMenuView extends MenuView {
         return bestelling;
     }
     
-    Bestelling showSelectBestellingMenu(){
+    private Bestelling showSelectionOptionsMenu() {
         
         setViewName("Bestelling zoeken");
         printHeader();
+        
+        Bestelling bestelling = new Bestelling();
+        
+        System.out.println("Wilt u:\n");
+        System.out.println("1. Bestelling op klantnaam zoeken\n2. Alle bestellingen " + 
+                "weergeven\n\n0. Terug naar Bestellingenpagina\n");
+        switch (getSelection()) {
+            case "0":   break;
+            case "1":   bestelling = showSelectBestellingFromKlantMenu();
+                        break;
+            case "2":   bestelling = showSelectBestellingMenu();
+                        break;
+            default:    System.out.println(MAINERROR);
+        }
+        
+        return bestelling;
+    }
+    
+    private Bestelling showSelectBestellingFromKlantMenu() {
+        
+        Bestelling bestelling = new Bestelling();
+        Klant klant;
+        
+        System.out.println("Selecteer bestelling op achternaam klant:");
+        String achternaam = SCANNER.next();
+        System.out.println();
+        
+        KlantMenuView klantMenuView = new KlantMenuView();
+        int id = klantMenuView.printList(achternaam);
+        System.out.println("\n0. Terug\n");
+        
+        System.out.println("Selecteer klant:");
+        int selection = Integer.parseInt(getSelection());
+        if (selection == 0) {
+        }
+        else if (selection < 0 || selection > id) {
+            System.out.println(MAINERROR);
+        }
+        else {
+            KlantController klantController = new KlantController();
+            klant = klantController.selectKlant(selection);
+            BestellingController bestellingController = new BestellingController();
+            bestelling = bestellingController.selectBestelling(klant.getId());
+            System.out.println("De geselecteerde klant en bestellingen:");
+            System.out.println(klant.toString());
+            System.out.println(bestelling.toString());
+            BestelregelMenuView bestelregelMenuView = new BestelregelMenuView();
+            bestelregelMenuView.printList(bestelling.getId());
+        }
+        return bestelling;
+    }
+    
+    Bestelling showSelectBestellingMenu() {
         
         int id = printList();
         System.out.println("\n0. Terug\n");
@@ -114,17 +170,14 @@ public class BestellingMenuView extends MenuView {
         return bestellingen.size();
     }
     
-    private void showUpdateBestellingMenu() {
-        
-        Bestelling bestelling = showSelectBestellingMenu();
-        
+    private void showUpdateBestellingMenu(Bestelling bestelling) {
         BestelregelMenuView bestelregelMenuView = new BestelregelMenuView();
         bestelregelMenuView.showMenuWithBestelling(bestelling);
     }
     
     private void showDeleteBestellingMenu() {
         
-        Bestelling bestelling = showSelectBestellingMenu();
+        Bestelling bestelling = showSelectionOptionsMenu();
         int id = bestelling.getId();
         
         setViewName("Bestelling verwijderen");

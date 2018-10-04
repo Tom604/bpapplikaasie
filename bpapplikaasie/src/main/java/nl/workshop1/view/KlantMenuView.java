@@ -59,8 +59,7 @@ public class KlantMenuView extends MenuView {
         switch (getSelection()) {
             case "0":   break;
             case "1":   KlantController klantController = new KlantController();
-                        klant = klantController.insertAndSelectKlant(klant);
-                        System.out.println(klant);
+                        klant = klantController.insertKlant(klant);
                         System.out.println("Klant toegevoegd.");
                         addAccountAndAdresForKlant(klant);
                         break;
@@ -105,6 +104,17 @@ public class KlantMenuView extends MenuView {
 
         KlantController klantController = new KlantController();
         ArrayList<Klant> klanten = klantController.selectKlanten();
+        
+        for (Klant e: klanten) {
+            System.out.println(e.getId() + ". " + e.toString());
+        }
+        return klanten.size();
+    }
+    
+    int printList(String achternaam) {
+        
+        KlantController klantController = new KlantController();
+        ArrayList<Klant> klanten = klantController.selectKlanten(achternaam);
         
         for (Klant e: klanten) {
             System.out.println(e.getId() + ". " + e.toString());

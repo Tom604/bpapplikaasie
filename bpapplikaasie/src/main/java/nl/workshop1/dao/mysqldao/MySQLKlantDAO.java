@@ -25,28 +25,32 @@ public class MySQLKlantDAO implements KlantDAO {
     */
     
     @Override
-    public boolean insertKlant(Klant klant) {
+    public Klant insertKlant(Klant klant) {
         
-        int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
         try (Connection connection = DatabaseConnection.getConnection()) {
             log.debug("Database connected through insertKlant");
             
             preparedStatement = connection.prepareStatement(
-                    "INSERT INTO klant (voornaam, achternaam, tussenvoegsel) VALUES (?, ?, ?)");
+                    "INSERT INTO klant (voornaam, achternaam, tussenvoegsel) VALUES (?, ?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, klant.getVoornaam());
             preparedStatement.setString(2, klant.getAchternaam());
             preparedStatement.setString(3, klant.getTussenvoegsel());
             
-            updateExecuted = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
             
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                klant.setId(resultSet.getInt(1));
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             log.warn("Exception catched in insertKlant");
         }
         
-        return updateExecuted != 0;
+        return klant;
     }
 
     @Override
@@ -78,35 +82,6 @@ public class MySQLKlantDAO implements KlantDAO {
     }
     
     @Override
-    public Klant insertAndSelectKlant(Klant klant) {
-        
-        PreparedStatement preparedStatement;
-        
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectLastKlantAdded");
-            
-            preparedStatement = connection.prepareStatement(
-                    "INSERT INTO klant (voornaam, achternaam, tussenvoegsel) VALUES (?, ?, ?)",
-                    PreparedStatement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, klant.getVoornaam());
-            preparedStatement.setString(2, klant.getAchternaam());
-            preparedStatement.setString(3, klant.getTussenvoegsel());
-            
-            preparedStatement.executeUpdate();
-            
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if (resultSet.next()) {
-                klant = selectKlant(resultSet.getInt(1));
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            log.warn("Exception catched in selectLastKlantAdded");
-        }
-        
-        return klant;
-    }
-    
-    @Override
     public ArrayList<Klant> selectKlanten() {
         
         ArrayList<Klant> klanten = new ArrayList<>();
@@ -130,6 +105,37 @@ public class MySQLKlantDAO implements KlantDAO {
         } catch (SQLException ex) {
             ex.printStackTrace();
             log.warn("Exception catched in selectKlanten");
+        }
+        
+        return klanten;
+    }
+    
+    @Override
+    public ArrayList<Klant> selectKlanten(String achternaam) {
+        
+        ArrayList<Klant> klanten = new ArrayList<>();
+        Klant klant;
+        PreparedStatement preparedStatement;
+        
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            log.debug("Database connected through selectKlant");
+            
+            preparedStatement = connection.prepareStatement(
+                    "SELECT id, voornaam, achternaam, tussenvoegsel FROM klant WHERE achternaam = ?");
+            preparedStatement.setString(1, achternaam);
+        
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                klant = new Klant();
+                klant.setId(resultSet.getInt("id"));
+                klant.setVoornaam(resultSet.getString("voornaam"));
+                klant.setAchternaam(resultSet.getString("achternaam"));
+                klant.setTussenvoegsel(resultSet.getString("tussenvoegsel"));
+                klanten.add(klant);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in selectKlant");
         }
         
         return klanten;

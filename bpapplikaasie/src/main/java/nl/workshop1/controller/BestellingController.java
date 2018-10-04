@@ -11,7 +11,7 @@ import nl.workshop1.domain.Bestelling;
  */
 public class BestellingController {
     
-    public boolean insertBestelling(Bestelling bestelling) {
+    public Bestelling insertBestelling(Bestelling bestelling) {
         BestellingDAO bestellingDAO = DAOFactory.getDAOFactory().getBestellingDAO();
         return bestellingDAO.insertBestelling(bestelling);
     }

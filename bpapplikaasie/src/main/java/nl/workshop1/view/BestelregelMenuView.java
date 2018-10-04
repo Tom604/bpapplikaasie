@@ -90,7 +90,7 @@ public class BestelregelMenuView extends MenuView {
         Bestelregel bestelregel = getNewBestelregel();
         addToTotaalprijsBestelling(bestelregel, bestelling);
                 
-        System.out.println("\nDe opgegeven bestelregel:\n" + bestelregel.toString());
+        System.out.println("De opgegeven bestelregel:\n" + bestelregel.toString());
         System.out.println("\nIs dit correct?");
         System.out.println("1. Ja, opslaan.\n0. Nee, stoppen (niets opslaan).\n");
         switch (getSelection()) {

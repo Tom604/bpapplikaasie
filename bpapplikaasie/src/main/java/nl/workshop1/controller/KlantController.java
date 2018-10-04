@@ -11,7 +11,7 @@ import nl.workshop1.domain.Klant;
  */
 public class KlantController {
     
-    public boolean insertKlant(Klant klant) {
+    public Klant insertKlant(Klant klant) {
         KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
         return klantDAO.insertKlant(klant);
     }
@@ -21,18 +21,14 @@ public class KlantController {
         return klantDAO.selectKlant(id);
     }
     
-    public Klant insertAndSelectKlant(Klant klant) {
-        
-        /*
-        Hier wordt de klant gezet en met id uit de db gehaald
-        */
-        KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
-        return klantDAO.insertAndSelectKlant(klant);
-    }
-    
     public ArrayList<Klant> selectKlanten() {
         KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
         return klantDAO.selectKlanten();
+    }
+    
+    public ArrayList<Klant> selectKlanten(String achternaam) {
+        KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
+        return klantDAO.selectKlanten(achternaam);
     }
     
     public boolean updateKlant(Klant klant) {
