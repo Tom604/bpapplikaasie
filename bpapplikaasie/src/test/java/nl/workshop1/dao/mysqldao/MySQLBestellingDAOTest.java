@@ -106,23 +106,23 @@ public class MySQLBestellingDAOTest {
         }
     }
 
-    /**
-     * Test of insertBestelling method, of class MySQLBestellingDAO.
-     */
-    @Test
-    public void testInsertBestelling() {
-        System.out.println("insertBestelling");
-        Bestelling bestelling = new Bestelling();
-        Klant klant = new Klant();
-        klant.setId(4);
-        bestelling.setTotaalprijs(new BigDecimal("85.95"));
-        bestelling.setDatumTijd(LocalDateTime.of(2018, 8, 13, 22, 43, 23));
-        bestelling.setKlant(klant);
-        BestellingDAO bestellingDAO = DAOFactory.getDAOFactory().getBestellingDAO();
-        boolean expResult = true;
-        boolean result = bestellingDAO.insertBestelling(bestelling);
-        assertEquals(expResult, result);
-    }
+//    /**
+//     * Test of insertBestelling method, of class MySQLBestellingDAO.
+//     */
+//    @Test
+//    public void testInsertBestelling() {
+//        System.out.println("insertBestelling");
+//        Bestelling bestelling = new Bestelling();
+//        Klant klant = new Klant();
+//        klant.setId(4);
+//        bestelling.setTotaalprijs(new BigDecimal("85.95"));
+//        bestelling.setDatumTijd(LocalDateTime.of(2018, 8, 13, 22, 43, 23));
+//        bestelling.setKlant(klant);
+//        BestellingDAO bestellingDAO = DAOFactory.getDAOFactory().getBestellingDAO();
+//        boolean expResult = true;
+//        boolean result = bestellingDAO.insertBestelling(bestelling);
+//        assertEquals(expResult, result);
+//    }
 
     /**
      * Test of selectBestelling method, of class MySQLBestellingDAO.

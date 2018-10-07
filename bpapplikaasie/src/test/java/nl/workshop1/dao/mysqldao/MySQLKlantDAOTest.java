@@ -73,21 +73,21 @@ public class MySQLKlantDAOTest {
         }
     }
 
-    /**
-     * Test of insertKlant method, of class MySQLKlantDAO.
-     */
-    @Test
-    public void testInsertKlant() {
-        System.out.println("insertKlant");
-        Klant klant = new Klant();
-        klant.setVoornaam("Sjaak");
-        klant.setAchternaam("Rand");
-        klant.setTussenvoegsel("van de");
-        KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
-        boolean expResult = true;
-        boolean result = klantDAO.insertKlant(klant);
-        assertEquals(expResult, result);
-    }
+//    /**
+//     * Test of insertKlant method, of class MySQLKlantDAO.
+//     */
+//    @Test
+//    public void testInsertKlant() {
+//        System.out.println("insertKlant");
+//        Klant klant = new Klant();
+//        klant.setVoornaam("Sjaak");
+//        klant.setAchternaam("Rand");
+//        klant.setTussenvoegsel("van de");
+//        KlantDAO klantDAO = DAOFactory.getDAOFactory().getKlantDAO();
+//        boolean expResult = true;
+//        boolean result = klantDAO.insertKlant(klant);
+//        assertEquals(expResult, result);
+//    }
 
     /**
      * Test of selectKlant method, of class MySQLKlantDAO.

@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import nl.workshop1.dao.KlantDAO;
 import nl.workshop1.domain.Klant;
-import nl.workshop1.utility.DatabaseConnection;
+import nl.workshop1.utility.HikariCPDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +29,7 @@ public class MySQLKlantDAO implements KlantDAO {
         
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = HikariCPDataSource.getConnection()) {
             log.debug("Database connected through insertKlant");
             
             preparedStatement = connection.prepareStatement(
@@ -59,8 +59,8 @@ public class MySQLKlantDAO implements KlantDAO {
         Klant klant = new Klant();
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectKlant");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through selectKlant-id");
             
             preparedStatement = connection.prepareStatement(
                     "SELECT id, voornaam, achternaam, tussenvoegsel FROM klant WHERE id = ?");
@@ -75,7 +75,7 @@ public class MySQLKlantDAO implements KlantDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in selectKlant");
+            log.warn("Exception catched in selectKlant-id");
         }
         
         return klant;
@@ -87,7 +87,7 @@ public class MySQLKlantDAO implements KlantDAO {
         ArrayList<Klant> klanten = new ArrayList<>();
         Klant klant;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = HikariCPDataSource.getConnection()) {
             log.debug("Database connected through selectKlanten");
             
             Statement statement = connection.createStatement();
@@ -117,8 +117,8 @@ public class MySQLKlantDAO implements KlantDAO {
         Klant klant;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectKlant");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through selectKlanten-achternaam");
             
             preparedStatement = connection.prepareStatement(
                     "SELECT id, voornaam, achternaam, tussenvoegsel FROM klant WHERE achternaam = ?");
@@ -135,7 +135,7 @@ public class MySQLKlantDAO implements KlantDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in selectKlant");
+            log.warn("Exception catched in selectKlanten-achternaam");
         }
         
         return klanten;
@@ -147,7 +147,7 @@ public class MySQLKlantDAO implements KlantDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = HikariCPDataSource.getConnection()) {
             log.debug("Database connected through updateKlant");
             
             preparedStatement = connection.prepareStatement(
@@ -173,8 +173,8 @@ public class MySQLKlantDAO implements KlantDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through deleteKlant");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through deleteKlant-id");
             
             preparedStatement = connection.prepareStatement(
                     "DELETE FROM klant WHERE id = ?");
@@ -184,7 +184,7 @@ public class MySQLKlantDAO implements KlantDAO {
             
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in deleteKlant");
+            log.warn("Exception catched in deleteKlant-id");
         }
         
         return updateExecuted != 0;

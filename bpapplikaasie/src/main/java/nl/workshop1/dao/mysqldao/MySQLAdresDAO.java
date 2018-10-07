@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import nl.workshop1.dao.AdresDAO;
 import nl.workshop1.domain.Adres;
 import nl.workshop1.domain.Klant;
-import nl.workshop1.utility.DatabaseConnection;
+import nl.workshop1.utility.HikariCPDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +31,7 @@ public class MySQLAdresDAO implements AdresDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = HikariCPDataSource.getConnection()) {
             log.debug("Database connected through insertAdres");
             
             preparedStatement = connection.prepareStatement(
@@ -63,8 +63,8 @@ public class MySQLAdresDAO implements AdresDAO {
         Adres adres = new Adres();
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectAdres");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through selectAdres-id");
             
             preparedStatement = connection.prepareStatement(
                     "SELECT id, straatnaam, huisnummer, toevoeging, postcode, " +
@@ -85,7 +85,7 @@ public class MySQLAdresDAO implements AdresDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in selectAdres");
+            log.warn("Exception catched in selectAdres-id");
         }
         
         return adres;
@@ -98,8 +98,8 @@ public class MySQLAdresDAO implements AdresDAO {
         Klant klant;
         Adres adres;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectAdres");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through selectAdressen");
             
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -122,7 +122,7 @@ public class MySQLAdresDAO implements AdresDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in selectAdres");
+            log.warn("Exception catched in selectAdressen");
         }
         
         return adressen;
@@ -136,8 +136,8 @@ public class MySQLAdresDAO implements AdresDAO {
         Adres adres;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectAdres");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through selectAdressen-id");
             
             preparedStatement = connection.prepareStatement(
                     "SELECT id, straatnaam, huisnummer, toevoeging, postcode, " +
@@ -161,7 +161,7 @@ public class MySQLAdresDAO implements AdresDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in selectAdres");
+            log.warn("Exception catched in selectAdressen-id");
         }
         
         return adressen;
@@ -173,7 +173,7 @@ public class MySQLAdresDAO implements AdresDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = HikariCPDataSource.getConnection()) {
             log.debug("Database connected through updateAdres");
             
             preparedStatement = connection.prepareStatement(
@@ -204,8 +204,8 @@ public class MySQLAdresDAO implements AdresDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through deleteAdres");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through deleteAdres-id");
             
             preparedStatement = connection.prepareStatement(
                     "DELETE FROM adres WHERE id = ?");
@@ -215,7 +215,7 @@ public class MySQLAdresDAO implements AdresDAO {
             
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in deleteAdres");
+            log.warn("Exception catched in deleteAdres-id");
         }
         
         return updateExecuted != 0;

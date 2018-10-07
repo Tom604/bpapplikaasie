@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import nl.workshop1.dao.ArtikelDAO;
 import nl.workshop1.domain.Artikel;
-import nl.workshop1.utility.DatabaseConnection;
+import nl.workshop1.utility.HikariCPDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +30,7 @@ public class MySQLArtikelDAO implements ArtikelDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = HikariCPDataSource.getConnection()) {
             log.debug("Database connected through insertArtikel");
             
             preparedStatement = connection.prepareStatement(
@@ -55,8 +55,8 @@ public class MySQLArtikelDAO implements ArtikelDAO {
         Artikel artikel = new Artikel();
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectArtikel");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through selectArtikel-id");
             
             preparedStatement = connection.prepareStatement(
                     "SELECT id, naam, prijs, voorraad FROM artikel WHERE id = ?");
@@ -71,7 +71,7 @@ public class MySQLArtikelDAO implements ArtikelDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in selectArtikel");
+            log.warn("Exception catched in selectArtikel-id");
         }
         
         return artikel;
@@ -83,8 +83,8 @@ public class MySQLArtikelDAO implements ArtikelDAO {
         Artikel artikel = new Artikel();
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectArtikel");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through selectArtikel-naam");
             
             preparedStatement = connection.prepareStatement(
                     "SELECT id, naam, prijs, voorraad FROM artikel WHERE naam = ?");
@@ -99,7 +99,7 @@ public class MySQLArtikelDAO implements ArtikelDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in selectArtikel");
+            log.warn("Exception catched in selectArtikel-naam");
         }
         
         return artikel;
@@ -111,8 +111,8 @@ public class MySQLArtikelDAO implements ArtikelDAO {
         ArrayList<Artikel> artikelen = new ArrayList<>();
         Artikel artikel;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectKlanten");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through selectArtikelen");
             
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -128,7 +128,7 @@ public class MySQLArtikelDAO implements ArtikelDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in selectKlanten");
+            log.warn("Exception catched in selectArtikelen");
         }
         
         return artikelen;
@@ -140,7 +140,7 @@ public class MySQLArtikelDAO implements ArtikelDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = HikariCPDataSource.getConnection()) {
             log.debug("Database connected through updateArtikel");
             
             preparedStatement = connection.prepareStatement(
@@ -166,8 +166,8 @@ public class MySQLArtikelDAO implements ArtikelDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through deleteArtikel");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through deleteArtikel-id");
             
             preparedStatement = connection.prepareStatement(
                     "DELETE FROM artikel WHERE id = ?");
@@ -177,7 +177,7 @@ public class MySQLArtikelDAO implements ArtikelDAO {
             
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in deleteArtikel");
+            log.warn("Exception catched in deleteArtikel-id");
         }
         
         return updateExecuted != 0;
@@ -189,8 +189,8 @@ public class MySQLArtikelDAO implements ArtikelDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through deleteArtikel");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through deleteArtikel-naam");
             
             preparedStatement = connection.prepareStatement(
                     "DELETE FROM artikel WHERE id = ?");
@@ -200,7 +200,7 @@ public class MySQLArtikelDAO implements ArtikelDAO {
             
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in deleteArtikel");
+            log.warn("Exception catched in deleteArtikel-naam");
         }
         
         return updateExecuted != 0;

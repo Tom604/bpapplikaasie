@@ -10,7 +10,7 @@ import nl.workshop1.dao.BestelregelDAO;
 import nl.workshop1.domain.Artikel;
 import nl.workshop1.domain.Bestelling;
 import nl.workshop1.domain.Bestelregel;
-import nl.workshop1.utility.DatabaseConnection;
+import nl.workshop1.utility.HikariCPDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +32,7 @@ public class MySQLBestelregelDAO implements BestelregelDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = HikariCPDataSource.getConnection()) {
             log.debug("Database connected through insertBestelregel");
             
             preparedStatement = connection.prepareStatement(
@@ -61,8 +61,8 @@ public class MySQLBestelregelDAO implements BestelregelDAO {
         Bestelregel bestelregel = new Bestelregel();
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectBestelregel");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through selectBestelregel-id");
             
             preparedStatement = connection.prepareStatement(
                     "SELECT id, aantal, bestelling_id, artikel_id " +
@@ -80,7 +80,7 @@ public class MySQLBestelregelDAO implements BestelregelDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in selectBestelregel");
+            log.warn("Exception catched in selectBestelregel-id");
         }
         
         return bestelregel;
@@ -94,8 +94,8 @@ public class MySQLBestelregelDAO implements BestelregelDAO {
         Artikel artikel;
         Bestelregel bestelregel;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectBestelregel");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through selectBestelregels");
             
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -115,7 +115,7 @@ public class MySQLBestelregelDAO implements BestelregelDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in selectBestelregel");
+            log.warn("Exception catched in selectBestelregels");
         }
         
         return bestelregels;
@@ -130,8 +130,8 @@ public class MySQLBestelregelDAO implements BestelregelDAO {
         Bestelregel bestelregel;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectBestelregel");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through selectBestelregels-id");
             
             preparedStatement = connection.prepareStatement(
                     "SELECT id, aantal, bestelling_id, artikel_id " +
@@ -153,7 +153,7 @@ public class MySQLBestelregelDAO implements BestelregelDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in selectBestelregel");
+            log.warn("Exception catched in selectBestelregels-id");
         }
         
         return bestelregels;
@@ -165,7 +165,7 @@ public class MySQLBestelregelDAO implements BestelregelDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = HikariCPDataSource.getConnection()) {
             log.debug("Database connected through updateBestelregel");
             
             preparedStatement = connection.prepareStatement(
@@ -192,8 +192,8 @@ public class MySQLBestelregelDAO implements BestelregelDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through deleteBestelregel");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through deleteBestelregel-id");
             
             preparedStatement = connection.prepareStatement(
                     "DELETE FROM bestelregel WHERE id = ?");
@@ -203,7 +203,7 @@ public class MySQLBestelregelDAO implements BestelregelDAO {
             
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in deleteBestelregel");
+            log.warn("Exception catched in deleteBestelregel-id");
         }
         
         return updateExecuted != 0;

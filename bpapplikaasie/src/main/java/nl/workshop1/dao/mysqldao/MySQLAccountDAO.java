@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import nl.workshop1.dao.AccountDAO;
 import nl.workshop1.domain.Account;
 import nl.workshop1.domain.Klant;
-import nl.workshop1.utility.DatabaseConnection;
+import nl.workshop1.utility.HikariCPDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +31,7 @@ public class MySQLAccountDAO implements AccountDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = HikariCPDataSource.getConnection()) {
             log.debug("Database connected through insertAccount");
             
             preparedStatement = connection.prepareStatement(
@@ -58,7 +58,7 @@ public class MySQLAccountDAO implements AccountDAO {
         Account account = new Account();
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = HikariCPDataSource.getConnection()) {
             log.debug("Database connected through selectAccount-id");
             
             preparedStatement = connection.prepareStatement(
@@ -95,7 +95,7 @@ public class MySQLAccountDAO implements AccountDAO {
         Account account = new Account();
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = HikariCPDataSource.getConnection()) {
             log.debug("Database connected through selectAccount-username");
             
             preparedStatement = connection.prepareStatement(
@@ -131,8 +131,8 @@ public class MySQLAccountDAO implements AccountDAO {
         
         ArrayList<Account> accounts = new ArrayList<>();
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectAccount-id");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through selectAccounts");
             
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -157,7 +157,7 @@ public class MySQLAccountDAO implements AccountDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in selectAccount-id");
+            log.warn("Exception catched in selectAccounts");
         }
         
         return accounts;
@@ -169,7 +169,7 @@ public class MySQLAccountDAO implements AccountDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = HikariCPDataSource.getConnection()) {
             log.debug("Database connected through updateAccount");
             
             preparedStatement = connection.prepareStatement(
@@ -197,8 +197,8 @@ public class MySQLAccountDAO implements AccountDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through deleteAccount");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through deleteAccount-id");
             
             preparedStatement = connection.prepareStatement(
                     "DELETE FROM account WHERE id = ?");
@@ -208,7 +208,7 @@ public class MySQLAccountDAO implements AccountDAO {
             
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in deleteAccount");
+            log.warn("Exception catched in deleteAccount-id");
         }
         
         return updateExecuted != 0;

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import nl.workshop1.dao.BestellingDAO;
 import nl.workshop1.domain.Bestelling;
 import nl.workshop1.domain.Klant;
-import nl.workshop1.utility.DatabaseConnection;
+import nl.workshop1.utility.HikariCPDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +31,7 @@ public class MySQLBestellingDAO implements BestellingDAO {
         
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = HikariCPDataSource.getConnection()) {
             log.debug("Database connected through insertBestelling");
             
             preparedStatement = connection.prepareStatement(
@@ -63,8 +63,8 @@ public class MySQLBestellingDAO implements BestellingDAO {
         Bestelling bestelling = new Bestelling();
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectBestelling");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through selectBestelling-id");
             
             preparedStatement = connection.prepareStatement(
                     "SELECT id, totaalprijs, datum_tijd, klant_id " +
@@ -82,7 +82,7 @@ public class MySQLBestellingDAO implements BestellingDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in selectBestelling");
+            log.warn("Exception catched in selectBestelling-id");
         }
         
         return bestelling;
@@ -95,8 +95,8 @@ public class MySQLBestellingDAO implements BestellingDAO {
         Klant klant;
         Bestelling bestelling;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through selectBestelling");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through selectBestellingen");
             
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -115,7 +115,7 @@ public class MySQLBestellingDAO implements BestellingDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in selectBestelling");
+            log.warn("Exception catched in selectBestellingen");
         }
         
         return bestellingen;
@@ -127,7 +127,7 @@ public class MySQLBestellingDAO implements BestellingDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
+        try (Connection connection = HikariCPDataSource.getConnection()) {
             log.debug("Database connected through updateBestelling");
             
             preparedStatement = connection.prepareStatement(
@@ -154,8 +154,8 @@ public class MySQLBestellingDAO implements BestellingDAO {
         int updateExecuted = 0;
         PreparedStatement preparedStatement;
         
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            log.debug("Database connected through deleteBestelling");
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through deleteBestelling-id");
             
             preparedStatement = connection.prepareStatement(
                     "DELETE FROM bestelling WHERE id = ?");
@@ -165,7 +165,7 @@ public class MySQLBestellingDAO implements BestellingDAO {
             
         } catch (SQLException ex) {
             ex.printStackTrace();
-            log.warn("Exception catched in deleteBestelling");
+            log.warn("Exception catched in deleteBestelling-id");
         }
         
         return updateExecuted != 0;
