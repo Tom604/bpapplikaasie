@@ -16,6 +16,7 @@ public interface BestellingDAO {
     public Bestelling insertBestelling (Bestelling bestelling);
     public Bestelling selectBestelling (int id);
     public ArrayList<Bestelling> selectBestellingen();
+    public ArrayList<Bestelling> selectBestellingen(int klantId);
     public boolean updateBestelling (Bestelling bestelling);
     public boolean deleteBestelling (int id);    
 }

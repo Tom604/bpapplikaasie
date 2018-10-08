@@ -3,6 +3,7 @@ package nl.workshop1.controller;
 import nl.workshop1.dao.AccountDAO;
 import nl.workshop1.dao.DAOFactory;
 import nl.workshop1.domain.Account;
+import nl.workshop1.utility.PasswordStorage;
 
 /**
  *
@@ -20,11 +21,11 @@ public class LoginController {
         // Verkrijg data van de database via AccountDAO en valideer
         AccountDAO accountDAO = DAOFactory.getDAOFactory().getAccountDAO();
         Account account = accountDAO.selectAccount(username);
-        if (wachtwoord.equals(account.getWachtwoord())) {
-                validation = true;
-                loginnaam = account.getUsername();
-                accounttype = account.getAccounttype();
-            }
+        if (account.getUsername() != null && PasswordStorage.verifyPassword(wachtwoord, account.getWachtwoord())) {
+            validation = true;
+            loginnaam = account.getUsername();
+            accounttype = account.getAccounttype();
+        }
         return validation;
     }
 }

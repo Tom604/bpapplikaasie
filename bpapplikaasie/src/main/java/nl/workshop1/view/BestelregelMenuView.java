@@ -50,6 +50,13 @@ public class BestelregelMenuView extends MenuView {
         this.viewName = viewName;
     }
     
+    private void printAttributes(Bestelregel bestelregel) {
+        ArtikelController artikelController = new ArtikelController();
+        bestelregel.setArtikel(artikelController.selectArtikel(bestelregel.getArtikel().getId()));
+        System.out.printf("%-16s%-10.2f%-8d\n", bestelregel.getArtikel().getNaam(),
+                bestelregel.getArtikel().getPrijs(), bestelregel.getAantal());
+    }
+    
     private void addToTotaalprijsBestelling(Bestelregel bestelregel, Bestelling bestelling) {
         BigDecimal x = bestelregel.getArtikel().getPrijs().multiply(new BigDecimal(bestelregel.getAantal()));
         bestelling.setTotaalprijs(bestelling.getTotaalprijs().add(x));
@@ -90,7 +97,8 @@ public class BestelregelMenuView extends MenuView {
         Bestelregel bestelregel = getNewBestelregel();
         addToTotaalprijsBestelling(bestelregel, bestelling);
                 
-        System.out.println("De opgegeven bestelregel:\n" + bestelregel.toString());
+        System.out.println("De opgegeven bestelregel:");
+        printAttributes(bestelregel);
         System.out.println("\nIs dit correct?");
         System.out.println("1. Ja, opslaan.\n0. Nee, stoppen (niets opslaan).\n");
         switch (getSelection()) {
@@ -147,7 +155,7 @@ public class BestelregelMenuView extends MenuView {
         else {
             bestelregel = bestelregelController.selectBestelregel(selection);
             System.out.println("De geselecteerde bestelregel:");
-            System.out.println(bestelregel.toString());
+            printAttributes(bestelregel);
         }
         return bestelregel;
     }
@@ -157,8 +165,10 @@ public class BestelregelMenuView extends MenuView {
         BestelregelController bestelregelController = new BestelregelController();
         ArrayList<Bestelregel> bestelregels = bestelregelController.selectBestelregels(bestellingId);
         
+        System.out.printf("%3s%-16s%-10s%-8s\n", "", "Art.naam", "Art.prijs", "Aantal");
         for (Bestelregel e: bestelregels) {
-            System.out.println(e.getId() + ". " + e.toString());
+            System.out.print(e.getId() + ". ");
+            printAttributes(e);
         }
         return bestelregels.size();
     }
@@ -187,7 +197,8 @@ public class BestelregelMenuView extends MenuView {
         
         subtractFromArtikelVoorraad(bestelregel);
         
-        System.out.println("\nDe aangepaste bestelregel:\n" + bestelregel.toString());
+        System.out.println("\nDe aangepaste bestelregel:");
+        printAttributes(bestelregel);
         System.out.println("\nWilt u de aangepaste bestelregel opslaan?");
         System.out.println("1. Ja\n0. Nee\n");
         switch (getSelection()) {

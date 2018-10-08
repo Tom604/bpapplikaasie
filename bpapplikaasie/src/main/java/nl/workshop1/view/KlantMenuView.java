@@ -38,9 +38,21 @@ public class KlantMenuView extends MenuView {
         this.viewName = viewName;
     }
 
+    private void printAttributes(Klant klant) {
+        
+        if (klant.getTussenvoegsel() == null) {
+            System.out.printf("%-16s\n", klant.getVoornaam() + " " +
+                    klant.getAchternaam());
+        }
+        else {
+            System.out.printf("%-20s\n", klant.getVoornaam() + " " +
+                    klant.getTussenvoegsel() + " " + klant.getAchternaam());
+        }
+    }
+    
     private void showInsertKlantMenu() {
         
-        setViewName("Klant toevoegen");
+        setViewName("Klant toevoegen\t");
         printHeader();
         
         Klant klant = new Klant();
@@ -53,7 +65,8 @@ public class KlantMenuView extends MenuView {
         System.out.print("Voer het tussenvoegsel van de klant in (en druk dan op enter): ");
         klant.setTussenvoegsel(SCANNER.nextLine());
             
-        System.out.println("\nDe opgegeven klant:\n" + klant.toString());
+        System.out.println("\nDe opgegeven klant:");
+        printAttributes(klant);
         System.out.println("\nIs dit correct?");
         System.out.println("1. Ja, opslaan.\n0. Nee, stoppen (niets opslaan).\n");
         switch (getSelection()) {
@@ -94,8 +107,39 @@ public class KlantMenuView extends MenuView {
         }
         else {
             klant = klantController.selectKlant(selection);
+            if (klant.getAchternaam() != null) {
+                System.out.println("De geselecteerde klant:");
+                printAttributes(klant);
+            }
+            else {
+                System.out.println(MAINERROR);
+            }
+        }
+        return klant;
+    }
+    
+    Klant showSelectKlantMenu(String achternaam) {
+        
+        setViewName("Klant zoeken\t");
+        printHeader();
+        
+        int id = printList(achternaam);
+        System.out.println("\n0. Terug");
+        
+        KlantController klantController = new KlantController();
+        Klant klant = new Klant();
+        
+        System.out.println("\nSelecteer klant.\n");
+        int selection = Integer.parseInt(getSelection());
+        if (selection == 0) {
+        }
+        else if (selection < 0 || selection > id) {
+            System.out.println(MAINERROR);
+        }
+        else {
+            klant = klantController.selectKlant(selection);
             System.out.println("De geselecteerde klant:");
-            System.out.println(klant.toString());
+            printAttributes(klant);
         }
         return klant;
     }
@@ -105,10 +149,14 @@ public class KlantMenuView extends MenuView {
         KlantController klantController = new KlantController();
         ArrayList<Klant> klanten = klantController.selectKlanten();
         
+        System.out.printf("%3s%-16s\n", "", "Naam");
+        int x = 0;
         for (Klant e: klanten) {
-            System.out.println(e.getId() + ". " + e.toString());
+            System.out.print(e.getId() + ". ");
+            printAttributes(e);
+            x = e.getId();
         }
-        return klanten.size();
+        return x;
     }
     
     int printList(String achternaam) {
@@ -116,8 +164,10 @@ public class KlantMenuView extends MenuView {
         KlantController klantController = new KlantController();
         ArrayList<Klant> klanten = klantController.selectKlanten(achternaam);
         
+        System.out.printf("%3s%-16s\n", "", "Naam");
         for (Klant e: klanten) {
-            System.out.println(e.getId() + ". " + e.toString());
+            System.out.print(e.getId() + ". ");
+            printAttributes(e);
         }
         return klanten.size();
     }
@@ -151,7 +201,8 @@ public class KlantMenuView extends MenuView {
 
     private void showUpdatedKlantMenu(Klant klant) {
         
-        System.out.println("\nDe aangepaste klant:\n" + klant.toString());
+        System.out.println("\nDe aangepaste klant:");
+        printAttributes(klant);
         
         System.out.println("\nWilt u de aangepaste klant opslaan?");
         System.out.println("1. Ja\n0. Nee\n");

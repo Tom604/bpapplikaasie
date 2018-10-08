@@ -38,6 +38,11 @@ public class ArtikelMenuView extends MenuView {
         this.viewName = viewName;
     }
     
+    private void printAttributes(Artikel artikel) {
+        System.out.printf("%-16s%-10.2f%-8d\n", artikel.getNaam(),
+                 artikel.getPrijs(), artikel.getVoorraad());
+    }
+    
     private void showInsertArtikeltMenu() {
         
         setViewName("Artikel toevoegen");
@@ -53,7 +58,8 @@ public class ArtikelMenuView extends MenuView {
         System.out.print("Voer de voorraad voor het artikel in (en druk dan op enter): ");
         artikel.setVoorraad(SCANNER.nextInt());
 
-        System.out.println("\nHet opgegeven artikel:\n" + artikel.toString());
+        System.out.println("\nHet opgegeven artikel:");
+        printAttributes(artikel);
         System.out.println("\nIs dit correct?");
         System.out.println("1. Ja, opslaan.\n0. Nee, stoppen (niets opslaan).\n");
         switch (getSelection()) {
@@ -87,7 +93,7 @@ public class ArtikelMenuView extends MenuView {
         else {
             artikel = artikelController.selectArtikel(selection);
             System.out.println("Het geselecteerde artikel:");
-            System.out.println(artikel.toString());
+            printAttributes(artikel);
         }
         return artikel;
     }
@@ -97,8 +103,10 @@ public class ArtikelMenuView extends MenuView {
         ArtikelController artikelController = new ArtikelController();
         ArrayList<Artikel> artikelen = artikelController.selectArtikelen();
         
+        System.out.printf("%3s%-16s%-10s%-8s\n", "", "Naam", "Prijs", "Voorraad");
         for (Artikel e: artikelen) {
-            System.out.println(e.getId() + ". " + e.toString());
+            System.out.print(e.getId() + ". ");
+            printAttributes(e);
         }
         return artikelen.size();
     }
@@ -131,7 +139,8 @@ public class ArtikelMenuView extends MenuView {
     
     private void showUpdatedArtikelMenu(Artikel artikel) {
         
-        System.out.println("\nHet aangepaste artikel:\n" + artikel.toString());
+        System.out.println("\nHet aangepaste artikel:");
+        printAttributes(artikel);
                 
         System.out.println("\nWilt u het aangepaste artikel opslaan?");
         System.out.println("1. Ja\n0. Nee\n");
@@ -153,7 +162,7 @@ public class ArtikelMenuView extends MenuView {
         setViewName("Artikel verwijderen");
         printHeader();
         
-        System.out.println("\nWilt u dit artikel verwijderen?");
+        System.out.println("Wilt u dit artikel verwijderen?");
         System.out.println("1. Ja\n0. Nee\n");
         switch (getSelection()) {
             case "0":   break;

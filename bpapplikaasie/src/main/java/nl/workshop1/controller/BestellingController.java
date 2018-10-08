@@ -26,6 +26,11 @@ public class BestellingController {
         return bestellingDAO.selectBestellingen();
     }
     
+    public ArrayList<Bestelling> selectBestellingen(int klantId) {
+        BestellingDAO bestellingDAO = DAOFactory.getDAOFactory().getBestellingDAO();
+        return bestellingDAO.selectBestellingen(klantId);
+    }
+    
     public boolean updateBestelling(Bestelling bestelling) {
         BestellingDAO bestellingDAO = DAOFactory.getDAOFactory().getBestellingDAO();
         return bestellingDAO.updateBestelling(bestelling);

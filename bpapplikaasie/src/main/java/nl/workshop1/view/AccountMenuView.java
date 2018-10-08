@@ -17,7 +17,7 @@ public class AccountMenuView extends MenuView {
         String selection = "";
         
         do {
-            setViewName("Accounts\t\t");
+            setViewName("Accounts\t");
             printHeader();
             
             System.out.println("1. Account toevoegen\n2. Account zoeken\n3. Account " +
@@ -37,6 +37,10 @@ public class AccountMenuView extends MenuView {
     @Override
     public void setViewName(String viewName) {
         this.viewName = viewName;
+    }
+    
+    private void printAttributes(Account account) {
+            System.out.printf("%-16s%-16s\n", account.getUsername(), account.getAccounttype());
     }
     
     private void setAccounttype() {
@@ -73,7 +77,8 @@ public class AccountMenuView extends MenuView {
         account.setUsername(SCANNER.next());
         account.setWachtwoord(getInputWithValidation("wachtwoord"));
             
-        System.out.println("\nHet opgegeven account:\n" + account.toString());
+        System.out.println("\nHet opgegeven account:");
+        printAttributes(account);
         System.out.println("\nIs dit correct?");
         System.out.println("1. Ja, opslaan.\n0. Nee, opnieuw invoeren.\n");
         switch (getSelection()) {
@@ -107,7 +112,7 @@ public class AccountMenuView extends MenuView {
         else {
             account = accountController.selectAccount(selection);
             System.out.println("De geselecteerde account:");
-            System.out.println(account.toString());
+            printAttributes(account);
         }
             
         return account;
@@ -118,8 +123,10 @@ public class AccountMenuView extends MenuView {
         AccountController accountController = new AccountController();
         ArrayList<Account> accounts = accountController.selectAccounts();
         
+        System.out.printf("%-3s%-16s%-16s\n", "", "Username", "Accounttype");
         for (Account e: accounts) {
-            System.out.println(e.getId() + ". " + e.toString());
+            System.out.print(e.getId() + ". ");
+            printAttributes(e);
         }
         return accounts.size();
     }
@@ -127,7 +134,7 @@ public class AccountMenuView extends MenuView {
     private void showUpdateAccountMenu() {
         
         Account account = showSelectAccountMenu();
-        setViewName("Account aanpassen\t");
+        setViewName("Account aanpassen");
         printHeader();
         
         System.out.println("Wat wilt u aanpassen?");
@@ -139,9 +146,15 @@ public class AccountMenuView extends MenuView {
                         account.setUsername(SCANNER.next());
                         showUpdatedAccountMenu(account);
                         break;
-            case "2":   System.out.print("Nieuw wachtwoord: ");
-                        account.setWachtwoord(SCANNER.next());
-                        showUpdatedAccountMenu(account);
+            case "2":   System.out.print("Bevestig uw wachtwoord: ");
+                        AccountController accountController = new AccountController();
+                        if (accountController.validatePassword(SCANNER.next())) {
+                            account.setWachtwoord(getInputWithValidation("wachtwoord"));
+                            showUpdatedAccountMenu(account);
+                        }
+                        else {
+                            System.out.println(MAINERROR);
+                        }
                         break;
             default:    System.out.println(MAINERROR);
         }
@@ -149,7 +162,8 @@ public class AccountMenuView extends MenuView {
 
     private void showUpdatedAccountMenu(Account account) {
         
-        System.out.println("\nDe aangepaste account:\n" + account.toString());
+        System.out.println("\nDe aangepaste account:");
+        printAttributes(account);
         System.out.println("\nWilt u de aangepaste account opslaan?");
         System.out.println("1. Ja\n0. Nee\n");
         switch (getSelection()) {

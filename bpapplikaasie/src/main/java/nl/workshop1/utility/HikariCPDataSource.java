@@ -11,10 +11,10 @@ import java.sql.SQLException;
  */
 public class HikariCPDataSource {
     
-    private static HikariConfig config = new HikariConfig("src/main/resources/hikaricp.properties");
-    private static HikariDataSource ds = new HikariDataSource(config);
+    private static final HikariConfig CONFIG = new HikariConfig("src/main/resources/hikaricp.properties");
+    private static final HikariDataSource DS = new HikariDataSource(CONFIG);
     
     public static Connection getConnection() throws SQLException {
-        return ds.getConnection();
+        return DS.getConnection();
     }
 }

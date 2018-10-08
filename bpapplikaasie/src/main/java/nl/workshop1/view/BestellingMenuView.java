@@ -43,6 +43,23 @@ public class BestellingMenuView extends MenuView {
         this.viewName = viewName;
     }
     
+    private void printAttributes(Bestelling bestelling) {
+        
+        KlantController klantController = new KlantController();
+        bestelling.setKlant(klantController.selectKlant(bestelling.getKlant().getId()));
+        
+        if (bestelling.getKlant().getTussenvoegsel() == null) {
+            System.out.printf("%-8s%-22s%-16s\n", bestelling.getTotaalprijs(),
+                    bestelling.getDatumTijd(), bestelling.getKlant().getVoornaam() + " " +
+                    bestelling.getKlant().getAchternaam());
+        }
+        else {
+            System.out.printf("%-8s%-22s%-20s\n", bestelling.getTotaalprijs(),
+                    bestelling.getDatumTijd(), bestelling.getKlant().getVoornaam() + " " +
+                    bestelling.getKlant().getTussenvoegsel() + " " + bestelling.getKlant().getAchternaam());
+        }
+    }
+    
     private void showInsertBestellingMenu() {
         
         Bestelling bestelling = getInitializedBestelling();
@@ -82,7 +99,7 @@ public class BestellingMenuView extends MenuView {
         
         Bestelling bestelling = new Bestelling();
         
-        System.out.println("Wilt u:\n");
+        System.out.println("Wilt u:");
         System.out.println("1. Bestelling op klantnaam zoeken\n2. Alle bestellingen " + 
                 "weergeven\n\n0. Terug naar Bestellingenpagina\n");
         switch (getSelection()) {
@@ -99,18 +116,21 @@ public class BestellingMenuView extends MenuView {
     
     private Bestelling showSelectBestellingFromKlantMenu() {
         
+        BestellingController bestellingController = new BestellingController();
         Bestelling bestelling = new Bestelling();
         Klant klant;
         
-        System.out.println("Selecteer bestelling op achternaam klant:");
-        String achternaam = SCANNER.next();
+        // Selecteer klant
+        System.out.print("Selecteer bestelling op achternaam klant: ");
+        KlantMenuView klantMenuView = new KlantMenuView();
+        klant = klantMenuView.showSelectKlantMenu(SCANNER.next());
         System.out.println();
         
-        KlantMenuView klantMenuView = new KlantMenuView();
-        int id = klantMenuView.printList(achternaam);
+        // Print bestellingen voor de klant
+        int id = printList(klant.getId());
         System.out.println("\n0. Terug\n");
         
-        System.out.println("Selecteer klant:");
+        System.out.println("Selecteer bestelling:\n");
         int selection = Integer.parseInt(getSelection());
         if (selection == 0) {
         }
@@ -118,15 +138,12 @@ public class BestellingMenuView extends MenuView {
             System.out.println(MAINERROR);
         }
         else {
-            KlantController klantController = new KlantController();
-            klant = klantController.selectKlant(selection);
-            BestellingController bestellingController = new BestellingController();
-            bestelling = bestellingController.selectBestelling(klant.getId());
-            System.out.println("De geselecteerde klant en bestellingen:");
-            System.out.println(klant.toString());
-            System.out.println(bestelling.toString());
+            bestelling = bestellingController.selectBestelling(selection);
+            System.out.println("De geselecteerde bestelling:");
+            printAttributes(bestelling);
+            System.out.println();
             BestelregelMenuView bestelregelMenuView = new BestelregelMenuView();
-            bestelregelMenuView.printList(bestelling.getId());
+            bestelregelMenuView.printList(selection);
         }
         return bestelling;
     }
@@ -149,12 +166,13 @@ public class BestellingMenuView extends MenuView {
         else {
             bestelling = bestellingController.selectBestelling(selection);
             System.out.println("De geselecteerde bestelling:");
-            System.out.println(bestelling.toString());
+            printAttributes(bestelling);
+            System.out.println();
             BestelregelMenuView bestelregelMenuView = new BestelregelMenuView();
             bestelregelMenuView.printList(selection);
-            /*
-            TODO - S: Ook nog artikelnaam printen (print nu alleen artikel id)
-            */
+//            /*
+//            TODO - S: Ook nog artikelnaam printen (print nu alleen artikel id)
+//            */
         }
         return bestelling;
     }
@@ -164,8 +182,23 @@ public class BestellingMenuView extends MenuView {
         BestellingController bestellingController = new BestellingController();
         ArrayList<Bestelling> bestellingen = bestellingController.selectBestellingen();
         
+        System.out.printf("%-3s%-8s%-22s%-16s\n", "", "Prijs", "Datum en tijd", "Naam");
         for (Bestelling e: bestellingen) {
-            System.out.println(e.getId() + ". " + e.toString());
+            System.out.print(e.getId() + ". ");
+            printAttributes(e);
+        }
+        return bestellingen.size();
+    }
+    
+    private int printList(int klantId) {
+
+        BestellingController bestellingController = new BestellingController();
+        ArrayList<Bestelling> bestellingen = bestellingController.selectBestellingen(klantId);
+        
+        System.out.printf("%-3s%-8s%-22s%-16s\n", "", "Prijs", "Datum en tijd", "Naam");
+        for (Bestelling e: bestellingen) {
+            System.out.print(e.getId() + ". ");
+            printAttributes(e);
         }
         return bestellingen.size();
     }

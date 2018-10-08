@@ -120,6 +120,42 @@ public class MySQLBestellingDAO implements BestellingDAO {
         
         return bestellingen;
     }
+    
+    @Override
+    public ArrayList<Bestelling> selectBestellingen(int klantId) {
+        
+        ArrayList<Bestelling> bestellingen = new ArrayList<>();
+        Klant klant;
+        Bestelling bestelling;
+        PreparedStatement preparedStatement;
+        
+        try (Connection connection = HikariCPDataSource.getConnection()) {
+            log.debug("Database connected through selectBestellingen");
+            
+            preparedStatement = connection.prepareStatement(
+                    "SELECT id, totaalprijs, datum_tijd, klant_id " +
+                    "FROM bestelling WHERE klant_id = ?");
+            preparedStatement.setInt(1, klantId);
+            
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                klant = new Klant();
+                bestelling = new Bestelling();
+                bestelling.setId(resultSet.getInt("id"));
+                bestelling.setTotaalprijs(resultSet.getBigDecimal("totaalprijs"));
+                Timestamp timestamp = resultSet.getTimestamp("datum_tijd");
+                bestelling.setDatumTijd(timestamp.toLocalDateTime());
+                klant.setId(resultSet.getInt("klant_id"));
+                bestelling.setKlant(klant);
+                bestellingen.add(bestelling);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            log.warn("Exception catched in selectBestellingen");
+        }
+        
+        return bestellingen;
+    }
 
     @Override
     public boolean updateBestelling(Bestelling bestelling) {

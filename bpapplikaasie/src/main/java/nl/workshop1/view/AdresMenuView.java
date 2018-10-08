@@ -4,18 +4,12 @@ import java.util.ArrayList;
 import nl.workshop1.controller.AdresController;
 import nl.workshop1.domain.Adres;
 import nl.workshop1.domain.Klant;
-//import nl.workshop1.utility.InputValidator;
 
 /**
  *
  * @author Vosjes
  */
 public class AdresMenuView extends MenuView {
-    
-    /*
-    TODO - M: toString() methode van Adres nog aanpassen, om null waarde op te
-    vangen voor toevoeging.
-    */
     
     @Override
     public void showMenu() {
@@ -45,21 +39,24 @@ public class AdresMenuView extends MenuView {
         this.viewName = viewName;
     }
     
+    private void printAttributes(Adres adres) {
+        
+        if (adres.getToevoeging() == null) {
+            System.out.printf("%-16s%-8s%-10s%-16s%-10s\n", adres.getStraatnaam(), adres.getHuisnummer(),
+                    adres.getPostcode(), adres.getWoonplaats(), adres.getAdrestype());
+        }
+        else {
+            System.out.printf("%-16s%-8s%-10s%-16s%-10s\n", adres.getStraatnaam(), adres.getHuisnummer() +
+                    " " + adres.getToevoeging(), adres.getPostcode(), adres.getWoonplaats(),
+                    adres.getAdrestype());
+        }
+    }
+    
     private void showKlantAndAdressen() {
         KlantMenuView klantMenuView = new KlantMenuView();
         Klant klant = klantMenuView.showSelectKlantMenu();
-        showAdressenForKlant(klant.getId());
+        printList(klant.getId());
         showInsertAdresMenu(klant);
-    }
-    
-    private void showAdressenForKlant(int klantId) {
-        
-        AdresController adresController = new AdresController();
-        ArrayList<Adres> adressen = adresController.selectAdressen(klantId);
-        
-        for (Adres e: adressen) {
-            System.out.println(e.toString());
-        }
     }
     
     void showInsertAdresMenu(Klant klant) {
@@ -78,14 +75,13 @@ public class AdresMenuView extends MenuView {
         adres.setToevoeging(SCANNER.nextLine());
         adres.setPostcode(getInputWithValidation("postcode").replaceAll("\\s*", "").toUpperCase());
         
-//        setPostcode(adres);
-        
         System.out.print("Voer de woonplaats voor het adres in (en druk dan op enter): ");
         adres.setWoonplaats(SCANNER.next());
         adres.setAdrestype(getAdrestype());
         adres.setKlant(klant);
 
-        System.out.println("Het opgegeven adres:\n" + adres.toString());
+        System.out.println("Het opgegeven adres:");
+        printAttributes(adres);
         System.out.println("\nIs dit correct?");
         System.out.println("1. Ja, opslaan.\n0. Nee, opnieuw invoeren.\n");
         switch (getSelection()) {
@@ -111,30 +107,12 @@ public class AdresMenuView extends MenuView {
         return adrestype;
     }
     
-//    private void setPostcode(Adres adres) {
-//        
-//        InputValidator input = new InputValidator();        
-//        String postcode = "";
-//        boolean validation = false;
-//        
-//        do {
-//            System.out.print("Voer de postcode voor het adres in (en druk dan op enter): ");
-//            validation = input.validatePostcode(postcode = SCANNER.nextLine());
-//            if (validation) {
-//                adres.setPostcode(postcode);
-//            }
-//            else {
-//                System.out.println(MAINERROR);
-//            }
-//        } while (validation == false);
-//    }
-    
     private Adres showSelectAdresMenu() {
         
         setViewName("Adres zoeken\t");
         printHeader();
         
-        int id = printList();
+        int id = AdresMenuView.this.printList();
         System.out.println("\n0. Terug");
         
         AdresController adresController = new AdresController();
@@ -150,7 +128,7 @@ public class AdresMenuView extends MenuView {
         else {
             adres = adresController.selectAdres(selection);
             System.out.println("Het geselecteerde adres:");
-            System.out.println(adres.toString());
+            printAttributes(adres);
         }
         return adres;
     }
@@ -160,10 +138,25 @@ public class AdresMenuView extends MenuView {
         AdresController adresController = new AdresController();
         ArrayList<Adres> adressen = adresController.selectAdressen();
         
+        System.out.printf("%3s%-16s%-8s%-10s%-16s%-10s\n", "", "Straatnaam", "Nummer",
+                "Postcode", "Woonplaats", "Adrestype");
         for (Adres e: adressen) {
-            System.out.println(e.getId() + ". " + e.toString());
+            System.out.print(e.getId() + ". ");
+            printAttributes(e);
         }
         return adressen.size();
+    }
+    
+    private void printList(int klantId) {
+        
+        AdresController adresController = new AdresController();
+        ArrayList<Adres> adressen = adresController.selectAdressen(klantId);
+        
+        System.out.printf("%-16s%-8s%-10s%-16s%-10s\n", "Straatnaam", "Nummer",
+                "Postcode", "Woonplaats", "Adrestype");
+        for (Adres e: adressen) {
+            printAttributes(e);
+        }
     }
     
     private void showUpdateAdresMenu() {
@@ -207,7 +200,8 @@ public class AdresMenuView extends MenuView {
 
     private void showUpdatedAdresMenu(Adres adres) {
         
-        System.out.println("\nHet aangepaste adres:\n" + adres.toString());
+        System.out.println("\nHet aangepaste adres:");
+        printAttributes(adres);
 
         System.out.println("\nWilt u het aangepaste adres opslaan?");
         System.out.println("1. Ja\n0. Nee\n");

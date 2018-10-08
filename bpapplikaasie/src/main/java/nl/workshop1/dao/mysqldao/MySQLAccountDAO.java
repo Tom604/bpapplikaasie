@@ -5,11 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import nl.workshop1.dao.AccountDAO;
 import nl.workshop1.domain.Account;
 import nl.workshop1.domain.Klant;
 import nl.workshop1.utility.HikariCPDataSource;
+import nl.workshop1.utility.PasswordStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,10 +40,15 @@ public class MySQLAccountDAO implements AccountDAO {
                     "INSERT INTO account (username, wachtwoord, accounttype, klant_id) " +
                     "VALUES (?, ?, ?, (SELECT id FROM klant WHERE id = ?))");
             preparedStatement.setString(1, account.getUsername());
-            preparedStatement.setString(2, account.getWachtwoord());
+            preparedStatement.setString(2, PasswordStorage.createHash(account.getWachtwoord()));
             preparedStatement.setString(3, account.getAccounttype());
-            preparedStatement.setInt(4, account.getKlant().getId());
-            
+            if (account.getKlant() != null) {
+                preparedStatement.setInt(4, account.getKlant().getId());
+            }
+            else {
+                preparedStatement.setNull(4, Types.INTEGER);
+            }
+                
             updateExecuted = preparedStatement.executeUpdate();
 
         } catch (SQLException ex) {
@@ -176,7 +183,7 @@ public class MySQLAccountDAO implements AccountDAO {
                     "UPDATE account SET username = ?, wachtwoord = ?, " +
                     "accounttype = ?, klant_id = ? WHERE id = ?");
             preparedStatement.setString(1, account.getUsername());
-            preparedStatement.setString(2, account.getWachtwoord());
+            preparedStatement.setString(2, PasswordStorage.createHash(account.getWachtwoord()));
             preparedStatement.setString(3, account.getAccounttype());
             preparedStatement.setInt(4, account.getKlant().getId());
             preparedStatement.setInt(5, account.getId());
